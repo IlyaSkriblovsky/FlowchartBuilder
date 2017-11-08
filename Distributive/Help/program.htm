@@ -1,0 +1,245 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>Введение в "Конструктор блок-схем"</title>
+</head>
+
+<body topmargin="0" leftmargin="0" bgcolor="#E0E0E0">
+<div align="center">
+  <center>
+
+<table width="100%"  bgcolor="#E0E0E0"  bordercolorlight="#A0A0A0" border="1" bordercolordark="#FFFFFF">
+<tr>
+<td>  
+<table width="100%">
+<tr>
+<td><a href="index.htm">Введение</a> | <a href="sch.htm">Блок-схемы</a> |
+  <a href="interp.htm">Выражения</a> | <a href="operat.htm">Операторы</a> |
+  <a href="program.htm">Среда</a> | <a href="example.htm">Примеры</a> |
+  <a href="online.htm">Online</a></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+
+  </center>
+</div>
+<table cellpadding="10" width="100%" bgcolor="#FFFFFF">
+<tr>
+<td>
+<h2>Интерфейс программы</h2>
+<h3>Введение</h3>
+<p align="center"><img border="0" src="images/main.jpg"></p>
+<p align="left">Главное окно программы содержит:</p>
+<ol>
+  <li>
+    <p align="left"><font color="#800000">Главное меню</font></li>
+  <li>
+    <p align="left"><font color="#008000">Панель с управляющими кнопками</font></li>
+  <li>
+    <p align="left"><font color="#000080">Поле редактирования документа</font></li>
+</ol>
+<h3>Главное меню</h3>
+<p><img border="0" src="images/mm1.jpg" width="438" height="233"></p>
+<p>Меню &quot;Файл&quot; содержит следующие опции:</p>
+<ul>
+  <li>Новый - создает новый документ. Если
+    текущий не сохранен, то новый документ
+    будет открыт в новом окне.</li>
+  <li>Открыть - открывает документ из файла.
+    Если текущий не сохранен, то новый
+    документ будет открыт в новом окне.</li>
+  <li>Сохранить - сохраняет документ. Всегда
+    запрашивается имя файла для сохранения.</li>
+  <li>Экспорт - экспорт изображения в
+    графические форматы (растровые: BMP, JPEG и
+    векторные: WMF, EMF).</li>
+  <li>Печать - отправить изображение на печать.</li>
+  <li>Еще одно окно - аналогично &quot;Новый&quot;,
+    но всегда в новом окне.</li>
+  <li>Выход - завершение работы. Если есть
+    несохраненный документ будет запрошено
+    подтверждение.</li>
+</ul>
+<p><img border="0" src="images/mm2.jpg" width="438" height="233"></p>
+<p>Меню &quot;Редактирование&quot; содержит
+следующие опции:</p>
+<ul>
+  <li>Новый блок - создает новый блок тип
+    которого нужно выбрать в раскрывающемся
+    меню. После чего необходимо подвести мышь
+    к нужному месту документа и щелчком левой
+    кнопки мыши установить блок.</li>
+  <li>Новое соединение - добавление стрелочки.
+    После выбора режима подведите мышь к
+    точке выхода стрелочки, нажмите левую
+    кнопку мыши и тяните до точки входа. Если
+    вы сразу отпустите кнопку мыши то
+    программа сымитирует залипание. Тогда
+    для окончания ввода вам предстоит просто
+    щелкнуть по точке входа.</li>
+  <li>Выравнивание. Для выравнивания выделите
+    группу блоков и выберите тип
+    выравнивания.</li>
+  <li>Удаление текущего - удаляет текущий блок
+    или стрелочку. Для этого сначала выделите
+    элемент щелчком мыши. Альтернативой
+    этого пункта меню является клавиша Delete.</li>
+</ul>
+<p>&nbsp;</p>
+<p><img border="0" src="images/mm3.jpg" width="438" height="233"></p>
+<p><img border="0" src="images/mm4.jpg" width="438" height="233"></p>
+<p>Меню &quot;Выполнить&quot; содержит следующие
+опции:</p>
+<ul>
+  <li>Указать первый блок - вам будет
+    предложено щелчком мыши установить точку
+    входа в блок-схему.</li>
+  <li>Запуск - начало &quot;анимации&quot;. Запуск
+    блок-схемы на исполнение.</li>
+  <li>Шагнуть - сделать очередной шаг.</li>
+  <li>Прекратить - остановить выполнение.</li>
+</ul>
+<p>&nbsp;</p>
+<p><img border="0" src="images/mm5.jpg" width="438" height="233"></p>
+<p>Меню &quot;Наблюдение&quot; содержит следующие
+опции:</p>
+<ul>
+  <li>Окно программы - отобразит консоль
+    вывода.</li>
+  <li>Просмотр переменных - отобразит панель
+    просмотра значений переменных.</li>
+</ul>
+<p>&nbsp;</p>
+<p><img border="0" src="images/mm6.jpg" width="438" height="233"></p>
+<p>Меню &quot;Параметры&quot; содержит следующие
+опции:</p>
+<ul>
+  <li>Настройки - отобразит панель настроек</li>
+  <li>Настроить задержку - предложит
+    установить задержку (таймер перехода к
+    очередному блоку)&nbsp; для автоматической
+    &quot;анимации&quot; блок-схемы.</li>
+</ul>
+<p>&nbsp;</p>
+<p><img border="0" src="images/mm7.jpg" width="438" height="233"></p>
+<p>Меню &quot;Помощь&quot; содержит следующие
+опции:</p>
+<ul>
+  <li>О программе - выведет форму с
+    информацией о версии программы, авторах,
+    регистрации, контактную информацию.</li>
+  <li>Справка - запуск справочной системы
+    программы.</li>
+  <li>Сообщить об ошибки - запустит ваш
+    почтовый клиент и введет адрес для
+    отправки сообщения об обнаруженной
+    ошибке.</li>
+</ul>
+<h3>Панель кнопок</h3>
+<p>Кнопки дублируют часто используемые
+пункты главного меню.</p>
+<ul>
+  <li><img border="0" src="images/sb1.jpg" width="29" height="27"> - новый
+    документ</li>
+  <li><img border="0" src="images/sb2.jpg" width="29" height="27"> -
+    открыть документ</li>
+  <li><img border="0" src="images/sb3.jpg" width="29" height="27"> -
+    сохранить документ</li>
+  <li><img border="0" src="images/sb4.jpg" width="55" height="22" > - сделать шаг</li>
+  <li><img border="0" src="images/sb5.jpg" width="29" height="27"> -
+    автомат. демонстрация</li>
+  <li><img border="0" src="images/sb6.jpg" width="29" height="27"> -
+    останов</li>
+  <li><img border="0" src="images/ss7.jpg" width="29" height="27"> -
+    отобразить консоль вывода</li>
+  <li><img border="0" src="images/ss8.jpg" width="29" height="27"> -
+    просмотр переменных</li>
+  <li><img border="0" src="images/ss9.jpg" width="29" height="27"> - блок
+    начало - конец</li>
+  <li><img border="0" src="images/ss10.jpg" width="29" height="27"> - блок
+    оператор</li>
+  <li><img border="0" src="images/ss11.jpg" width="29" height="27"> - блок
+    условный оператор</li>
+  <li><img border="0" src="images/ss12.jpg" width="29" height="27"> - блок
+    ввод - вывод</li>
+  <li><img border="0" src="images/ss13.jpg" width="29" height="27"> - блок
+    подпрограмма</li>
+  <li><img border="0" src="images/ss14.jpg" width="29" height="27"> - блок
+    слияние</li>
+  <li><img border="0" src="images/ss15.jpg" width="29" height="27"> - блок
+    список глобальных переменных</li>
+  <li><img border="0" src="images/ss16.jpg" width="29" height="27"> - блок
+    код инициализации</li>
+  <li><img border="0" src="images/ss17.jpg" width="29" height="27"> - блок
+    комментария</li>
+  <li><img border="0" src="images/ss18.jpg" width="29" height="27"> -
+    добавление соединения (стрелочки)</li>
+  <li><img border="0" src="images/ss19.jpg" width="29" height="27"> -
+    удаление текущего элемента</li>
+  <li><img border="0" src="images/ss20.jpg" width="29" height="27"> -
+    выравнивание по вертикали</li>
+  <li><img border="0" src="images/ss21.jpg" width="29" height="27"> -
+    выравнивание по горизонтали</li>
+</ul>
+<h3>Приемы работы с программой</h3>
+<p>&nbsp;</p>
+<p align="center">&nbsp;<img border="0" src="images/two.jpg" width="381" height="131"></p>
+<p>На рисунке вверху приведены два блока.
+Левый - текущий. Для того, чтобы сделать
+текущим другой блок нужно щелкнуть по нему
+левой кнопкой мыши.</p>
+<p>Для выделения группы блоков необходимо
+стандартным приемом выделить группу блоков.
+Либо растянув резиновый прямоугольник (установите
+мышь, нажмите левую кнопку, ведите мышь не
+отпуская левую кнопку, отпустите кнопку
+мыши):</p>
+<p align="center"><img border="0" src="images/two2.jpg" width="381" height="131"></p>
+<p>Либо удерживая клавишу Shift щелкнуть левой
+кнопкой мыши поочередно по нужным блокам.</p>
+<p align="center"><img border="0" src="images/two3.jpg" width="381" height="131"></p>
+<p align="left">Для изменения свойств блока нужно
+щелкнуть правой кнопкой мыши по блоку и
+выбрать нужное свойство.</p>
+<p align="center"><img border="0" src="images/two4.jpg" width="381" height="131"></p>
+<p align="left">В диалоговом окне ввести нужное
+свойство.</p>
+<p align="center"><img border="0" src="images/input.jpg" width="259" height="253"></p>
+<p align="left">Или можно было дважды щелкнуть по
+блоку и использовать иное поле ввода.</p>
+<p align="left">&nbsp;</p>
+<p align="center"><img border="0" src="images/input2.jpg" width="259" height="433">
+<h4>Добавление стрелочки</h4>
+<p align="center"><img border="0" src="images/arrows.jpg" width="489" height="227"></p>
+<p align="left">Для изменения положения стрелочки
+используйте узлы, которые подсвечиваются,
+когда стрелочка выделена.</p>
+<p align="left">&nbsp;
+</td>
+</tr>
+</table>
+<div align="center">
+  <center>
+
+<table width="100%"  bgcolor="#E0E0E0"  bordercolorlight="#A0A0A0" border="1" bordercolordark="#F0F0F0">
+<tr>
+<td>  
+<table width="100%">
+<tr>
+<td>(C) С.Г. Кузин, Р.О. Митин, И.С. Скрибловский</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+
+  </center>
+</div>
+
+</body>
+
+</html>
