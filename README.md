@@ -2,7 +2,7 @@
 
 IDE for drawing and running Flowcharts with statements written in Pascal-like mini-language.
 
-This was my school project in 2002—2004. Archived here for the sake of nostalgia.
+This was my school project in 2002—2004. Archived here for the sake of nostalgia. Please do not judge the code seriously :)
 
 
 ## Building
