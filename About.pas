@@ -2,7 +2,7 @@ unit About;
 
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
+uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, DateUtils,
   Buttons, ExtCtrls;
 
 type
@@ -20,7 +20,7 @@ type
     Label7: TLabel;
     GoToWeb: TLabel;
     Copyright: TLabel;
-    Label2: TLabel;
+    CityAndYears: TLabel;
     Version: TLabel;
     Shape1: TShape;
     Label6: TLabel;
@@ -36,8 +36,6 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure GoToWebClick(Sender: TObject);
     procedure GoToWebMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure Image1MouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure FormShow(Sender: TObject);
     procedure Label17Click(Sender: TObject);
@@ -69,39 +67,31 @@ end;
 
 procedure TAboutBox.GoToWebClick(Sender: TObject);
 begin
-  ShellExecute(Handle, nil, PChar('http://'+GoToWeb.Caption), nil, nil, SW_SHOWNORMAL);
+  ShellExecute(Handle, nil, PChar('https://github.com/IlyaSkriblovsky/FlowchartBuilder'), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TAboutBox.GoToWebMouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: Integer);
 begin
-  (Sender as TLabel).Font.Color:=clRed;
-  (Sender as TLabel).Font.Style:=GoToWeb.Font.Style+[fsUnderline];
-end;
-
-procedure TAboutBox.Image1MouseMove(Sender: TObject; Shift: TShiftState; X,
-  Y: Integer);
-begin
-  with GoToWeb do begin
-        Font.Color:=clPurple;
-        Font.Style:=GoToWeb.Font.Style-[fsUnderline];
-  end;
+  (Sender as TLabel).Font.Color:=clPurple;
 end;
 
 procedure TAboutBox.FormShow(Sender: TObject);
 begin
-  Image1MouseMove(nil, [], 0, 0);
+  GoToWeb.Font.Color:=clBlue;
+  GoToWeb.Font.Style:=[fsBold, fsUnderline];
   SN.Caption:=RegNum;
 end;
 
 procedure TAboutBox.Label17Click(Sender: TObject);
 begin
-  ShellExecute(Handle, nil, 'mailto:mitin@roman.nnov.ru?Subject=Сообщение об ошибке в программе Flowchart builder', nil, nil, SW_SHOWNORMAL);
+  ShellExecute(Handle, nil, 'mailto:ilyaskriblovsky@gmail.com?Subject=Сообщение об ошибке в программе Flowchart builder', nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TAboutBox.FormCreate(Sender: TObject);
 begin
   Version.Caption:='Версия '+BuildVersion+' (сборка '+IntToStr(BuildNumber)+') от '+DateTimeToStr(BuildDate);
+  CityAndYears.Caption:='Нижний Новгород, 2002—' + IntToStr(YearOf(BuildDate));
 end;
 
 procedure TAboutBox.Panel1Click(Sender: TObject);
@@ -123,4 +113,4 @@ begin
 end;
 
 end.
- 
+

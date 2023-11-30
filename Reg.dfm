@@ -1,6 +1,6 @@
 object RegForm: TRegForm
   Left = 330
-  Top = 221
+  Top = 222
   BorderStyle = bsNone
   Caption = #1056#1077#1075#1080#1089#1090#1088#1072#1094#1080#1103
   ClientHeight = 232
