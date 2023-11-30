@@ -21,7 +21,6 @@ uses
   StrsInput in 'StrsInput.pas' {frmStrsForm},
   ini in 'ini.pas',
   BlockProps in 'BlockProps.pas' {frmProps},
-  Reg in 'Reg.pas' {RegForm},
   Version in 'Version.pas',
   ZoomForm in 'ZoomForm.pas' {frmZoom};
 
@@ -41,7 +40,6 @@ begin
   Application.CreateForm(TfrmOutProg, frmOutProg);
   Application.CreateForm(TfrmOpt, frmOpt);
   Application.CreateForm(TfrmWatch, frmWatch);
-  Application.CreateForm(TRegForm, RegForm);
   Application.CreateForm(TfrmZoom, frmZoom);
   if Viewer
   then begin
@@ -108,8 +106,6 @@ begin
          with AboutBox
          do begin
               lblConstructor.Caption:='Интерпретатор блок-схем';
-              lblSN.Visible:=false;
-              SN.Visible:=false;  
             end;
        end;
 

@@ -1,0 +1,232 @@
+#FORMAT 0.1temp
+INIT
+начальный код
+/INIT
+GLOB
+глобальные переменные
+/GLOB
+-1
+BLOCK 0
+150
+150
+778
+180
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+                                                                  ДОБРО ПОЖАЛОВАТЬ!!!
+Установив эту программу на свой компьютер Вы стали пользователем глобальной коллекции блок-схем.
+
+На Ваш компьютер были установлены следующие программы:
+   - Flowchrt viewer (программа просмсотра блок-схем)
+   - Flowchart browser (проводник по интернет-коллекции)
+
+Эти системы распространяются свободно без каких-либо ограничений.
+
+Редактор блок-схем распространяется отдельно.
+  /UNFORMAL
+
+/BLOCK
+BLOCK 1
+295
+452
+106
+50
+ELLIPSE
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+начало/конец
+  /UNFORMAL
+
+/BLOCK
+BLOCK 2
+414
+452
+146
+50
+ROMB
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+условный оператор
+  /UNFORMAL
+
+/BLOCK
+BLOCK 3
+572
+452
+106
+50
+RECT
+  STATEMENT
+присваивание
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 4
+705
+452
+90
+50
+PARAL
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+ввод/вывод
+  /UNFORMAL
+
+/BLOCK
+BLOCK 5
+808
+452
+106
+50
+CALL
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+подпрограмма
+  /UNFORMAL
+
+/BLOCK
+BLOCK 6
+333
+555
+10
+10
+CONFLUENCE
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+слияние
+  /UNFORMAL
+
+/BLOCK
+BLOCK 7
+640
+535
+178
+50
+GLOB
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 8
+500
+535
+114
+50
+INIT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 9
+840
+535
+98
+50
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+комментарий
+  /UNFORMAL
+
+/BLOCK
+BLOCK 10
+364
+535
+90
+50
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+<- слияние
+  /UNFORMAL
+
+/BLOCK
+BLOCK 11
+694
+632
+114
+50
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+<- соединения
+  /UNFORMAL
+
+/BLOCK
+BLOCK 12
+553
+382
+410
+50
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+Для записи блок-схем используются следующие блоки:
+  /UNFORMAL
+
+/BLOCK
+BLOCK 13
+179
+738
+754
+50
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+Спасибо за интерес проявленный к данному программному продукту. За дополнительной информацией
+обращайтесь к справочной системе программы.
+  /UNFORMAL
+
+/BLOCK
+BLOCK 14
+728
+810
+250
+50
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+С уважением,
+                  Разработчики
+  /UNFORMAL
+
+/BLOCK
+ARROW
+VERT
+511
+681
+353
+619
+432
+NIL
+NIL
+/ARROW
+ARROW
+HORIZ
+603
+689
+544
+615
+652
+NIL
+NIL
+/ARROW

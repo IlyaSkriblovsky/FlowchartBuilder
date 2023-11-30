@@ -1,0 +1,314 @@
+#FORMAT 0.1temp
+INIT
+N:=10;
+arr A[N];
+A[0]:=Random(15);
+A[1]:=Random(15);
+A[2]:=Random(15);
+A[3]:=Random(15);
+A[4]:=Random(15);
+A[5]:=Random(15);
+A[6]:=Random(15);
+A[7]:=Random(15);
+A[8]:=Random(15);
+A[9]:=Random(15);
+Val:=Random(15)
+/INIT
+NIL
+0
+BLOCK 0
+381
+163
+80
+50
+ELLIPSE
+  STATEMENT
+Начало
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 1
+382
+869
+80
+50
+ELLIPSE
+  STATEMENT
+Конец
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 2
+368
+248
+106
+50
+RECT
+  STATEMENT
+ResultOk:=0;
+Pos:=-1
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 3
+381
+328
+80
+50
+RECT
+  STATEMENT
+Cur:=0
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 4
+416
+413
+10
+10
+CONFLUENCE
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 5
+381
+453
+80
+50
+ROMB
+  STATEMENT
+Cur<N
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 6
+376
+533
+90
+50
+ROMB
+  STATEMENT
+A[Cur]=Val
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 7
+448
+613
+106
+50
+RECT
+  STATEMENT
+ResultOk:=1;
+Pos:=Cur
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 8
+416
+693
+10
+10
+CONFLUENCE
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 9
+150
+150
+146
+231
+INIT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 10
+376
+731
+90
+50
+RECT
+  STATEMENT
+Cur:=Cur+1
+  /STATEMENT
+  UNFORMAL
+  /UNFORMAL
+
+/BLOCK
+BLOCK 11
+505
+152
+482
+180
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+Алгоритм поиска на основе линейного просмотра.
+
+Входные данные:
+  Поиск величины Val производится по массиву a[] длиной N.
+
+Выходные данные:
+  Если значение найдено, то переменная ResultOk равна 1,
+  а переменная Pos - позиции искомого значения.
+  Если значение не найдено, то переменная ResultOk равна 0,
+  а переменная Pos - минус единице.
+  /UNFORMAL
+
+/BLOCK
+ARROW
+VERT
+421
+225
+421
+225
+421
+NORTH
+2
+SOUTH
+0
+/ARROW
+ARROW
+VERT
+421
+390
+421
+390
+421
+NORTH
+4
+SOUTH
+3
+/ARROW
+ARROW
+VERT
+421
+310
+421
+310
+421
+NORTH
+3
+SOUTH
+2
+/ARROW
+ARROW
+VERT
+421
+435
+421
+435
+421
+NORTH
+5
+SOUTH
+4
+/ARROW
+ARROW
+VERT
+421
+515
+421
+515
+421
+NORTH
+6
+SOUTH
+5
+/ARROW
+ARROW
+VERT
+421
+715
+421
+715
+421
+NORTH
+10
+SOUTH
+8
+/ARROW
+ARROW
+VERT
+422
+832
+474
+478
+578
+NORTH
+1
+EAST
+5
+/ARROW
+ARROW
+VERT
+366
+698
+364
+558
+364
+WEST
+8
+WEST
+6
+/ARROW
+ARROW
+HORIZ
+501
+601
+501
+558
+579
+NORTH
+7
+EAST
+6
+/ARROW
+ARROW
+VERT
+438
+698
+501
+698
+469
+EAST
+8
+SOUTH
+7
+/ARROW
+ARROW
+VERT
+359
+418
+421
+803
+332
+WEST
+4
+SOUTH
+10
+/ARROW
