@@ -25,8 +25,6 @@ type
     Shape1: TShape;
     Label6: TLabel;
     Label9: TLabel;
-    lblSN: TLabel;
-    SN: TLabel;
     Label12: TLabel;
     Shape5: TShape;
     Shape6: TShape;
@@ -55,7 +53,7 @@ var
   AboutBox: TAboutBox;
 
 implementation
-uses Dialogs, ShellAPI, reg, Version;
+uses Dialogs, ShellAPI, Version;
 
 {$R *.DFM}
 
@@ -80,7 +78,6 @@ procedure TAboutBox.FormShow(Sender: TObject);
 begin
   GoToWeb.Font.Color:=clBlue;
   GoToWeb.Font.Style:=[fsBold, fsUnderline];
-  SN.Caption:=RegNum;
 end;
 
 procedure TAboutBox.Label17Click(Sender: TObject);
