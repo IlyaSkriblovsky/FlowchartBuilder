@@ -1287,7 +1287,7 @@ type FuncType=(ftMath, ftString, ftOther);
             Name: string;
             _Type: FuncType;
           end;
-const Funcs: array [1..40] of Func=
+const Funcs: array [1..42] of Func=
       ((Name: 'Sin';  _Type: ftMath),
        (Name: 'Cos';  _Type: ftMath),
        (Name: 'Tan'; _Type: ftMath),
@@ -1296,6 +1296,8 @@ const Funcs: array [1..40] of Func=
        (Name: 'ArcTan'; _Type: ftMath),
        (Name: 'Sqr';  _Type: ftMath),
        (Name: 'Sqrt'; _Type: ftMath),
+       (Name: 'Abs'; _Type: ftMath),    // ADDED IN VERSION 3.4
+       (Name: 'Sign'; _Type: ftMath),    // ADDED IN VERSION 3.4
 
        (Name: 'Round'; _Type: ftMath),  //
        (Name: 'Int'; _Type: ftMath),    //
@@ -1468,6 +1470,10 @@ begin
   then Result:=MakeVal(Sqr(P[1].Real));
   if n='sqrt'
   then Result:=MakeVal(Sqrt(P[1].Real));
+  if n='abs'
+  then Result:=MakeVal(Abs(P[1].Real));
+  if n='sign'
+  then Result:=MakeVal(Sign(P[1].Real));
   if n='pos'
   then begin
          Check(2, [tyStr, tyStr]);
