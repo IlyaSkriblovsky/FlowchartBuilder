@@ -439,13 +439,18 @@ end;
 
 procedure TChildForm.DestroyList;
 var
-  i, j : Integer;
+  i: Integer;
 
 begin
-  j:=BlockList.Count - 1;
-  for i:=j downto 0
+  for i:=BlockList.Count - 1 downto 0
   do TBlock(BlockList[i]).Free;
-  BlockList.Free;
+  BlockList.Clear;
+
+  for i:=ArrowList.Count - 1 downto 0
+  do TArrow(ArrowList[i]).Free;
+  ArrowList.Clear;
+
+  Actives.Clear;
 end;
 
 procedure TChildForm.FormCreate(Sender: TObject);

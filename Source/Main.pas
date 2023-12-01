@@ -318,12 +318,6 @@ begin
   ChildForm.Caption:=ChildForm.FileName;
   ChildForm.DestroyList;
   ChildForm.RePaint;
-  for i:=ChildForm.BlockList.Count-1 downto 0
-  do TBlock(ChildForm.BlockList[i]).Free;
-  ChildForm.BlockList:=TList.Create;
-  for i:=ChildForm.ArrowList.Count-1 downto 0
-  do TArrow(ChildForm.ArrowList[i]).Free;
-  ChildForm.ArrowList:=TList.Create;
   ChildForm.Dragging:=False;
   ChildForm.FindStartBlok:=False;
   ChildForm.flagInWork:=False;
@@ -350,8 +344,6 @@ begin
     ChildForm.StartBlok:=Nil;
     ChildForm.FileName:=OpenDialog.FileName;
     ChildForm.DestroyList;
-    ChildForm.BlockList:=TList.Create;
-    ChildForm.ArrowList:=TList.Create;
     ChildForm.Dragging:=False;
     ChildForm.flagInWork:=False;
     AlreadyGlob:=false;
