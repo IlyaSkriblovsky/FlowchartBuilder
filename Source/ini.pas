@@ -131,20 +131,19 @@ var
 
 begin
   reg:=TRegistry.Create;
-  reg.RootKey:=HKEY_CLASSES_ROOT;
+  reg.RootKey:=HKEY_CURRENT_USER;
 
-  if not (reg.KeyExists('.bsh'))
+  if not (reg.KeyExists('\Software\Classes\.bsh'))
   then begin
-         reg.OpenKey('.bsh', true);
+         reg.OpenKey('\Software\Classes\.bsh', true);
          reg.WriteString('', 'bshfile');
          reg.OpenKey('ShellNew', true);
          reg.WriteString('FileName', 'Flowchart.bsh');
-         reg.OpenKey('\bshfile', true);
+         reg.OpenKey('\Software\Classes\bshfile', true);
          reg.WriteString('', 'Блок-схема');
          reg.OpenKey('shell\open\command', true);
          reg.WriteString('', ParamStr(0)+' "%1"');
 
-         reg.RootKey:=HKEY_CURRENT_USER;
          reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders', false);
 
          WriteEmpty(reg.ReadString('Templates')+'\Flowchart.bsh');
