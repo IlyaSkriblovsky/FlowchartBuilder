@@ -302,9 +302,6 @@ begin
 end;
 
 procedure TMainForm.mnuNewClick(Sender: TObject);
-var
-  i: integer;
-
 begin
   if Modifed then
    begin
@@ -868,9 +865,9 @@ begin
                    end;
      end;
   UndoStack.Remove(UN);
+  Dispose(UN);
   if UndoStack.Count=0
   then mnuUndo.Enabled:=false;
-  Dispose(UN);
 end;
 
 procedure TMainForm.mnuUndoClick(Sender: TObject);

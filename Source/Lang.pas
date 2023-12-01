@@ -186,7 +186,7 @@ begin
   Lines.Assign(ALines);
 
   LexCount:=1;
-  FillChar(Lexemes^, SizeOf(Lexemes^), lxUndef);
+  FillChar(Lexemes^, SizeOf(Lexemes^), 0);
   LexCount:=0;
   EOF:=false;
   Pos:=0;
