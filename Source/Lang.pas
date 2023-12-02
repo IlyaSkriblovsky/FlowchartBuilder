@@ -203,10 +203,10 @@ begin
   Read;
 
   repeat
-    if c in Alpha // читаем имя переменной/ф-ии
+    if CharInSet(c, Alpha) // читаем имя переменной/ф-ии
     then begin
            Word:='';      
-           while c in (Alpha+Num)
+           while CharInset(c, Alpha+Num)
            do begin
                 Word:=Word+c;
                 Read;
@@ -244,10 +244,10 @@ begin
            Add(lxString, Word);
          end;
 
-    if c in Num // Читаем число
+    if CharInset(c, Num) // Читаем число
     then begin
            Word:='';
-           while c in Num
+           while CharInSet(c, Num)
            do begin
                 Word:=Word+c;
                 Read;                        //  целая часть
@@ -258,7 +258,7 @@ begin
            then begin
                   Word:=Word+c;
                   Read;
-                  while c in Num
+                  while CharInSet(c, Num)
                   do begin
                        Word:=Word+c;         // дробная часть
                        Read;
@@ -266,16 +266,16 @@ begin
                        then Break;
                      end;
                 end;
-           if c in ['e', 'E']
+           if CharInSet(c, ['e', 'E'])
            then begin
                   Word:=Word+c;
                   Read;
-                  if c in Num+['-', '+']
-                  then while c in Num+['-', '+']
+                  if CharInSet(c, Num+['-', '+'])
+                  then while CharInSet(c, Num+['-', '+'])
                        do begin
                             Word:=Word+c;
                             Read;
-                            while c in Num           // экспонента 
+                            while CharInSet(c, Num)           // экспонента
                             do begin
                                  Word:=Word+c;
                                  Read;
@@ -288,7 +288,7 @@ begin
            Add(lxNumber, StrToFloat(Word));
          end;
 
-    if c in ['<', '>'] // Читаем знаки сравнения
+    if CharInSet(c, ['<', '>']) // Читаем знаки сравнения
     then case c of
              '<': begin
                     Read;
@@ -315,7 +315,7 @@ begin
                   end;
          end;
 
-    if c in ['+', '-', '*', '/', '^', '(', ')', '=', ';', ':', '[', ']', '{', '}', ',', '?', '&']
+    if CharInSet(c, ['+', '-', '*', '/', '^', '(', ')', '=', ';', ':', '[', ']', '{', '}', ',', '?', '&'])
     then begin
            case c of // Читаем все остальное
              '+': Add(lxPlus);
@@ -341,7 +341,7 @@ begin
            end;
            Read;
          end;
-    if (not (c in Any)) or (c=' ')
+    if (not CharInSet(c, Any)) or (c=' ')
     then Read;
   until EOF;
 end;
@@ -1394,7 +1394,7 @@ var
 
     procedure Skip;
     begin
-      while (Path[Cur] in Space) and (Cur<Length(Path))
+      while CharInSet(Path[Cur], Space) and (Cur<Length(Path))
       do Inc(Cur);
     end;
 
@@ -1408,7 +1408,7 @@ var
            Inc(Cur);
          end;
       Inc(Cur);
-      while Result[Length(Result)] in Space
+      while CharInSet(Result[Length(Result)], Space)
       do Delete(Result, Length(Result), 1);
     end;
 
