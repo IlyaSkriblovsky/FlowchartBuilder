@@ -52,6 +52,7 @@ object MainForm: TMainForm
       NumGlyphs = 2
       ParentShowHint = False
       ShowHint = True
+      Transparent = False
       OnClick = mnuArrowClick
     end
     object btnDelete: TSpeedButton
@@ -105,6 +106,7 @@ object MainForm: TMainForm
         FFFFFFFFFFFFFFFFFFFF}
       ParentShowHint = False
       ShowHint = True
+      Transparent = False
     end
     object btnSettings: TSpeedButton
       Left = 652
@@ -161,6 +163,7 @@ object MainForm: TMainForm
         FF00FFFF00FFFF000000}
       ParentShowHint = False
       ShowHint = True
+      Transparent = False
       OnClick = Options1Click
     end
     object btnZoom: TSpeedButton
@@ -186,6 +189,7 @@ object MainForm: TMainForm
       NumGlyphs = 2
       ParentShowHint = False
       ShowHint = True
+      Transparent = False
       OnClick = btnZoomClick
     end
     object tbrFile: TToolBar
@@ -219,6 +223,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
       end
       object btnOpen: TSpeedButton
         Left = 25
@@ -244,6 +249,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
       end
       object btnSave: TSpeedButton
         Left = 50
@@ -269,6 +275,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
       end
       object btnBrowser: TSpeedButton
         Left = 75
@@ -344,6 +351,7 @@ object MainForm: TMainForm
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = Go1Click
       end
       object btnAuto: TSpeedButton
@@ -371,6 +379,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = btnAutoClick
       end
       object btnStop: TSpeedButton
@@ -396,6 +405,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = btnStopClick
       end
     end
@@ -447,6 +457,7 @@ object MainForm: TMainForm
           FFFFFFFFFFFFFFFFFFFF}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
       object RectSB: TSpeedButton
@@ -492,6 +503,7 @@ object MainForm: TMainForm
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FF0000FF000000000000}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
       object RombSB: TSpeedButton
@@ -515,6 +527,7 @@ object MainForm: TMainForm
           F99FFFFFFFFFF99999FFFFFFFFFFFF999FFFFFFFFFFFFFFFFFFF}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
       object ParalSB: TSpeedButton
@@ -558,6 +571,7 @@ object MainForm: TMainForm
           00000000000000000000}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
       object CallSB: TSpeedButton
@@ -602,6 +616,7 @@ object MainForm: TMainForm
           0000000000000000000000000000000000000000000000000000}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
       object ConflSB: TSpeedButton
@@ -628,6 +643,7 @@ object MainForm: TMainForm
           FFFFFFFF0000FFFFFFF11111FFFFFFFF0000FFFFFFFFF1FFFFFFFFFF0000}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
       object ToolButton1: TToolButton
@@ -705,6 +721,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
       object InitSB: TSpeedButton
@@ -775,6 +792,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
       object CommSB: TSpeedButton
@@ -800,6 +818,7 @@ object MainForm: TMainForm
           0000DD090DDDDDDDDDDDDDD00000DDD0DDDDDDDDDDDDDDD00000}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BlockCreateClick
       end
     end
@@ -834,6 +853,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = btnViewClick
       end
       object BtnWatch: TSpeedButton
@@ -859,6 +879,7 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = BtnWatchClick
       end
     end
@@ -916,6 +937,7 @@ object MainForm: TMainForm
           FFFFFFFFFFFFFFFFFFFFFF000000}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = btnAlignVClick
       end
       object btnAlignH: TSpeedButton
@@ -966,6 +988,7 @@ object MainForm: TMainForm
           FFFFFFFFFFFFFFFFFFFFFF000000}
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         OnClick = btnAlignHClick
       end
     end
