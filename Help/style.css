@@ -3,33 +3,36 @@ BODY {
   COLOR : #000000;
   FONT-FAMILY : Verdana;
   TEXT-ALIGN: justify;
-  FONT-SIZE: 9pt;
+  FONT-SIZE: 13pt;
+
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 CODE {
   FONT-FAMILY: Courier;
-  FONT-SIZE: 9pt;
+  FONT-SIZE: 13pt;
 }
 
 TD {
   FONT-FAMILY: Verdana;
   TEXT-ALIGN: justify;
-  FONT-SIZE: 9pt;
+  FONT-SIZE: 13pt;
 }
 
 H1 {
   FONT-FAMILY: Verdana;
-  FONT-SIZE: 16pt;
+  FONT-SIZE: 20pt;
 }
 
 H2 {
   FONT-FAMILY: Verdana;
-  FONT-SIZE: 14pt;
+  FONT-SIZE: 18pt;
 }
 
 H3{
   FONT-FAMILY: Verdana;
-  FONT-SIZE: 12pt;
+  FONT-SIZE: 16pt;
 }
 
 B {
@@ -39,12 +42,12 @@ B {
 
 BIG {
   FONT-FAMILY: Verdana;
-  FONT-SIZE : 10pt;
+  FONT-SIZE : 14pt;
 }
 
 A {
   FONT-FAMILY: Tahoma, Verdana;
-  FONT-SIZE: 9pt;
+  FONT-SIZE: 13pt;
   COLOR: #505050;
   FONT-WEIGHT: bold;
   TEXT-DECORATION: underline;
@@ -52,7 +55,7 @@ A {
 
 A:hover {
   FONT-FAMILY: Tahoma, Verdana;
-  FONT-SIZE: 9pt;
+  FONT-SIZE: 13pt;
   COLOR: #1E7289;
   FONT-WEIGHT: bold;
   TEXT-DECORATION: underline;
@@ -126,23 +129,23 @@ DIV.title {
   FONT-FAMILY: Verdana;
   COLOR: #206080;
   FONT-WEIGHT: bold;
-  FONT-SIZE: 10pt;
+  FONT-SIZE: 14pt;
   MARGIN-TOP: 10px;
 }
 
 TEXTAREA {
   FONT-FAMILY: Verdana;
-  FONT-SIZE: 9pt;
+  FONT-SIZE: 13pt;
 }
 
 INPUT {
   FONT-FAMILY: Verdana;
-  FONT-SIZE: 9pt;
+  FONT-SIZE: 13pt;
 }
 
 SELECT {
   FONT-FAMILY: Verdana;
-  FONT-SIZE: 9pt;
+  FONT-SIZE: 13pt;
 }
 
 INPUT.test {
@@ -154,4 +157,8 @@ INPUT.test {
   BORDER: 1px solid #38A1BE;
   HEIGHT: 14px;
   WIDTH: 60px;
+}
+
+LI {
+  margin-bottom: 0.8em;
 }
