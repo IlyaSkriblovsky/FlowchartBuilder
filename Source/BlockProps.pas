@@ -1,4 +1,4 @@
-unit BlockProps;
+﻿unit BlockProps;
 
 interface
 

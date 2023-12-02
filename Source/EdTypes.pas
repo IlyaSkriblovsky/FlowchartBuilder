@@ -1,4 +1,4 @@
-unit EdTypes;
+ο»Ώunit EdTypes;
 
 interface
 
@@ -289,12 +289,12 @@ begin
             Brush.Color:=ChildForm.Color;
             if Isd
             then begin
-                   TextOut(XOffs+Width-TextWidth('νες'),YOffs, 'νες');
-                   TextOut(XOffs+Width div 2+10, YOffs+Height-TextHeight('δΰ'), 'δΰ');
+                   TextOut(XOffs+Width-TextWidth('Π½ΠµΡ‚'),YOffs, 'Π½ΠµΡ‚');
+                   TextOut(XOffs+Width div 2+10, YOffs+Height-TextHeight('Π΄Π°'), 'Π΄Π°');
                  end
             else begin
-                   TextOut(XOffs, YOffs, 'νες');
-                   TextOut(XOffs+Width-TextWidth('δΰ'), YOffs, 'δΰ');
+                   TextOut(XOffs, YOffs, 'Π½ΠµΡ‚');
+                   TextOut(XOffs+Width-TextWidth('Π΄Π°'), YOffs, 'Π΄Π°');
                  end;
             Brush.Color:=Color;
           end;

@@ -1,4 +1,4 @@
-unit StrsInput;
+﻿unit StrsInput;
 
 interface
 

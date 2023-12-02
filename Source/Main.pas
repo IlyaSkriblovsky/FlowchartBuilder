@@ -1,4 +1,4 @@
-//{$DEFINE VIEWER}
+п»ї//{$DEFINE VIEWER}
 
 unit Main;
 
@@ -265,7 +265,7 @@ procedure TMainForm.SetModifed;
 begin
   FModifed:=Value;
   if ChildForm.FileName<>''
-  then ChildForm.Caption:=IfThen(Value, ChildForm.FileName+' (изменен)', ChildForm.FileName)
+  then ChildForm.Caption:=IfThen(Value, ChildForm.FileName+' (РёР·РјРµРЅРµРЅ)', ChildForm.FileName)
 end;
 
 procedure TMainForm.SetAutoExec;
@@ -306,7 +306,7 @@ begin
   if Modifed then
    begin
     WriteIniFile;
-    WinExec(PChar(AplName), 0);
+    ShellExecuteW(0, Nil, PChar(AplName), Nil, Nil, SW_NORMAL);
     exit;
    end;
   Modifed:=false;
@@ -335,7 +335,7 @@ begin
     if Modifed then
     begin
       WriteIniFile;  
-      WinExec(PChar(AplName+' "'+OpenDialog.FileName+'"'), 0);
+      ShellExecuteW(0, Nil, PChar(AplName), PChar('"'+OpenDialog.FileName+'"'), Nil, SW_NORMAL);
       Exit;
     end;
     ChildForm.StartBlok:=Nil;
@@ -442,7 +442,7 @@ end;
 procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if Modifed
-  then if MessageDlg('Текущая схема не сохранена.'#10#13'Вы уверены, что хотите выйти?',
+  then if MessageDlg('РўРµРєСѓС‰Р°СЏ СЃС…РµРјР° РЅРµ СЃРѕС…СЂР°РЅРµРЅР°.'#10#13'Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ РІС‹Р№С‚Рё?',
                         mtConfirmation, [mbYes, mbNo], 0)<>mrYes
        then begin
               Action:=caNone;
@@ -485,15 +485,15 @@ end;
 procedure TMainForm.mnuRunHelpClick(Sender: TObject);
 begin
   if not FileExists(MyDir+'Help\Index.htm')
-  then MessageBox(0, 'Файл справочной системы'#10#13'(Help\index.htm) не найден',
-         'Вызов справочной системы', MB_ICONERROR);
+  then MessageBox(0, 'Р¤Р°Р№Р» СЃРїСЂР°РІРѕС‡РЅРѕР№ СЃРёСЃС‚РµРјС‹'#10#13'(Help\index.htm) РЅРµ РЅР°Р№РґРµРЅ',
+         'Р’С‹Р·РѕРІ СЃРїСЂР°РІРѕС‡РЅРѕР№ СЃРёСЃС‚РµРјС‹', MB_ICONERROR);
   ShellExecute(Handle, nil, PChar(MyDir+'Help\Index.htm'), nil, nil, SW_SHOW);
 end;
 
 procedure TMainForm.mnuNewWindowClick(Sender: TObject);
 begin
   WriteIniFile;
-  WinExec(PChar(AplName), 0);
+  ShellExecuteW(0, Nil, PChar(AplName), Nil, Nil, SW_NORMAL);
 end;
 
 procedure TMainForm.ApplicationEvents1Exception(Sender: TObject;
@@ -501,51 +501,51 @@ procedure TMainForm.ApplicationEvents1Exception(Sender: TObject;
 begin
   AutoTimer.Enabled:=false;
   if E is EConvertError
-  then E.Message:='Ошибка перевода значения';
+  then E.Message:='РћС€РёР±РєР° РїРµСЂРµРІРѕРґР° Р·РЅР°С‡РµРЅРёСЏ';
   if E is EInOutError
-  then E.Message:='Ошибка ввода/вывода';
+  then E.Message:='РћС€РёР±РєР° РІРІРѕРґР°/РІС‹РІРѕРґР°';
   if E is EDivByZero
-  then E.Message:='Деление на ноль';
+  then E.Message:='Р”РµР»РµРЅРёРµ РЅР° РЅРѕР»СЊ';
   if E is EIntOverflow
-  then E.Message:='Целочисленное переполнение';
+  then E.Message:='Р¦РµР»РѕС‡РёСЃР»РµРЅРЅРѕРµ РїРµСЂРµРїРѕР»РЅРµРЅРёРµ';
   if E is ERangeError
-  then E.Message:='Ошибка диапазона';
+  then E.Message:='РћС€РёР±РєР° РґРёР°РїР°Р·РѕРЅР°';
   if E is EInvalidCast
-  then E.Message:='Ошибка приведения типа';
+  then E.Message:='РћС€РёР±РєР° РїСЂРёРІРµРґРµРЅРёСЏ С‚РёРїР°';
   if E is EInvalidOperation
-  then E.Message:='Неверная операция над компонентом';
+  then E.Message:='РќРµРІРµСЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ РЅР°Рґ РєРѕРјРїРѕРЅРµРЅС‚РѕРј';
   if E is EInvalidPointer
-  then E.Message:='Ошибка операции над указателями';
+  then E.Message:='РћС€РёР±РєР° РѕРїРµСЂР°С†РёРё РЅР°Рґ СѓРєР°Р·Р°С‚РµР»СЏРјРё';
   if E is EListError
-  then E.Message:='Ошибка операции над списками';
+  then E.Message:='РћС€РёР±РєР° РѕРїРµСЂР°С†РёРё РЅР°Рґ СЃРїРёСЃРєР°РјРё';
   if E is EOSError
-  then E.Message:='Ошибка операционной системы';
+  then E.Message:='РћС€РёР±РєР° РѕРїРµСЂР°С†РёРѕРЅРЅРѕР№ СЃРёСЃС‚РµРјС‹';
   if E is EInvalidArgument
-  then E.Message:='Неверный аргумент';
+  then E.Message:='РќРµРІРµСЂРЅС‹Р№ Р°СЂРіСѓРјРµРЅС‚';
   if E is EInvalidOp
-  then E.Message:='Неверная операция с плавающей точкой';
+  then E.Message:='РќРµРІРµСЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№';
   if E is EOverflow
-  then E.Message:='Дробное переполнение';
+  then E.Message:='Р”СЂРѕР±РЅРѕРµ РїРµСЂРµРїРѕР»РЅРµРЅРёРµ';
   if E is EUnderflow
-  then E.Message:='Потеря точности';
+  then E.Message:='РџРѕС‚РµСЂСЏ С‚РѕС‡РЅРѕСЃС‚Рё';
   if E is EZeroDivide
-  then E.Message:='Деление на ноль';
+  then E.Message:='Р”РµР»РµРЅРёРµ РЅР° РЅРѕР»СЊ';
   if E is EOutOfMemory
-  then E.Message:='Нехватает памяти';
+  then E.Message:='РќРµС…РІР°С‚Р°РµС‚ РїР°РјСЏС‚Рё';
   if E is EPrivilege
-  then E.Message:='Нехватает привилегий';
+  then E.Message:='РќРµС…РІР°С‚Р°РµС‚ РїСЂРёРІРёР»РµРіРёР№';
   {$WARN SYMBOL_DEPRECATED OFF}
   if E is EStackOverflow
-  then E.Message:='Переполнение стека';
+  then E.Message:='РџРµСЂРµРїРѕР»РЅРµРЅРёРµ СЃС‚РµРєР°';
   {$WARN SYMBOL_DEPRECATED ON}
   if E is EFOpenError
-  then E.Message:='Ошибка открытия фала';
+  then E.Message:='РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р»Р°';
   if E is EStringListError
-  then E.Message:='Ошибка операции над списком строк';
+  then E.Message:='РћС€РёР±РєР° РѕРїРµСЂР°С†РёРё РЅР°Рґ СЃРїРёСЃРєРѕРј СЃС‚СЂРѕРє';
   if E is EVariantError
-  then E.Message:='Ошибка операции над вариантными типами';
+  then E.Message:='РћС€РёР±РєР° РѕРїРµСЂР°С†РёРё РЅР°Рґ РІР°СЂРёР°РЅС‚РЅС‹РјРё С‚РёРїР°РјРё';
   if not (E is ERunTimeError)
-  then E.Message:='Ошибка времени выполнения: '#10#13'  '+E.Message;
+  then E.Message:='РћС€РёР±РєР° РІСЂРµРјРµРЅРё РІС‹РїРѕР»РЅРµРЅРёСЏ: '#10#13'  '+E.Message;
   Application.ShowException(E);
 end;
 
@@ -639,7 +639,7 @@ begin
   if Max.y<Min.y then Max.y:=Min.y;
   MF.Width:=Max.x-Min.x;
   MF.Height:=Max.y-Min.y;
-  MFC:=TMetafileCanvas.CreateWithComment(MF, GetDC(ChildForm.Handle), 'Конструктор Блок-схем', MainForm.SaveDialog.FileName);
+  MFC:=TMetafileCanvas.CreateWithComment(MF, GetDC(ChildForm.Handle), 'РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р‘Р»РѕРє-СЃС…РµРј', MainForm.SaveDialog.FileName);
   for i:=0 to ChildForm.BlockList.Count-1
   do begin
        b:=TBlock(ChildForm.BlockList[i]);
@@ -669,9 +669,9 @@ end;
 
 procedure TMainForm.mnuExpWMFClick(Sender: TObject);
 begin
-  PICSave.Title:='Экспорт в WMF';
+  PICSave.Title:='Р­РєСЃРїРѕСЂС‚ РІ WMF';
   PICSave.DefaultExt:='*.wmf';
-  PICSave.Filter:='Windows Meta Files (*.wmf; *.emf)|*.wmf; *.emf|Все файлы (*.*)|*.*';
+  PICSave.Filter:='Windows Meta Files (*.wmf; *.emf)|*.wmf; *.emf|Р’СЃРµ С„Р°Р№Р»С‹ (*.*)|*.*';
   PICSave.FilterIndex:=0;
   PICSave.FileName:='';
   if PICSave.Execute
@@ -684,9 +684,9 @@ var
   bmp: TBitmap;
 
 begin
-  PICSave.Title:='Экспорт в BMP';
+  PICSave.Title:='Р­РєСЃРїРѕСЂС‚ РІ BMP';
   PICSave.DefaultExt:='*.wmf';
-  PICSave.Filter:='Windows Bitmaps (*.bmp)|*.bmp|Все файлы (*.*)|*.*';
+  PICSave.Filter:='Windows Bitmaps (*.bmp)|*.bmp|Р’СЃРµ С„Р°Р№Р»С‹ (*.*)|*.*';
   PICSave.FilterIndex:=0;
   PICSave.FileName:='';
   if PICSave.Execute
@@ -709,9 +709,9 @@ var
   bmp: TBitmap;
 
 begin
-  PICSave.Title:='Экспорт в JPEG';
+  PICSave.Title:='Р­РєСЃРїРѕСЂС‚ РІ JPEG';
   PICSave.DefaultExt:='*.jpeg';
-  PICSave.Filter:='JPEG Files(*.jpg; *.jpeg)|*.jpg; *.jpeg|Все файлы (*.*)|*.*';
+  PICSave.Filter:='JPEG Files(*.jpg; *.jpeg)|*.jpg; *.jpeg|Р’СЃРµ С„Р°Р№Р»С‹ (*.*)|*.*';
   PICSave.FilterIndex:=0;
   PICSave.FileName:='';
   if PICSave.Execute
@@ -771,7 +771,7 @@ begin
 
   if (AlreadyGlob and (TWD(SB.Tag)=wdGlob)) or (AlreadyInit and (TWD(SB.Tag)=wdInit))
   then begin
-         MessageBox(0, 'На схеме уже есть этот блок.', 'Ошибка', MB_ICONSTOP);
+         MessageBox(0, 'РќР° СЃС…РµРјРµ СѓР¶Рµ РµСЃС‚СЊ СЌС‚РѕС‚ Р±Р»РѕРє.', 'РћС€РёР±РєР°', MB_ICONSTOP);
          WhatDown:=wdNone;
          SB.Down:=false;
          ChildForm.DefCursor:=crDefault;
@@ -954,7 +954,7 @@ var
 begin
 //  ChildForm.Print;
   MF:=MakeMetaFile;
-  Printer.Title:=IfThen(ChildForm.FileName<>'', 'Блок-схема ('+ChildForm.FileName+')', 'Блок-схема');
+  Printer.Title:=IfThen(ChildForm.FileName<>'', 'Р‘Р»РѕРє-СЃС…РµРјР° ('+ChildForm.FileName+')', 'Р‘Р»РѕРє-СЃС…РµРјР°');
   Printer.BeginDoc;
   Printer.Canvas.Draw(0, 0, MF);
   Printer.EndDoc;

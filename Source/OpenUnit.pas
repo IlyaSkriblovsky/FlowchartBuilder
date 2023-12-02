@@ -1,4 +1,4 @@
-unit OpenUnit;
+п»їunit OpenUnit;
 
 interface
 
@@ -30,7 +30,7 @@ begin
   ReadLn(F, q);
   if q<>#26
   then Result:=q
-  else raise EReadError.Create('Неожиданный конец файла');
+  else raise EReadError.Create('РќРµРѕР¶РёРґР°РЅРЅС‹Р№ РєРѕРЅРµС† С„Р°Р№Р»Р°');
 end;
 
 procedure LoadScheme(FileName: string);
@@ -165,7 +165,7 @@ begin
     str:=DoRead;
     if str<>'#FORMAT 0.1temp'
     then begin
-           MessageBox(0, 'Эта версия открывает только файлы формата 0.1temp', 'Ошибка', MB_ICONERROR or MB_OK);
+           MessageBox(0, 'Р­С‚Р° РІРµСЂСЃРёСЏ РѕС‚РєСЂС‹РІР°РµС‚ С‚РѕР»СЊРєРѕ С„Р°Р№Р»С‹ С„РѕСЂРјР°С‚Р° 0.1temp', 'РћС€РёР±РєР°', MB_ICONERROR or MB_OK);
            Exit;
          end;
     str:=DoRead;
@@ -200,7 +200,7 @@ begin
     if start<>-1
     then ChildForm.StartBlok:=ChildForm.BlockList[start];
   except
-    else MessageBox(0, 'Ошибка при открытии схемы', 'Конструктор Блок-Схем', MB_ICONERROR or MB_OK);
+    else MessageBox(0, 'РћС€РёР±РєР° РїСЂРё РѕС‚РєСЂС‹С‚РёРё СЃС…РµРјС‹', 'РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р‘Р»РѕРє-РЎС…РµРј', MB_ICONERROR or MB_OK);
   end;
   CloseFile(F);
 end;

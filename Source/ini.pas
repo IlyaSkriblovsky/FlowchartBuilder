@@ -1,4 +1,4 @@
-unit ini;
+Ôªøunit ini;
 
 interface
 
@@ -140,7 +140,7 @@ begin
          reg.OpenKey('ShellNew', true);
          reg.WriteString('FileName', 'Flowchart.bsh');
          reg.OpenKey('\Software\Classes\bshfile', true);
-         reg.WriteString('', '¡ÎÓÍ-ÒıÂÏ‡');
+         reg.WriteString('', '–ë–ª–æ–∫-—Å—Ö–µ–º–∞');
          reg.OpenKey('shell\open\command', true);
          reg.WriteString('', ParamStr(0)+' "%1"');
 

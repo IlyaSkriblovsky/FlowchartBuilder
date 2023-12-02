@@ -1,13 +1,13 @@
 object StrsForm: TStrsForm
   Left = 239
   Top = 201
-  Width = 243
-  Height = 240
   BiDiMode = bdLeftToRight
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSizeToolWin
   BorderWidth = 5
   Caption = 'StrsForm'
+  ClientHeight = 206
+  ClientWidth = 225
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -23,14 +23,14 @@ object StrsForm: TStrsForm
     Left = 0
     Top = 20
     Width = 225
-    Height = 143
+    Height = 146
     Align = alClient
     ScrollBars = ssBoth
     TabOrder = 0
   end
   object Panel1: TPanel
     Left = 0
-    Top = 163
+    Top = 166
     Width = 225
     Height = 40
     Align = alBottom
@@ -45,9 +45,7 @@ object StrsForm: TStrsForm
       Width = 73
       Height = 25
       Caption = 'OK'
-      ModalResult = 1
-      TabOrder = 0
-      OnClick = btnOKClick
+      DoubleBuffered = True
       Glyph.Data = {
         DE010000424DDE01000000000000760000002800000024000000120000000100
         0400000000006801000000000000000000001000000000000000000000000000
@@ -65,7 +63,11 @@ object StrsForm: TStrsForm
         3338F38F000033333333333333A223333333333333338F830000333333333333
         333A333333333333333338330000333333333333333333333333333333333333
         0000}
+      ModalResult = 1
       NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = btnOKClick
     end
     object BitBtn2: TBitBtn
       Left = 128
@@ -74,9 +76,11 @@ object StrsForm: TStrsForm
       Height = 25
       Anchors = [akTop, akRight]
       Caption = #1054#1090#1084#1077#1085#1072
+      DoubleBuffered = True
+      Kind = bkCancel
+      ParentDoubleBuffered = False
       TabOrder = 1
       OnClick = btnCancelClick
-      Kind = bkCancel
     end
   end
   object Panel2: TPanel

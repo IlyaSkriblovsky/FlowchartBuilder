@@ -1,4 +1,4 @@
-unit SaveUnit;
+п»їunit SaveUnit;
 
 interface
 
@@ -118,7 +118,7 @@ begin
     for i:=0 to ChildForm.ArrowList.Count-1
     do SaveArrow(TArrow(ChildForm.ArrowList[i]));
   except
-    else MessageBox(0, 'Ошибка при сохранении схемы', 'Конструктор Блок-Схем', MB_ICONERROR or MB_OK);
+    else MessageBox(0, 'РћС€РёР±РєР° РїСЂРё СЃРѕС…СЂР°РЅРµРЅРёРё СЃС…РµРјС‹', 'РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р‘Р»РѕРє-РЎС…РµРј', MB_ICONERROR or MB_OK);
   end;
   CloseFile(F);
   ChildForm.VertScrollBar.Position:=vp;

@@ -37,21 +37,21 @@ object frmInterval: TfrmInterval
     Width = 16
     Height = 21
     Associate = Edit1
-    Min = 0
     Max = 30000
     Position = 1000
     TabOrder = 1
     Thousands = False
-    Wrap = False
   end
   object btnOK: TBitBtn
     Left = 8
     Top = 56
     Width = 75
     Height = 25
+    DoubleBuffered = True
+    Kind = bkOK
+    ParentDoubleBuffered = False
     TabOrder = 2
     OnClick = btnOKClick
-    Kind = bkOK
   end
   object CheckBox1: TCheckBox
     Left = 88

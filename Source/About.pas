@@ -1,4 +1,4 @@
-unit About;
+п»їunit About;
 
 interface
 
@@ -82,13 +82,13 @@ end;
 
 procedure TAboutBox.Label17Click(Sender: TObject);
 begin
-  ShellExecute(Handle, nil, 'mailto:ilyaskriblovsky@gmail.com?Subject=Сообщение об ошибке в программе Flowchart builder', nil, nil, SW_SHOWNORMAL);
+  ShellExecute(Handle, nil, 'mailto:ilyaskriblovsky@gmail.com?Subject=РЎРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ РІ РїСЂРѕРіСЂР°РјРјРµ Flowchart builder', nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TAboutBox.FormCreate(Sender: TObject);
 begin
-  Version.Caption:='Версия '+BuildVersion+' (сборка '+IntToStr(BuildNumber)+') от '+DateTimeToStr(BuildDate);
-  CityAndYears.Caption:='Нижний Новгород, 2002—' + IntToStr(YearOf(BuildDate));
+  Version.Caption:='Р’РµСЂСЃРёСЏ '+BuildVersion+' (СЃР±РѕСЂРєР° '+IntToStr(BuildNumber)+') РѕС‚ '+DateTimeToStr(BuildDate);
+  CityAndYears.Caption:='РќРёР¶РЅРёР№ РќРѕРІРіРѕСЂРѕРґ, 2002вЂ”' + IntToStr(YearOf(BuildDate));
 end;
 
 procedure TAboutBox.Panel1Click(Sender: TObject);

@@ -1,10 +1,10 @@
 object frmZoom: TfrmZoom
   Left = 218
   Top = 129
-  Width = 696
-  Height = 480
   Cursor = crSizeAll
   Caption = #1052#1072#1089#1096#1090#1072#1073
+  ClientHeight = 453
+  ClientWidth = 688
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -52,14 +52,12 @@ object frmZoom: TfrmZoom
       Height = 22
       ButtonHeight = 20
       Caption = 'ToolBar1'
-      EdgeBorders = []
       TabOrder = 0
       object ZoomBox: TComboBox
         Left = 0
-        Top = 2
+        Top = 0
         Width = 49
         Height = 21
-        ItemHeight = 13
         TabOrder = 0
         Text = '100'
         OnChange = ZoomBoxChange
@@ -87,7 +85,7 @@ object frmZoom: TfrmZoom
       end
       object Label1: TLabel
         Left = 49
-        Top = 2
+        Top = 0
         Width = 14
         Height = 20
         Caption = '%'

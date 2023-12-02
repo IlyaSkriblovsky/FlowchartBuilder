@@ -1,4 +1,4 @@
-unit Version;
+﻿unit Version;
 
 interface
 

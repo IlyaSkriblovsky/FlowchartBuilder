@@ -1,4 +1,4 @@
-unit uInterval;
+п»їunit uInterval;
 
 interface
 
@@ -47,7 +47,7 @@ begin
            MainForm.AutoTimer.Interval:=StrToInt(Edit1.Text);
          except
            on EConvertError
-           do raise Exception.Create('Неверное число.');
+           do raise Exception.Create('РќРµРІРµСЂРЅРѕРµ С‡РёСЃР»Рѕ.');
          end;
        end;
 end;

@@ -1,4 +1,4 @@
-unit Child;
+п»їunit Child;
 
 interface
 
@@ -735,7 +735,7 @@ begin
                           Pos:=1;
                           CheckExpr(Lexs);
                           if Lexs^[Pos]._Type<>lxUndef
-                          then raise ECheckError.Create('Ожидалось конец оператора, но найдено лишние символы в позиции '+ IntToStr(Pos));
+                          then raise ECheckError.Create('РћР¶РёРґР°Р»РѕСЃСЊ РєРѕРЅРµС† РѕРїРµСЂР°С‚РѕСЂР°, РЅРѕ РЅР°Р№РґРµРЅРѕ Р»РёС€РЅРёРµ СЃРёРјРІРѕР»С‹ РІ РїРѕР·РёС†РёРё '+ IntToStr(Pos));
                         end;
          end;
          Dispose(Lexs);
@@ -765,7 +765,7 @@ begin
   MainForm.Modifed:=true;
   BackUp:=TStringList.Create;
   BackUp.Assign(Tb.Statement);
-  MemoInput('Поле ввода', 'Введите оператор', Tb.Statement);
+  MemoInput('РџРѕР»Рµ РІРІРѕРґР°', 'Р’РІРµРґРёС‚Рµ РѕРїРµСЂР°С‚РѕСЂ', Tb.Statement);
   CheckStatement(BackUp, Tb);
   BackUp.Free;
 
@@ -793,7 +793,7 @@ begin
   UN.RemStr:=Tb.RemText;
 
   MainForm.Modifed:=true;
-  Tb.RemText:=InputBox('Поле ввода', 'Введите подсказку', Tb.RemText);
+  Tb.RemText:=InputBox('РџРѕР»Рµ РІРІРѕРґР°', 'Р’РІРµРґРёС‚Рµ РїРѕРґСЃРєР°Р·РєСѓ', Tb.RemText);
   if not (Tb.RemText=UN.RemStr)
   then MainForm.AddUndo(UN)
   else Dispose(UN);
@@ -1075,7 +1075,7 @@ var
 
 begin
   if FTbCur=Nil then begin
-   ShowMessage('Не указан первый элемент.');
+   ShowMessage('РќРµ СѓРєР°Р·Р°РЅ РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚.');
    Exit;
   end;
   Tb:=FTbCur;
@@ -1087,7 +1087,7 @@ begin
         if Tb.Statement.Count=0
         then fstr:=''
         else fstr:=ANSIUpperCase(Tb.Statement[0]);
-        if (fstr='Конец') or (fstr='END') or (GetNext(Tb, false)=nil)
+        if (fstr='РљРѕРЅРµС†') or (fstr='END') or (GetNext(Tb, false)=nil)
         then begin
                OnEnd;
              end
@@ -1107,7 +1107,7 @@ begin
                Delete(tmp, System.Pos('?', tmp), 1);
                Lines[0]:=tmp;
                AutoPause;
-               Lines[0]:=Lines[0]+' := '+InputBox('Ввод', IfThen(MainForm.StatusBar.Panels[1].Text<>'', MainForm.StatusBar.Panels[1].Text, 'Введите значение: '), '');
+               Lines[0]:=Lines[0]+' := '+InputBox('Р’РІРѕРґ', IfThen(MainForm.StatusBar.Panels[1].Text<>'', MainForm.StatusBar.Panels[1].Text, 'Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ: '), '');
                AutoResume;
                ReadBlock(Lines, Lexs);
                if CheckOperator(Lexs)
@@ -1164,7 +1164,7 @@ begin
     stCall:
       begin
         if Tb.Statement.Count=0
-        then fstr:='НИЧЕГО'
+        then fstr:='РќРР§Р•Р“Рћ'
         else fstr:=Tb.Statement[0];
         if FileExists(fstr+'.BSH')
         then begin
@@ -1238,7 +1238,7 @@ begin
                if StartBlok=nil
                then begin
                       AutoPause;
-                      MessageDlg('В вызываемой схеме не указан первый элемент'#10#13'Откройте эту схему, задайте первый элемент и сохраните ее.',
+                      MessageDlg('Р’ РІС‹Р·С‹РІР°РµРјРѕР№ СЃС…РµРјРµ РЅРµ СѓРєР°Р·Р°РЅ РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚'#10#13'РћС‚РєСЂРѕР№С‚Рµ СЌС‚Сѓ СЃС…РµРјСѓ, Р·Р°РґР°Р№С‚Рµ РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ Рё СЃРѕС…СЂР°РЅРёС‚Рµ РµРµ.',
                                         mtError, [mbOK], 0);
                       AutoResume;
                       Cur:=nil;
@@ -1250,7 +1250,7 @@ begin
              end
         else begin
                AutoPause;
-               MessageDlg('Схема '+fstr+'.bsh не существует.'#10#13'Pабота схемы завершена',
+               MessageDlg('РЎС…РµРјР° '+fstr+'.bsh РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.'#10#13'PР°Р±РѕС‚Р° СЃС…РµРјС‹ Р·Р°РІРµСЂС€РµРЅР°',
                             mtError, [mbOK], 0);
                AutoResume;
                Cur:=nil;
@@ -1269,7 +1269,7 @@ begin
                then if Val.Real=0
                     then Cur:=GetNext(Tb, false)
                     else Cur:=GetNext(Tb, true)
-               else RunTimeError('Ожидалось условие, но найдена строка');
+               else RunTimeError('РћР¶РёРґР°Р»РѕСЃСЊ СѓСЃР»РѕРІРёРµ, РЅРѕ РЅР°Р№РґРµРЅР° СЃС‚СЂРѕРєР°');
              end
         else Cur:=nil;
       end;
@@ -1313,7 +1313,7 @@ begin
   UN.RemStr:=Tb.RemText;
 
   MainForm.Modifed:=true;
-  MemoInput('Поле ввода', 'Введите надпись на блоке', Tb.UnfText);
+  MemoInput('РџРѕР»Рµ РІРІРѕРґР°', 'Р’РІРµРґРёС‚Рµ РЅР°РґРїРёСЃСЊ РЅР° Р±Р»РѕРєРµ', Tb.UnfText);
   if not (Tb.UnfText.Text=UN.Text)
   then MainForm.AddUndo(UN)
   else Dispose(UN);
@@ -1791,13 +1791,13 @@ end;
 
 procedure TChildForm.mnuGlobClick(Sender: TObject);
 begin
-  MemoInput('Введите значение', 'Введите список глобальных переменных', GlobBlock.GlobStrings);
+  MemoInput('Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ', 'Р’РІРµРґРёС‚Рµ СЃРїРёСЃРѕРє РіР»РѕР±Р°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С…', GlobBlock.GlobStrings);
   GlobBlock.Paint;
 end;
 
 procedure TChildForm.mnuInitClick(Sender: TObject);
 begin
-  MemoInput('Введите значение', 'Введите иницилизационный код', InitBlock.InitCode);
+  MemoInput('Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ', 'Р’РІРµРґРёС‚Рµ РёРЅРёС†РёР»РёР·Р°С†РёРѕРЅРЅС‹Р№ РєРѕРґ', InitBlock.InitCode);
   InitBlock.Paint;
 end;
 

@@ -1,4 +1,4 @@
-unit ZoomForm;
+﻿unit ZoomForm;
 
 interface
 

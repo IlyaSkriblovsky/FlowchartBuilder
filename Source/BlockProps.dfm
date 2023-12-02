@@ -154,9 +154,7 @@ object frmProps: TfrmProps
     Height = 25
     Caption = #1055#1088#1080#1084#1077#1085#1080#1090#1100
     Default = True
-    ModalResult = 1
-    TabOrder = 4
-    OnClick = btnOKClick
+    DoubleBuffered = True
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
       0400000000006801000000000000000000001000000000000000000000000000
@@ -174,7 +172,11 @@ object frmProps: TfrmProps
       3338F38F000033333333333333A223333333333333338F830000333333333333
       333A333333333333333338330000333333333333333333333333333333333333
       0000}
+    ModalResult = 1
     NumGlyphs = 2
+    ParentDoubleBuffered = False
+    TabOrder = 4
+    OnClick = btnOKClick
   end
   object btnCancel: TBitBtn
     Left = 108
@@ -183,9 +185,7 @@ object frmProps: TfrmProps
     Height = 25
     Cancel = True
     Caption = #1054#1090#1084#1077#1085#1072
-    ModalResult = 2
-    TabOrder = 5
-    OnClick = btnCancelClick
+    DoubleBuffered = True
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
       0400000000006801000000000000000000001000000000000000000000000000
@@ -203,15 +203,18 @@ object frmProps: TfrmProps
       38F338F300003333333333333919333333388333338FFF830000333333333333
       3333333333333333333888330000333333333333333333333333333333333333
       0000}
+    ModalResult = 2
     NumGlyphs = 2
+    ParentDoubleBuffered = False
+    TabOrder = 5
+    OnClick = btnCancelClick
   end
   object btnHelp: TBitBtn
     Left = 200
     Top = 367
     Width = 31
     Height = 25
-    TabOrder = 6
-    OnClick = btnHelpClick
+    DoubleBuffered = True
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
       0400000000006801000000000000000000001000000000000000000000000000
@@ -230,5 +233,8 @@ object frmProps: TfrmProps
       E333333333388FFFFF8333330000333333333333333333333333388888333333
       0000}
     NumGlyphs = 2
+    ParentDoubleBuffered = False
+    TabOrder = 6
+    OnClick = btnHelpClick
   end
 end

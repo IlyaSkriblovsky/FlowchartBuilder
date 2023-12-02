@@ -1,38 +1,38 @@
-(*******************************************************************
-*        К О Н С Т Р У К Т O Р - И Н Т Е Р П Р Е Т А Т О Р         *
-*                      Б Л О К - С Х Е М                           *
+п»ї(*******************************************************************
+*        Рљ Рћ Рќ РЎ Рў Р  РЈ Рљ Рў O Р  - Р Рќ Рў Р• Р  Рџ Р  Р• Рў Рђ Рў Рћ Р          *
+*                      Р‘ Р› Рћ Рљ - РЎ РҐ Р• Рњ                           *
 ********************************************************************
-*             М О Д У Л Ь   И Н Т Е Р П Р Е Т А Ц И И              *
-*                 Ф О Р М А Л Ь Н Г О   Я З Ы К А                  *
+*             Рњ Рћ Р” РЈ Р› Р¬   Р Рќ Рў Р• Р  Рџ Р  Р• Рў Рђ Р¦ Р Р              *
+*                 Р¤ Рћ Р  Рњ Рђ Р› Р¬ Рќ Р“ Рћ   РЇ Р— Р« Рљ Рђ                  *
 ********************************************************************
-* Модуль Lang.pas                                                  *
-* Разбор и обработка операторов внутреннего языка                  *
-* Модуль реализует следующие ф-ии:                                 *
-*   1) ReadBlock(Lines, Lexemes) - Чтение строк Lines и деление    *
-*       строк на лексемы, которые заносятся в Lexemes              *
-*   2) CheckExpr(Lexemes) - Проверка одного выражения в Lexemes.   *
-*       true - успешно, false - нет                                *
-*   3) ExecExpr(Lexemes, Vars) - Вычисление значения выражения,    *
-*       используя список переменных Vars. Возвращает TValue        *
-*   4) GetVarValue(Vars, Name, ArrIndex) - Возвращает значение     *
-*       переменной Name из списка Vars. ArrIndex - список индексов *
-*       массива (пустой - без индекса)                             *
-*   5) SetVarValue(Vars, Name, ArrIndex, Value) - Присваивает      *
-*       переменной Name из списка Vars значение Value. ArrIndex -  *
-*       список инексов массива (пустой - без индекса)              *
-*   6) CheckOperator(Lexemes) - Проверка серии операторов через    *
-*       точку-с-запятой. true - успешно, false - нет               *
-*   7) ExecOperator(Lexemes, Vars) - Выполнение серии операторов   *
-*       через точку-с-запятой, используя список переменных Vars    *
-*   8) GetVarIndex(Vars, Name) - Возвращает индекс переменной      *
-*       в списке Vars                                              *
+* РњРѕРґСѓР»СЊ Lang.pas                                                  *
+* Р Р°Р·Р±РѕСЂ Рё РѕР±СЂР°Р±РѕС‚РєР° РѕРїРµСЂР°С‚РѕСЂРѕРІ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ СЏР·С‹РєР°                  *
+* РњРѕРґСѓР»СЊ СЂРµР°Р»РёР·СѓРµС‚ СЃР»РµРґСѓСЋС‰РёРµ С„-РёРё:                                 *
+*   1) ReadBlock(Lines, Lexemes) - Р§С‚РµРЅРёРµ СЃС‚СЂРѕРє Lines Рё РґРµР»РµРЅРёРµ    *
+*       СЃС‚СЂРѕРє РЅР° Р»РµРєСЃРµРјС‹, РєРѕС‚РѕСЂС‹Рµ Р·Р°РЅРѕСЃСЏС‚СЃСЏ РІ Lexemes              *
+*   2) CheckExpr(Lexemes) - РџСЂРѕРІРµСЂРєР° РѕРґРЅРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ РІ Lexemes.   *
+*       true - СѓСЃРїРµС€РЅРѕ, false - РЅРµС‚                                *
+*   3) ExecExpr(Lexemes, Vars) - Р’С‹С‡РёСЃР»РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РІС‹СЂР°Р¶РµРЅРёСЏ,    *
+*       РёСЃРїРѕР»СЊР·СѓСЏ СЃРїРёСЃРѕРє РїРµСЂРµРјРµРЅРЅС‹С… Vars. Р’РѕР·РІСЂР°С‰Р°РµС‚ TValue        *
+*   4) GetVarValue(Vars, Name, ArrIndex) - Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ     *
+*       РїРµСЂРµРјРµРЅРЅРѕР№ Name РёР· СЃРїРёСЃРєР° Vars. ArrIndex - СЃРїРёСЃРѕРє РёРЅРґРµРєСЃРѕРІ *
+*       РјР°СЃСЃРёРІР° (РїСѓСЃС‚РѕР№ - Р±РµР· РёРЅРґРµРєСЃР°)                             *
+*   5) SetVarValue(Vars, Name, ArrIndex, Value) - РџСЂРёСЃРІР°РёРІР°РµС‚      *
+*       РїРµСЂРµРјРµРЅРЅРѕР№ Name РёР· СЃРїРёСЃРєР° Vars Р·РЅР°С‡РµРЅРёРµ Value. ArrIndex -  *
+*       СЃРїРёСЃРѕРє РёРЅРµРєСЃРѕРІ РјР°СЃСЃРёРІР° (РїСѓСЃС‚РѕР№ - Р±РµР· РёРЅРґРµРєСЃР°)              *
+*   6) CheckOperator(Lexemes) - РџСЂРѕРІРµСЂРєР° СЃРµСЂРёРё РѕРїРµСЂР°С‚РѕСЂРѕРІ С‡РµСЂРµР·    *
+*       С‚РѕС‡РєСѓ-СЃ-Р·Р°РїСЏС‚РѕР№. true - СѓСЃРїРµС€РЅРѕ, false - РЅРµС‚               *
+*   7) ExecOperator(Lexemes, Vars) - Р’С‹РїРѕР»РЅРµРЅРёРµ СЃРµСЂРёРё РѕРїРµСЂР°С‚РѕСЂРѕРІ   *
+*       С‡РµСЂРµР· С‚РѕС‡РєСѓ-СЃ-Р·Р°РїСЏС‚РѕР№, РёСЃРїРѕР»СЊР·СѓСЏ СЃРїРёСЃРѕРє РїРµСЂРµРјРµРЅРЅС‹С… Vars    *
+*   8) GetVarIndex(Vars, Name) - Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РїРµСЂРµРјРµРЅРЅРѕР№      *
+*       РІ СЃРїРёСЃРєРµ Vars                                              *
 ********************************************************************
-* Ф-ии 2 и 6 генерируют исключения класса ECheckError ф-ией        *
+* Р¤-РёРё 2 Рё 6 РіРµРЅРµСЂРёСЂСѓСЋС‚ РёСЃРєР»СЋС‡РµРЅРёСЏ РєР»Р°СЃСЃР° ECheckError С„-РёРµР№        *
 *       CheckError                                                 *
-* Ф-ии 3, 4, 5, 7 генерируют исключения класса ERunTimeError       *
-*       ф-ией RunTimeError                                         *
+* Р¤-РёРё 3, 4, 5, 7 РіРµРЅРµСЂРёСЂСѓСЋС‚ РёСЃРєР»СЋС‡РµРЅРёСЏ РєР»Р°СЃСЃР° ERunTimeError       *
+*       С„-РёРµР№ RunTimeError                                         *
 ********************************************************************
-* Copyright © 2002-2003 Ilya Skriblovsky                           *
+* Copyright В© 2002-2003 Ilya Skriblovsky                           *
 *******************************************************************)
 
 
@@ -42,7 +42,7 @@ interface
 uses SysUtils, Classes;
 
 const
-  LexMax=1000;// Max число лексем
+  LexMax=1000;// Max С‡РёСЃР»Рѕ Р»РµРєСЃРµРј
   Alpha=['A'..'Z', 'a'..'z', '_'];
   Num=['0'..'9'];
   Symbol=['+', '-', '*', '/', '(', ')', '<', '=', '>', '''', ',', ';', ':', '[', ']', '{', '}', '?', '&', ' ', '^'];
@@ -72,16 +72,16 @@ type
            lxArr{arr}, lxLess{<}, lxLessOrEqual{<=}, lxGreat{>}, lxGreatOrEqual{>=}, lxEqual{=}, lxNotEqual{<>},
            lxSemicolon{;}, lxComma{,}, lxAssignment{:=}, lxString{'qwe'}, lxLSBracket{[}, lxRSBracket{]},
            lxLBrace(*{*), lxRBrace(*}*), lxQuestion{?}, lxAmpersand{&});
-                                                          // Все возможные лексемы
+                                                          // Р’СЃРµ РІРѕР·РјРѕР¶РЅС‹Рµ Р»РµРєСЃРµРјС‹
   TLexRecord=record
-    _Type: TLexeme; // Тип
-    Value: Variant; // Значение (напр. для _Type=lxName)
+    _Type: TLexeme; // РўРёРї
+    Value: Variant; // Р—РЅР°С‡РµРЅРёРµ (РЅР°РїСЂ. РґР»СЏ _Type=lxName)
   end;
-  TLexemes=array [1..LexMax] of TLexRecord;// Массив лекскм
+  TLexemes=array [1..LexMax] of TLexRecord;// РњР°СЃСЃРёРІ Р»РµРєСЃРєРј
   PLexemes=^TLexemes;
 
-  ECheckError=class(Exception);// Исключение проверки
-  ERunTimeError=class(Exception);// Исключение времени выполнения
+  ECheckError=class(Exception);// РСЃРєР»СЋС‡РµРЅРёРµ РїСЂРѕРІРµСЂРєРё
+  ERunTimeError=class(Exception);// РСЃРєР»СЋС‡РµРЅРёРµ РІСЂРµРјРµРЅРё РІС‹РїРѕР»РЅРµРЅРёСЏ
 
 
   EError=class(Exception);
@@ -99,9 +99,9 @@ type
   end;
 
 const
-  Lex2Str: array [TLexeme] of string=('ничего', 'имя', 'число', '+', '-', '*', '/', '^', '(', ')', 'DIV', 'MOD',
+  Lex2Str: array [TLexeme] of string=('РЅРёС‡РµРіРѕ', 'РёРјСЏ', 'С‡РёСЃР»Рѕ', '+', '-', '*', '/', '^', '(', ')', 'DIV', 'MOD',
                                       'NOT', 'AND', 'OR', 'XOR', 'ARR', '<', '<=', '>', '>=', '=', '<>', ';', ',', ':=',
-                                      'строка', '[', ']', '{', '}', '?', '&');
+                                      'СЃС‚СЂРѕРєР°', '[', ']', '{', '}', '?', '&');
 
 var
   LexCount: Cardinal;
@@ -134,7 +134,7 @@ function GetFuncResult(Vars: TVars; Name: string; Params: TList): TValue;
 implementation
 uses Main, Math, Windows;
 
-procedure ReadBlock(ALines: TStrings; Lexemes: PLexemes); // Разбиваем программу на лексемы
+procedure ReadBlock(ALines: TStrings; Lexemes: PLexemes); // Р Р°Р·Р±РёРІР°РµРј РїСЂРѕРіСЂР°РјРјСѓ РЅР° Р»РµРєСЃРµРјС‹
 var
   Lines: TStringList;
   Lex: TLexeme;
@@ -148,10 +148,10 @@ var
 const
   EOFChar=#0;
 
-  procedure Add(Lex: TLexeme; Val: Variant); overload; // Добавляем элемент в Lexemes
+  procedure Add(Lex: TLexeme; Val: Variant); overload; // Р”РѕР±Р°РІР»СЏРµРј СЌР»РµРјРµРЅС‚ РІ Lexemes
   begin
     if LexCount=LexMax
-    then raise ECheckError.Create('Слишком длинноe выражение (больше чем '+IntToStr(LexMax)+' элементов)');
+    then raise ECheckError.Create('РЎР»РёС€РєРѕРј РґР»РёРЅРЅРѕe РІС‹СЂР°Р¶РµРЅРёРµ (Р±РѕР»СЊС€Рµ С‡РµРј '+IntToStr(LexMax)+' СЌР»РµРјРµРЅС‚РѕРІ)');
     Inc(LexCount);
     Lexemes^[LexCount]._Type:=Lex;
     Lexemes^[LexCount].Value:=Val;
@@ -164,7 +164,7 @@ const
     Add(Lex, 0);
   end;
 
-  procedure Read;// Читаем очередной символ
+  procedure Read;// Р§РёС‚Р°РµРј РѕС‡РµСЂРµРґРЅРѕР№ СЃРёРјРІРѕР»
   begin
     Inc(Pos);
     if Pos<=Length(Lines.Text)
@@ -203,7 +203,7 @@ begin
   Read;
 
   repeat
-    if c in Alpha // читаем имя переменной/ф-ии
+    if c in Alpha // С‡РёС‚Р°РµРј РёРјСЏ РїРµСЂРµРјРµРЅРЅРѕР№/С„-РёРё
     then begin
            Word:='';      
            while c in (Alpha+Num)
@@ -214,14 +214,14 @@ begin
                 then Break;
               end;
            Lex:=lxDiv;
-           while (Lex2Str[Lex]<>UpperCase(Word)) and (Lex<=lxArr) // проверяем на совпадение с ключевыми словами (Div..Arr)
+           while (Lex2Str[Lex]<>UpperCase(Word)) and (Lex<=lxArr) // РїСЂРѕРІРµСЂСЏРµРј РЅР° СЃРѕРІРїР°РґРµРЅРёРµ СЃ РєР»СЋС‡РµРІС‹РјРё СЃР»РѕРІР°РјРё (Div..Arr)
            do Lex:=Succ(Lex);
            if Lex2Str[Lex]=UpperCase(Word)
            then Add(Lex)
            else Add(lxName, Word);
          end;
 
-    if c=''''       // читаем строку
+    if c=''''       // С‡РёС‚Р°РµРј СЃС‚СЂРѕРєСѓ
     then begin
            Word:='';
            f:=false;
@@ -229,7 +229,7 @@ begin
              Read;
              if f
              then Word:=Word+'''';
-             while c<>''''                    // repeat...until для чтения апострофов в строке
+             while c<>''''                    // repeat...until РґР»СЏ С‡С‚РµРЅРёСЏ Р°РїРѕСЃС‚СЂРѕС„РѕРІ РІ СЃС‚СЂРѕРєРµ
              do begin
                   Word:=Word+c;
                   Read;
@@ -244,13 +244,13 @@ begin
            Add(lxString, Word);
          end;
 
-    if c in Num // Читаем число
+    if c in Num // Р§РёС‚Р°РµРј С‡РёСЃР»Рѕ
     then begin
            Word:='';
            while c in Num
            do begin
                 Word:=Word+c;
-                Read;                        //  целая часть
+                Read;                        //  С†РµР»Р°СЏ С‡Р°СЃС‚СЊ
                 if c=EOFChar
                 then Break;
               end;
@@ -260,7 +260,7 @@ begin
                   Read;
                   while c in Num
                   do begin
-                       Word:=Word+c;         // дробная часть
+                       Word:=Word+c;         // РґСЂРѕР±РЅР°СЏ С‡Р°СЃС‚СЊ
                        Read;
                        if c=EOFChar
                        then Break;
@@ -275,7 +275,7 @@ begin
                        do begin
                             Word:=Word+c;
                             Read;
-                            while c in Num           // экспонента 
+                            while c in Num           // СЌРєСЃРїРѕРЅРµРЅС‚Р° 
                             do begin
                                  Word:=Word+c;
                                  Read;
@@ -288,7 +288,7 @@ begin
            Add(lxNumber, StrToFloat(Word));
          end;
 
-    if c in ['<', '>'] // Читаем знаки сравнения
+    if c in ['<', '>'] // Р§РёС‚Р°РµРј Р·РЅР°РєРё СЃСЂР°РІРЅРµРЅРёСЏ
     then case c of
              '<': begin
                     Read;
@@ -317,7 +317,7 @@ begin
 
     if c in ['+', '-', '*', '/', '^', '(', ')', '=', ';', ':', '[', ']', '{', '}', ',', '?', '&']
     then begin
-           case c of // Читаем все остальное
+           case c of // Р§РёС‚Р°РµРј РІСЃРµ РѕСЃС‚Р°Р»СЊРЅРѕРµ
              '+': Add(lxPlus);
              '-': Add(lxMinus);
              '*': Add(lxAsterisk);
@@ -346,20 +346,20 @@ begin
   until EOF;
 end;
 
-procedure CheckError(ExpectError: boolean; Expect: string; Found: string='');// генерация ошибки
+procedure CheckError(ExpectError: boolean; Expect: string; Found: string='');// РіРµРЅРµСЂР°С†РёСЏ РѕС€РёР±РєРё
 begin
   if not AlreadyError
   then if ExpectError
-       then raise ECheckError.Create('Ожидалось '+Expect+', но найдено '+Found)
+       then raise ECheckError.Create('РћР¶РёРґР°Р»РѕСЃСЊ '+Expect+', РЅРѕ РЅР°Р№РґРµРЅРѕ '+Found)
        else raise ECheckError.Create(Expect);
 //  Inc(Pos);
   AlreadyError:=true;
 end;
 
-procedure RunTimeError(Error: string);// генерация ошибки
+procedure RunTimeError(Error: string);// РіРµРЅРµСЂР°С†РёСЏ РѕС€РёР±РєРё
 begin
   if not AlreadyError
-  then raise ERunTimeError.Create('Ошибка времени выполнения: '#10#13'  '+Error);
+  then raise ERunTimeError.Create('РћС€РёР±РєР° РІСЂРµРјРµРЅРё РІС‹РїРѕР»РЅРµРЅРёСЏ: '#10#13'  '+Error);
 //  Inc(Pos);
   AlreadyError:=true;
 end;
@@ -399,11 +399,11 @@ begin
 
   _Var:=TVar(Vars[VarNo]^);
 
-  if (_Var.Value._Type=tyStr) and (_Var.Sizes.Count=0) and (ArrIndex.Count=1)  // Обработка выбора символа строки 
+  if (_Var.Value._Type=tyStr) and (_Var.Sizes.Count=0) and (ArrIndex.Count=1)  // РћР±СЂР°Р±РѕС‚РєР° РІС‹Р±РѕСЂР° СЃРёРјРІРѕР»Р° СЃС‚СЂРѕРєРё 
   then begin
          Num:=integer(ArrIndex[0]^);
          if (Num>Length(_Var.Value.Str)) or (Num<1) 
-         then RunTimeError('Выход за пределы строки');
+         then RunTimeError('Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ СЃС‚СЂРѕРєРё');
          Result._Type:=tyStr;
          Result.Str:=_Var.Value.Str[integer(ArrIndex[0]^)];
          Exit;
@@ -411,7 +411,7 @@ begin
 
   if (_Var.Sizes.Count=0) xor (ArrIndex.Count=0) then
   begin
-    RunTimeError('Ошибка указания индекса массива');
+    RunTimeError('РћС€РёР±РєР° СѓРєР°Р·Р°РЅРёСЏ РёРЅРґРµРєСЃР° РјР°СЃСЃРёРІР°');
     Exit;
   end;
 
@@ -420,7 +420,7 @@ begin
   else begin
          if ArrIndex.Count<>integer(_Var.Sizes.Count)
          then begin
-                RunTimeError('Несоответствие количества индексов массива');
+                RunTimeError('РќРµСЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ РєРѕР»РёС‡РµСЃС‚РІР° РёРЅРґРµРєСЃРѕРІ РјР°СЃСЃРёРІР°');
                 Result._Type:=tyReal;
                 Result.Str:='';
                 Result.Real:=0;
@@ -430,7 +430,7 @@ begin
          for i:=0 to ArrIndex.Count-1
          do if integer(ArrIndex[i]^)>integer(_Var.Sizes[i]^)-1
             then begin
-                   RunTimeError('Выход за пределы массива');
+                   RunTimeError('Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ РјР°СЃСЃРёРІР°');
                    Result._Type:=tyReal;
                    Result.Str:='';
                    Result.Real:=0;
@@ -513,10 +513,10 @@ begin
   if (myVar.Value._Type=tyStr) and (myVar.Sizes.Count=0) and (ArrIndex.Count=1)
   then begin
          if Value._Type<>tyStr
-         then RunTimeError('Нельзя присвоить символам число');
+         then RunTimeError('РќРµР»СЊР·СЏ РїСЂРёСЃРІРѕРёС‚СЊ СЃРёРјРІРѕР»Р°Рј С‡РёСЃР»Рѕ');
          Num:=integer(ArrIndex[0]^);
          if (Num+Length(Value.Str)>Length(myVar.Value.Str)+1) or (Num<1)
-         then RunTimeError('Выход за пределы строки');
+         then RunTimeError('Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ СЃС‚СЂРѕРєРё');
          for i:=1 to Length(Value.Str)
          do myVar.Value.Str[Num+i]:=Value.Str[i];
          Exit;
@@ -524,7 +524,7 @@ begin
 
   if (myVar.Sizes.Count=0) xor (ArrIndex.Count=0) then
   begin
-    RunTimeError('Ошибка указания индекса массива');
+    RunTimeError('РћС€РёР±РєР° СѓРєР°Р·Р°РЅРёСЏ РёРЅРґРµРєСЃР° РјР°СЃСЃРёРІР°');
     Exit;
   end;
 
@@ -533,14 +533,14 @@ begin
   else begin
          if ArrIndex.Count<>integer(myVar.Sizes.Count)
          then begin
-                RunTimeError('Несоответствие количества индексов массива');
+                RunTimeError('РќРµСЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ РєРѕР»РёС‡РµСЃС‚РІР° РёРЅРґРµРєСЃРѕРІ РјР°СЃСЃРёРІР°');
                 Exit;
               end;
 
          for i:=0 to ArrIndex.Count-1
          do if integer(ArrIndex[i]^)>integer(myVar.Sizes[i]^)-1
             then begin
-                   RunTimeError('Выход за пределы массива');
+                   RunTimeError('Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ РјР°СЃСЃРёРІР°');
                    Exit;
                  end;
 
@@ -555,10 +555,10 @@ begin
        end;
 end;
 
-function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражения
+function CheckExpr(Lexemes: PLexemes): boolean; // РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё РІС‹СЂР°Р¶РµРЅРёСЏ
   procedure Expr; forward;
 
-  procedure Element;// Проверка элемента
+  procedure Element;// РџСЂРѕРІРµСЂРєР° СЌР»РµРјРµРЅС‚Р°
   begin
     if Lexemes^[Pos]._Type=lxName
     then begin
@@ -572,7 +572,7 @@ function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражен
                          while Lexemes^[Pos]._Type<>lxRBracket
                          do begin
                               if Lexemes^[Pos]._Type<>lxComma
-                              then CheckError(true, 'запятая или скобка', Lex2Str[Lexemes^[Pos]._Type]);
+                              then CheckError(true, 'Р·Р°РїСЏС‚Р°СЏ РёР»Рё СЃРєРѕР±РєР°', Lex2Str[Lexemes^[Pos]._Type]);
                               Inc(Pos);
                               Expr;
                             end;
@@ -587,7 +587,7 @@ function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражен
                          while Lexemes^[Pos]._Type<>lxRSBracket
                          do begin
                               if Lexemes^[Pos]._Type<>lxComma
-                              then CheckError(true, 'запятая или квадратная скобка', Lex2Str[Lexemes^[Pos]._Type]);
+                              then CheckError(true, 'Р·Р°РїСЏС‚Р°СЏ РёР»Рё РєРІР°РґСЂР°С‚РЅР°СЏ СЃРєРѕР±РєР°', Lex2Str[Lexemes^[Pos]._Type]);
                               Inc(Pos);
                               Expr;
                             end;
@@ -619,15 +619,15 @@ function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражен
                                     Inc(Pos);
                                     if Lexemes^[Pos]._Type=lxName
                                     then Inc(Pos)
-                                    else CheckError(true, 'имя', Lex2Str[Lexemes^[Pos]._Type]);
+                                    else CheckError(true, 'РёРјСЏ', Lex2Str[Lexemes^[Pos]._Type]);
                                   end
                              else begin
-                                    CheckError(true, 'элемент', Lex2Str[Lexemes^[Pos]._Type]);
+                                    CheckError(true, 'СЌР»РµРјРµРЅС‚', Lex2Str[Lexemes^[Pos]._Type]);
                                     Inc(Pos);
                                   end;
   end;
 
-  procedure Power;// Проверка операций возведение в степень
+  procedure Power;// РџСЂРѕРІРµСЂРєР° РѕРїРµСЂР°С†РёР№ РІРѕР·РІРµРґРµРЅРёРµ РІ СЃС‚РµРїРµРЅСЊ
   begin
     Element;
     while Lexemes^[Pos]._Type = lxPower
@@ -637,7 +637,7 @@ function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражен
        end;
   end;
 
-  procedure Term;// Проверка произведений
+  procedure Term;// РџСЂРѕРІРµСЂРєР° РїСЂРѕРёР·РІРµРґРµРЅРёР№
   begin
     Power;
     while Lexemes^[Pos]._Type in [lxAsterisk, lxSlash, lxDiv, lxMod]
@@ -647,7 +647,7 @@ function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражен
        end;
   end;
 
-  procedure SimpleExpr;// Проверка прост. выр. (без сравнений)
+  procedure SimpleExpr;// РџСЂРѕРІРµСЂРєР° РїСЂРѕСЃС‚. РІС‹СЂ. (Р±РµР· СЃСЂР°РІРЅРµРЅРёР№)
   begin
     Term;
     while Lexemes^[Pos]._Type in [lxPlus, lxMinus]
@@ -657,7 +657,7 @@ function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражен
        end;
   end;
 
-  procedure IfExpr;// Проверка выражения с условием
+  procedure IfExpr;// РџСЂРѕРІРµСЂРєР° РІС‹СЂР°Р¶РµРЅРёСЏ СЃ СѓСЃР»РѕРІРёРµРј
   begin
     SimpleExpr;
     if Lexemes^[Pos]._Type in [lxLess, lxLessOrEqual, lxGreat, lxGreatOrEqual, lxEqual, lxNotEqual]
@@ -667,14 +667,14 @@ function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражен
          end;
   end;
 
-  procedure notExpr;// Проверка IfExpr+not
+  procedure notExpr;// РџСЂРѕРІРµСЂРєР° IfExpr+not
   begin
     if Lexemes^[Pos]._Type=lxNot
     then Inc(Pos);
     IfExpr;
   end;
 
-  procedure andExpr;// Проверка notExpr+and
+  procedure andExpr;// РџСЂРѕРІРµСЂРєР° notExpr+and
   begin
     notExpr;
     while Lexemes^[Pos]._Type=lxAnd
@@ -684,7 +684,7 @@ function CheckExpr(Lexemes: PLexemes): boolean; // Проверка корректности выражен
        end;
   end;
 
-  procedure Expr;// Проверка andExpr+or+xor
+  procedure Expr;// РџСЂРѕРІРµСЂРєР° andExpr+or+xor
   begin
     andExpr;
     while Lexemes^[Pos]._Type in [lxOr, lxXor]
@@ -704,7 +704,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
 
   function Expr: TValue; forward;
 
-  function Element: TValue;// Вычисление элемента
+  function Element: TValue;// Р’С‹С‡РёСЃР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р°
   var
     Name: string;
     tmp: TValue;
@@ -713,7 +713,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
     pVal: PValue;
 
   begin
-    if Lexemes^[Pos]._Type=lxName // Возвращаем значение переменной
+    if Lexemes^[Pos]._Type=lxName // Р’РѕР·РІСЂР°С‰Р°РµРј Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№
     then begin
            Name:=Lexemes^[Pos].Value;
            Inc(Pos);
@@ -738,7 +738,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
                        Inc(Pos);
                        Result:=GetFuncValue(Vars, Name, ArrIndex);
                      end
-                else RunTimeError('Внутренняя ошибка: не установлена процедура обработки функций')
+                else RunTimeError('Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°: РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅР° РїСЂРѕС†РµРґСѓСЂР° РѕР±СЂР°Р±РѕС‚РєРё С„СѓРЅРєС†РёР№')
            else begin
                   if Lexemes^[Pos]._Type=lxLSBracket
                   then begin
@@ -746,7 +746,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
                          New(pInt);
                          tmp:=Expr;
                          if (tmp._Type<>tyReal) or (tmp.Real<0)
-                         then RunTimeError('Индекс элемента или символа должен быть целым неотрицательным числом');
+                         then RunTimeError('РРЅРґРµРєСЃ СЌР»РµРјРµРЅС‚Р° РёР»Рё СЃРёРјРІРѕР»Р° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РµР»С‹Рј РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј С‡РёСЃР»РѕРј');
                          pInt^:=Trunc(tmp.Real);
                          ArrIndex.Add(pInt);
                          while Lexemes^[Pos]._Type<>lxRSBracket
@@ -755,7 +755,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
                               New(pInt);
                               tmp:=Expr;
                               if (tmp._Type<>tyReal) or (tmp.Real<0)
-                              then RunTimeError('Индекс элемента должен быть целым неотрицательным числом');
+                              then RunTimeError('РРЅРґРµРєСЃ СЌР»РµРјРµРЅС‚Р° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РµР»С‹Рј РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј С‡РёСЃР»РѕРј');
                               pInt^:=Trunc(tmp.Real);
                               ArrIndex.Add(pInt);
                             end;
@@ -779,7 +779,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
                                   tmp:=Element;
                                   if tmp._Type<>tyReal
                                   then begin
-                                         RunTimeError('Недопустимая операция: Отрицательная строка');
+                                         RunTimeError('РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РѕРїРµСЂР°С†РёСЏ: РћС‚СЂРёС†Р°С‚РµР»СЊРЅР°СЏ СЃС‚СЂРѕРєР°');
                                          Inc(Pos);
                                        end;
                                   Result._Type:=tyReal;
@@ -809,7 +809,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
 
   end;
 
-  function Power: TValue;//Вычисление выражений со степенями
+  function Power: TValue;//Р’С‹С‡РёСЃР»РµРЅРёРµ РІС‹СЂР°Р¶РµРЅРёР№ СЃРѕ СЃС‚РµРїРµРЅСЏРјРё
   var
     tmp: TValue;
 
@@ -820,7 +820,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
          Inc(Pos);
          tmp:=Element;
          if (Result._Type<>tyReal) or (tmp._Type<>tyReal)
-         then RunTimeError('Операция возведения в степень над строками недопустима');
+         then RunTimeError('РћРїРµСЂР°С†РёСЏ РІРѕР·РІРµРґРµРЅРёСЏ РІ СЃС‚РµРїРµРЅСЊ РЅР°Рґ СЃС‚СЂРѕРєР°РјРё РЅРµРґРѕРїСѓСЃС‚РёРјР°');
 {         x:=Result.Real; y:=tmp.Real;
 
          r:=0;
@@ -829,16 +829,16 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
          else if x=0
               then if y>0
                    then r:=0
-                   else RunTimeError('Нельзя возводить ноль в неположительную степень')
+                   else RunTimeError('РќРµР»СЊР·СЏ РІРѕР·РІРѕРґРёС‚СЊ РЅРѕР»СЊ РІ РЅРµРїРѕР»РѕР¶РёС‚РµР»СЊРЅСѓСЋ СЃС‚РµРїРµРЅСЊ')
               else if Frac(y)=0
                    then r:=IfThen(Trunc(Abs(y)) mod 2 =0, Exp(Ln(Abs(x))*y), -Exp(Ln(Abs(x))*y))
-                   else RunTimeError('Нельзя возводить отрицательное число в нецелую степень');
+                   else RunTimeError('РќРµР»СЊР·СЏ РІРѕР·РІРѕРґРёС‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ С‡РёСЃР»Рѕ РІ РЅРµС†РµР»СѓСЋ СЃС‚РµРїРµРЅСЊ');
          Result.Real:=r;}
          Result.Real:=Math.Power(Result.Real, tmp.Real);
        end;
   end;
 
-  function Term: TValue;// Вычисление произведений
+  function Term: TValue;// Р’С‹С‡РёСЃР»РµРЅРёРµ РїСЂРѕРёР·РІРµРґРµРЅРёР№
   var
     tmp: TValue;
     Op: TLexeme;
@@ -851,7 +851,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
          Inc(Pos);
          tmp:=Power;
          if (Result._Type<>tyReal) or (tmp._Type<>tyReal)
-         then RunTimeError('Недопустимая операция: Умножение/Деление строк');
+         then RunTimeError('РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РѕРїРµСЂР°С†РёСЏ: РЈРјРЅРѕР¶РµРЅРёРµ/Р”РµР»РµРЅРёРµ СЃС‚СЂРѕРє');
          case Op of
            lxAsterisk: Result.Real:=Result.Real*tmp.Real;
               lxSlash: Result.Real:=Result.Real/tmp.Real;
@@ -862,7 +862,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
        end;
   end;
 
-  function SimpleExpr: TValue;// Вычисление прост. выр. (без сравнений)
+  function SimpleExpr: TValue;// Р’С‹С‡РёСЃР»РµРЅРёРµ РїСЂРѕСЃС‚. РІС‹СЂ. (Р±РµР· СЃСЂР°РІРЅРµРЅРёР№)
   var
     tmp: TValue;
 
@@ -876,7 +876,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
                       tmp:=Term;
                       if tmp._Type<>Result._Type
                       then begin
-                             RunTimeError('Недопустимая операция: Сложение значений разных типов!');
+                             RunTimeError('РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РѕРїРµСЂР°С†РёСЏ: РЎР»РѕР¶РµРЅРёРµ Р·РЅР°С‡РµРЅРёР№ СЂР°Р·РЅС‹С… С‚РёРїРѕРІ!');
                              Inc(Pos);
                            end;
                       Result.Str:=Result.Str+tmp.Str;
@@ -886,7 +886,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
                       tmp:=Term;
                       if (tmp._Type<>tyReal) or (Result._Type<>tyReal)
                       then begin
-                             RunTimeError('Вычитания над строками недопустимы');
+                             RunTimeError('Р’С‹С‡РёС‚Р°РЅРёСЏ РЅР°Рґ СЃС‚СЂРѕРєР°РјРё РЅРµРґРѕРїСѓСЃС‚РёРјС‹');
                              Inc(Pos);
                            end;
                       Result.Real:=Result.Real-tmp.Real;
@@ -896,7 +896,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
        end;
   end;
 
-  function IfExpr: TValue;// Вычисление выражения с условием
+  function IfExpr: TValue;// Р’С‹С‡РёСЃР»РµРЅРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ СЃ СѓСЃР»РѕРІРёРµРј
   var
     tmp: TValue;
     Op: TLexeme;
@@ -911,7 +911,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
 
            if Result._Type<>tmp._Type
            then begin
-                  RunTimeError('Недопустимая операция: Сравнение разных типов');
+                  RunTimeError('РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РѕРїРµСЂР°С†РёСЏ: РЎСЂР°РІРЅРµРЅРёРµ СЂР°Р·РЅС‹С… С‚РёРїРѕРІ');
                   Inc(Pos);
                 end;
 
@@ -960,14 +960,14 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
          end;
   end;
 
-  function notExpr: TValue;// Вычисление IfExpr+not
+  function notExpr: TValue;// Р’С‹С‡РёСЃР»РµРЅРёРµ IfExpr+not
   begin
     if Lexemes^[Pos]._Type=lxNot
     then begin
            Inc(Pos);
            if Result._Type<>tyReal
            then begin
-                  RunTimeError('Операции And, Or, Xor, Not над строками недопустимы');
+                  RunTimeError('РћРїРµСЂР°С†РёРё And, Or, Xor, Not РЅР°Рґ СЃС‚СЂРѕРєР°РјРё РЅРµРґРѕРїСѓСЃС‚РёРјС‹');
                   Inc(Pos);
                 end;
            if IfExpr.Real=0
@@ -978,7 +978,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
     else Result:=IfExpr;
   end;
 
-  function andExpr: TValue;// Вычисление notExpr+and
+  function andExpr: TValue;// Р’С‹С‡РёСЃР»РµРЅРёРµ notExpr+and
   var
     tmp: TValue;
 
@@ -990,7 +990,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
          tmp:=notExpr;
          if (Result._Type<>tyReal) or (tmp._Type<>tyReal)
          then begin
-                RunTimeError('Операции And, Or, Xor, Not над строками недопустимы');
+                RunTimeError('РћРїРµСЂР°С†РёРё And, Or, Xor, Not РЅР°Рґ СЃС‚СЂРѕРєР°РјРё РЅРµРґРѕРїСѓСЃС‚РёРјС‹');
                 Inc(Pos);
               end;
          if (Result.Real<>0) and (tmp.Real<>0)
@@ -1000,7 +1000,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
        end;
   end;
 
-  function Expr: TValue;// Вычисление andExpr+or+xor
+  function Expr: TValue;// Р’С‹С‡РёСЃР»РµРЅРёРµ andExpr+or+xor
   var
     tmp: TValue;
     Op: TLexeme;
@@ -1014,7 +1014,7 @@ function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
          tmp:=andExpr;
          if (Result._Type<>tyReal) or (tmp._Type<>tyReal)
          then begin
-                RunTimeError('Операции And, Or, Xor, Not над строками недопустимы');
+                RunTimeError('РћРїРµСЂР°С†РёРё And, Or, Xor, Not РЅР°Рґ СЃС‚СЂРѕРєР°РјРё РЅРµРґРѕРїСѓСЃС‚РёРјС‹');
                 Inc(Pos);
               end;
          case Op of
@@ -1033,15 +1033,15 @@ begin
   Result:=Expr;
 end;
 
-function CheckOperator(Lexemes: PLexemes): boolean; // Проверка списка операторов
+function CheckOperator(Lexemes: PLexemes): boolean; // РџСЂРѕРІРµСЂРєР° СЃРїРёСЃРєР° РѕРїРµСЂР°С‚РѕСЂРѕРІ
 var
   Bracket: TLexeme;
 
-  procedure Arr; // Проверка декларации массива
+  procedure Arr; // РџСЂРѕРІРµСЂРєР° РґРµРєР»Р°СЂР°С†РёРё РјР°СЃСЃРёРІР°
   begin
     Inc(Pos);
     if Lexemes^[Pos]._Type<>lxName
-    then CheckError(true, 'имя массива', Lex2Str[Lexemes^[Pos]._Type])
+    then CheckError(true, 'РёРјСЏ РјР°СЃСЃРёРІР°', Lex2Str[Lexemes^[Pos]._Type])
     else begin
            Inc(Pos);
            if Lexemes^[Pos]._Type<>lxLSBracket
@@ -1052,7 +1052,7 @@ var
                   while Lexemes^[Pos]._Type<>lxRSBracket
                   do begin
                        if Lexemes^[Pos]._Type<>lxComma
-                       then CheckError(true, 'запятая', Lex2Str[Lexemes^[Pos]._type]);
+                       then CheckError(true, 'Р·Р°РїСЏС‚Р°СЏ', Lex2Str[Lexemes^[Pos]._type]);
                        Inc(Pos);
                        CheckExpr(Lexemes);
                      end;
@@ -1061,7 +1061,7 @@ var
          end;
   end;
 
-  procedure Oper; // Проверка одного оператора
+  procedure Oper; // РџСЂРѕРІРµСЂРєР° РѕРґРЅРѕРіРѕ РѕРїРµСЂР°С‚РѕСЂР°
   begin
     if Lexemes^[Pos]._Type in [lxUndef, lxSemicolon]
     then begin
@@ -1073,7 +1073,7 @@ var
     then Arr
     else if Lexemes^[Pos]._Type<>lxName
          then begin
-                CheckError(true, 'имя', Lex2Str[Lexemes^[Pos]._Type]);
+                CheckError(true, 'РёРјСЏ', Lex2Str[Lexemes^[Pos]._Type]);
                 Exit;
               end
          else begin
@@ -1088,7 +1088,7 @@ var
                             Inc(Pos);
                             CheckExpr(Lexemes);
                             if not (Lexemes^[Pos]._Type in [lxComma, Bracket])
-                            then CheckError(true, 'запятая или скобка', Lex2Str[Lexemes^[Pos]._Type]);
+                            then CheckError(true, 'Р·Р°РїСЏС‚Р°СЏ РёР»Рё СЃРєРѕР±РєР°', Lex2Str[Lexemes^[Pos]._Type]);
                           end;
                        Inc(Pos);
                      end;
@@ -1096,14 +1096,14 @@ var
                 then Exit;
                 if Lexemes^[Pos]._Type<>lxAssignment
                 then begin
-                       CheckError(true, 'присваивание', Lex2Str[Lexemes^[Pos]._Type]);
+                       CheckError(true, 'РїСЂРёСЃРІР°РёРІР°РЅРёРµ', Lex2Str[Lexemes^[Pos]._Type]);
                      end;
                 Inc(Pos);
                 CheckExpr(Lexemes);
               end;
   end;
 
-  procedure Opers; // Проверка списка операторов
+  procedure Opers; // РџСЂРѕРІРµСЂРєР° СЃРїРёСЃРєР° РѕРїРµСЂР°С‚РѕСЂРѕРІ
   begin
     Oper;
     while Lexemes^[Pos]._Type=lxSemicolon
@@ -1112,7 +1112,7 @@ var
          Oper;
        end;
     if Lexemes^[Pos]._Type<>lxUndef
-    then CheckError(false, 'Не хватает ; после оператора');
+    then CheckError(false, 'РќРµ С…РІР°С‚Р°РµС‚ ; РїРѕСЃР»Рµ РѕРїРµСЂР°С‚РѕСЂР°');
   end;
 
 begin
@@ -1122,9 +1122,9 @@ begin
   Result:=not AlreadyError;
 end;
 
-procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка списка операторов
+procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // РћР±СЂР°Р±РѕС‚РєР° СЃРїРёСЃРєР° РѕРїРµСЂР°С‚РѕСЂРѕРІ
 
-  procedure Arr; // Обработка декларации массива
+  procedure Arr; // РћР±СЂР°Р±РѕС‚РєР° РґРµРєР»Р°СЂР°С†РёРё РјР°СЃСЃРёРІР°
   var
     Name: string;
     VarNo: LongInt;
@@ -1172,7 +1172,7 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка списка опер
     tmpExpr:=ExecExpr(Lexemes, Vars);
     if (tmpExpr._Type<>tyReal) or (tmpExpr.Real<0)
     then begin
-           RunTimeError('Индекс массива должен быть целым неотрицательным числом');
+           RunTimeError('РРЅРґРµРєСЃ РјР°СЃСЃРёРІР° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РµР»С‹Рј РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј С‡РёСЃР»РѕРј');
            Exit;
          end;
     New(pInt);
@@ -1186,7 +1186,7 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка списка опер
          tmpExpr:=ExecExpr(Lexemes, Vars);
          if (tmpExpr._Type<>tyReal) or (tmpExpr.Real<0)
          then begin
-                RunTimeError('Индекс массива должен быть целым неотрицательным числом');
+                RunTimeError('РРЅРґРµРєСЃ РјР°СЃСЃРёРІР° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РµР»С‹Рј РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј С‡РёСЃР»РѕРј');
                 Exit;
               end;
          pInt^:=Trunc(tmpExpr.Real);
@@ -1206,7 +1206,7 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка списка опер
        end;
   end;
 
-  procedure Oper; // Обработка одного оператора
+  procedure Oper; // РћР±СЂР°Р±РѕС‚РєР° РѕРґРЅРѕРіРѕ РѕРїРµСЂР°С‚РѕСЂР°
   var
     Name: string;
     ArrIndex: TList;
@@ -1244,7 +1244,7 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка списка опер
                   tmp:=ExecExpr(Lexemes, Vars);
                   if (tmp._Type<>tyReal) or (tmp.Real<0)
                   then begin
-                         RunTimeError('Индекс массива должен быть целым неотрицательным числом');
+                         RunTimeError('РРЅРґРµРєСЃ РјР°СЃСЃРёРІР° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РµР»С‹Рј РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј С‡РёСЃР»РѕРј');
                          Exit;
                        end;
                   pInt^:=Trunc(tmp.Real);
@@ -1256,7 +1256,7 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка списка опер
                        tmp:=ExecExpr(Lexemes, Vars);
                        if (tmp._Type<>tyReal) or (tmp.Real<0)
                        then begin
-                              RunTimeError('Индекс массива должен быть целым неотрицательным числом');
+                              RunTimeError('РРЅРґРµРєСЃ РјР°СЃСЃРёРІР° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РµР»С‹Рј РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј С‡РёСЃР»РѕРј');
                               Exit;
                             end;
                        pInt^:=Trunc(tmp.Real);
@@ -1377,7 +1377,7 @@ var
          Inc(i);
        end;  
     if not f
-    then RunTimeError('Неправильный список параметров функции '+Name);
+    then RunTimeError('РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё '+Name);
   end;
 
   procedure CheckFileName(Path: string);
@@ -1389,7 +1389,7 @@ var
 
     procedure Error;
     begin
-      RunTimeError('Неверное имя файла или ошибка доступа');
+      RunTimeError('РќРµРІРµСЂРЅРѕРµ РёРјСЏ С„Р°Р№Р»Р° РёР»Рё РѕС€РёР±РєР° РґРѕСЃС‚СѓРїР°');
     end;
 
     procedure Skip;
@@ -1441,7 +1441,7 @@ begin
 
   if i>High(Funcs)
   then begin
-         RunTimeError('Неизвестная функция: '+Name);
+         RunTimeError('РќРµРёР·РІРµСЃС‚РЅР°СЏ С„СѓРЅРєС†РёСЏ: '+Name);
          Exit;
        end;
 
@@ -1486,7 +1486,7 @@ begin
   if n='message'
   then begin
          AutoPause;
-         MessageBox(MainForm.Handle, PChar(P[1].Str), 'Конструктор блок-схем', MB_ICONINFORMATION);
+         MessageBox(MainForm.Handle, PChar(P[1].Str), 'РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р±Р»РѕРє-СЃС…РµРј', MB_ICONINFORMATION);
          AutoResume;
          Result:=MakeVal(P[1].Str);
        end;
@@ -1529,7 +1529,7 @@ begin
            Result:=MakeVal(StrToFloat(P[1].Str));
          except
            on EConvertError
-           do RunTimeError('Строка '''+P[1].Str+''' не переводится в число');
+           do RunTimeError('РЎС‚СЂРѕРєР° '''+P[1].Str+''' РЅРµ РїРµСЂРµРІРѕРґРёС‚СЃСЏ РІ С‡РёСЃР»Рѕ');
          end;
        end;
 
@@ -1552,7 +1552,7 @@ begin
   if n='calc'
   then begin
          if (Params.Count<>2) or (P[1]._Type<>tyStr)
-         then RunTimeError('Неправильный список параметров функции Calc');
+         then RunTimeError('РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё Calc');
          Lines:=TStringList.Create;
          New(Lexs);
          XVars:=TVars.Create;
@@ -1601,13 +1601,13 @@ begin
            try
              Check(2, [tyStr, tyReal]);
            except
-             RunTimeError('Неправильный список аргументоф функции Open');
+             RunTimeError('РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє Р°СЂРіСѓРјРµРЅС‚РѕС„ С„СѓРЅРєС†РёРё Open');
            end;
          end;
 
          CheckFileName(P[1].Str);
 
-         // Параметр 2:  0=reset   1=rewrite   2=append
+         // РџР°СЂР°РјРµС‚СЂ 2:  0=reset   1=rewrite   2=append
          if Params.Count=1
          then P[2]:=MakeVal(0);
 
@@ -1618,7 +1618,7 @@ begin
            if Trunc(P[2].Real) in [0, 2]
            then File_Rec.Strings.LoadFromFile(P[1].Str);
          except
-           RuntimeError('Ошибка при открытии файла');
+           RuntimeError('РћС€РёР±РєР° РїСЂРё РѕС‚РєСЂС‹С‚РёРё С„Р°Р№Р»Р°');
          end;
 
          File_Rec.Write:=not (P[2].Real=0);
@@ -1651,7 +1651,7 @@ begin
               end;
            Result:=MakeVal(j);
          except
-           RunTimeError('Ошибка при закрытии файла');
+           RunTimeError('РћС€РёР±РєР° РїСЂРё Р·Р°РєСЂС‹С‚РёРё С„Р°Р№Р»Р°');
          end;
        end;
   if n='read'
@@ -1672,7 +1672,7 @@ begin
   if n='write'
   then begin
          if (Params.Count<1) or (P[1]._Type<>tyReal)
-         then RunTimeError('Неправильный список параметров функции Write');
+         then RunTimeError('РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё Write');
          for i:=0 to Files.Count-1
          do if PFile_Rec(Files[i]).ID=P[1].Real
             then begin
@@ -1690,7 +1690,7 @@ begin
   if n='writeover'
   then begin
          if (Params.Count<1) or (P[1]._Type<>tyReal)
-         then RunTimeError('Неправильный список параметров функции WriteOver');
+         then RunTimeError('РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё WriteOver');
          for i:=0 to Files.Count-1
          do if PFile_Rec(Files[i]).ID=P[1].Real
             then begin

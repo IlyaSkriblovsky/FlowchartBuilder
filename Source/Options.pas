@@ -1,4 +1,4 @@
-unit Options;
+﻿unit Options;
 
 interface
 
