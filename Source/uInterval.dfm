@@ -7,7 +7,7 @@ object frmInterval: TfrmInterval
   ClientHeight = 85
   ClientWidth = 192
   Color = 15066597
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'

@@ -111,7 +111,7 @@ object AboutBox: TAboutBox
       Hint = #1064#1082#1086#1083#1072' 91'
       Caption = #1040#1074#1090#1086#1088': '#1057#1082#1088#1080#1073#1083#1086#1074#1089#1082#1080#1081' '#1048#1083#1100#1103
       Color = clBlack
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -130,7 +130,7 @@ object AboutBox: TAboutBox
       Hint = #1044#1086#1094#1077#1085#1090' '#1082#1072#1092'. '#1048#1048#1057#1043#1077#1086' '#1082'.'#1090'.'#1085'. '#1057'.'#1043'. '#1050#1091#1079#1080#1085
       Caption = #1053#1072#1091#1095#1085#1099#1081' '#1088#1091#1082#1086#1074#1086#1076#1080#1090#1077#1083#1100':'
       Color = clBlack
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -149,7 +149,7 @@ object AboutBox: TAboutBox
       Hint = #1048#1048#1057#1043#1077#1086' '#1053#1053#1043#1059
       Caption = #1050#1091#1079#1080#1085' '#1057#1090#1072#1085#1080#1089#1083#1072#1074' '#1043#1088#1080#1075#1086#1088#1100#1077#1074#1080#1095
       Color = clBlack
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -168,7 +168,7 @@ object AboutBox: TAboutBox
       Hint = #1048#1048#1057#1043#1077#1086' '#1053#1053#1043#1059
       Caption = #1050#1086#1085#1089#1091#1083#1100#1090#1072#1085#1090': '#1052#1080#1090#1080#1085' '#1056#1086#1084#1072#1085
       Color = clBlack
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -186,7 +186,7 @@ object AboutBox: TAboutBox
       Height = 16
       Hint = #1044#1086#1084#1072#1096#1085#1103#1103' '#1089#1090#1088#1072#1085#1080#1095#1082#1072' '#1056#1086#1084#1072#1085#1072' '#1052#1080#1090#1080#1085#1072
       Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1086#1085#1085#1072#1103' '#1087#1086#1076#1076#1077#1088#1078#1082#1072':'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -203,7 +203,7 @@ object AboutBox: TAboutBox
       Width = 119
       Height = 16
       Caption = #1041#1083#1072#1075#1086#1076#1072#1088#1085#1086#1089#1090#1080':'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -220,7 +220,7 @@ object AboutBox: TAboutBox
       Width = 152
       Height = 13
       Caption = #1053#1080#1078#1085#1080#1081' '#1053#1086#1074#1075#1086#1088#1086#1076', 2002'#8212'2005'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clBlue
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
@@ -234,7 +234,7 @@ object AboutBox: TAboutBox
       Width = 35
       Height = 13
       Caption = 'Version'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -8
       Font.Name = 'MS Sans Serif'
@@ -258,7 +258,7 @@ object AboutBox: TAboutBox
       Height = 16
       Hint = #1053#1053#1043#1059
       Caption = #1050#1086#1090#1082#1086#1074#1091' '#1040#1083#1077#1082#1089#1077#1102'.'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -276,7 +276,7 @@ object AboutBox: TAboutBox
       Height = 16
       Hint = #1059#1095#1080#1090#1077#1083#1100' '#1080#1085#1092#1086#1088#1084#1072#1090#1080#1082#1080' '#1074' '#1096#1082#1086#1083#1077' '#8470'91'
       Caption = #1050#1072#1089#1100#1082#1086#1074#1086#1081' '#1048#1088#1080#1085#1077' '#1041#1086#1088#1080#1089#1086#1074#1085#1077
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -294,7 +294,7 @@ object AboutBox: TAboutBox
       Height = 16
       Hint = #1064#1082#1086#1083#1072' '#8470'91'
       Caption = #1052#1086#1088#1086#1079#1086#1074#1091' '#1040#1085#1076#1088#1077#1102
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -324,7 +324,7 @@ object AboutBox: TAboutBox
       Cursor = crHandPoint
       Caption = #1089#1090#1088#1072#1085#1080#1094#1072' '#1087#1088#1086#1077#1082#1090#1072' '#1085#1072' Github'
       Color = clAqua
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clBlue
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -337,20 +337,6 @@ object AboutBox: TAboutBox
       OnClick = GoToWebClick
       OnMouseMove = GoToWebMouseMove
       IsControl = True
-    end
-    object Label1: TLabel
-      Left = 232
-      Top = 224
-      Width = 195
-      Height = 23
-      Caption = #1041#1045#1047' '#1056#1045#1043#1048#1057#1058#1056#1040#1062#1048#1048
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
-      Font.Height = -21
-      Font.Name = 'Courier New'
-      Font.Style = [fsBold]
-      ParentFont = False
-      Visible = False
     end
   end
   object Timer1: TTimer

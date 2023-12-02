@@ -30,7 +30,6 @@ type
     Shape6: TShape;
     Shape7: TShape;
     Shape8: TShape;
-    Label1: TLabel;
     procedure Timer1Timer(Sender: TObject);
     procedure GoToWebClick(Sender: TObject);
     procedure GoToWebMouseMove(Sender: TObject; Shift: TShiftState; X,

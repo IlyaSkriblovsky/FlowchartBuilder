@@ -6,7 +6,7 @@ object MainForm: TMainForm
   ClientWidth = 757
   Color = 15066597
   UseDockManager = True
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clBlack
   Font.Height = -13
   Font.Name = 'MS Sans Serif'
@@ -322,7 +322,7 @@ object MainForm: TMainForm
         Hint = #1064#1072#1075#1085#1091#1090#1100
         Caption = #1064#1072#1075
         Flat = True
-        Font.Charset = DEFAULT_CHARSET
+        Font.Charset = RUSSIAN_CHARSET
         Font.Color = clBlack
         Font.Height = -13
         Font.Name = 'MS Sans Serif'

@@ -6,7 +6,7 @@ object frmOpt: TfrmOpt
   ClientHeight = 382
   ClientWidth = 498
   Color = 15066597
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -34,7 +34,7 @@ object frmOpt: TfrmOpt
     Height = 17
     AutoSize = False
     Caption = #1055#1086#1076#1089#1082#1072#1079#1082#1080':'
-    Font.Charset = DEFAULT_CHARSET
+    Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
@@ -105,6 +105,11 @@ object frmOpt: TfrmOpt
     Caption = #1055#1088#1080#1084#1077#1085#1080#1090#1100
     Default = True
     DoubleBuffered = True
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
       0400000000006801000000000000000000001000000000000000000000000000
@@ -125,6 +130,7 @@ object frmOpt: TfrmOpt
     ModalResult = 1
     NumGlyphs = 2
     ParentDoubleBuffered = False
+    ParentFont = False
     TabOrder = 0
     OnClick = BitOkClick
   end
@@ -137,6 +143,11 @@ object frmOpt: TfrmOpt
     Cancel = True
     Caption = #1054#1090#1084#1077#1085#1072
     DoubleBuffered = True
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
       0400000000006801000000000000000000001000000000000000000000000000
@@ -157,6 +168,7 @@ object frmOpt: TfrmOpt
     ModalResult = 2
     NumGlyphs = 2
     ParentDoubleBuffered = False
+    ParentFont = False
     TabOrder = 1
     OnClick = BitCanselClick
   end
@@ -166,6 +178,12 @@ object frmOpt: TfrmOpt
     Width = 225
     Height = 121
     Caption = ' '#1062#1074#1077#1090#1072' '
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 2
     object Label3: TLabel
       Left = 93
@@ -173,7 +191,7 @@ object frmOpt: TfrmOpt
       Width = 108
       Height = 16
       Caption = #1058#1077#1082#1091#1097#1080#1081' '#1094#1074#1077#1090':'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
@@ -243,6 +261,11 @@ object frmOpt: TfrmOpt
     Height = 25
     Anchors = [akLeft, akBottom]
     DoubleBuffered = True
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
       0400000000006801000000000000000000001000000000000000000000000000
@@ -262,6 +285,7 @@ object frmOpt: TfrmOpt
       0000}
     NumGlyphs = 2
     ParentDoubleBuffered = False
+    ParentFont = False
     TabOrder = 5
     OnClick = BitHelpClick
   end
@@ -312,6 +336,12 @@ object frmOpt: TfrmOpt
     Width = 225
     Height = 49
     Caption = #1064#1088#1080#1092#1090#1099
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 8
     object btnBlockFont: TButton
       Left = 8
@@ -366,7 +396,7 @@ object frmOpt: TfrmOpt
     Top = 50
   end
   object FontDialog: TFontDialog
-    Font.Charset = DEFAULT_CHARSET
+    Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'

@@ -6,7 +6,7 @@ object frmOutProg: TfrmOutProg
   ClientHeight = 189
   ClientWidth = 206
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -23,7 +23,7 @@ object frmOutProg: TfrmOutProg
     Height = 164
     Align = alClient
     Color = 5650990
-    Font.Charset = DEFAULT_CHARSET
+    Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWhite
     Font.Height = -11
     Font.Name = 'MS Sans Serif'

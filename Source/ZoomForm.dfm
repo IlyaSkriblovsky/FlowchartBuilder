@@ -6,7 +6,7 @@ object frmZoom: TfrmZoom
   ClientHeight = 453
   ClientWidth = 688
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -37,7 +37,7 @@ object frmZoom: TfrmZoom
       Height = 22
       Caption = #1047#1072#1082#1088#1099#1090#1100
       Flat = True
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
@@ -89,7 +89,7 @@ object frmZoom: TfrmZoom
         Width = 14
         Height = 20
         Caption = '%'
-        Font.Charset = DEFAULT_CHARSET
+        Font.Charset = RUSSIAN_CHARSET
         Font.Color = clWindowText
         Font.Height = -16
         Font.Name = 'MS Sans Serif'

@@ -9,7 +9,7 @@ object StrsForm: TStrsForm
   ClientHeight = 206
   ClientWidth = 225
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'

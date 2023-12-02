@@ -6,7 +6,7 @@ object frmProps: TfrmProps
   ClientHeight = 400
   ClientWidth = 344
   Color = 15066597
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -32,7 +32,7 @@ object frmProps: TfrmProps
     Height = 17
     AutoSize = False
     Caption = #1055#1086#1076#1089#1082#1072#1079#1082#1080':'
-    Font.Charset = DEFAULT_CHARSET
+    Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
