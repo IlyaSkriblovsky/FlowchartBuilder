@@ -1762,6 +1762,8 @@ begin
   if n='order'
   then begin
          Check(1, [tyStr]);
+         if Length(P[1].Str) < 1
+         then RunTimeError('Аргумент функции Order не может быть пустой строкой');
          Result:=MakeVal(Ord(P[1].Str[1]));
        end;
 end;
