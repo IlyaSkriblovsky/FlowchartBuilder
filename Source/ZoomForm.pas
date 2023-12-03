@@ -8,7 +8,7 @@ uses
 
 type
   TfrmZoom = class(TForm)
-    ControlBar1: TControlBar;
+    ControlBar: TControlBar;
     ToolBar1: TToolBar;
     ZoomBox: TComboBox;
     Label1: TLabel;
@@ -62,7 +62,7 @@ procedure TfrmZoom.FormMouseUp(Sender: TObject; Button: TMouseButton;
 begin
   Down._:=false;
   Screen.Cursor:=crDefault;
-  ControlBar1.Cursor:=crArrow;
+  ControlBar.Cursor:=crArrow;
 end;
 
 procedure TfrmZoom.FormMouseMove(Sender: TObject; Shift: TShiftState; X,

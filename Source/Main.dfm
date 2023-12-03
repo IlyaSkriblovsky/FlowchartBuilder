@@ -1,4 +1,4 @@
-object MainForm: TMainForm
+﻿object MainForm: TMainForm
   Left = 280
   Top = 183
   Caption = #1050#1086#1085#1089#1090#1088#1091#1082#1090#1086#1088' '#1073#1083#1086#1082'-'#1089#1093#1077#1084
@@ -1320,7 +1320,7 @@ object MainForm: TMainForm
     Top = 137
   end
   object ApplicationEvents1: TApplicationEvents
-    OnException = ApplicationEvents1Exception
+    OnException = ApplicationEventsException
     Left = 372
     Top = 153
   end

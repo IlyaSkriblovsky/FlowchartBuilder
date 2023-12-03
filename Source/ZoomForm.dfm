@@ -19,7 +19,7 @@ object frmZoom: TfrmZoom
   OnPaint = FormPaint
   PixelsPerInch = 96
   TextHeight = 13
-  object ControlBar1: TControlBar
+  object ControlBar: TControlBar
     Left = 0
     Top = 0
     Width = 688

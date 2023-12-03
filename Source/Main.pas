@@ -87,7 +87,7 @@ type
     InitSB: TSpeedButton;
     AutoTimer: TTimer;
     btnAuto: TSpeedButton;
-    ApplicationEvents1: TApplicationEvents;
+    ApplicationEvents: TApplicationEvents;
     mnuInterval: TMenuItem;
     btnLineRun: TSpeedButton;
     btnDelete: TSpeedButton;
@@ -119,7 +119,7 @@ type
     mnuView: TMenuItem;
     mnuBlkStat: TMenuItem;
     pnlLine: TPanel;
-    Panel1: TPanel;
+    pnlSelectFirstBlock: TPanel;
     N3: TMenuItem;
     mnuUndo: TMenuItem;
     N4: TMenuItem;
@@ -141,17 +141,17 @@ type
     procedure mnuOpenClick(Sender: TObject);
     procedure mnuSaveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure Options1Click(Sender: TObject);
+    procedure OptionsClick(Sender: TObject);
     procedure mnuAboutClick(Sender: TObject);
     procedure mnuSelFirstClick(Sender: TObject);
-    procedure Go1Click(Sender: TObject);
+    procedure StepClick(Sender: TObject);
     procedure btnViewClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
     procedure BtnWatchClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure mnuRunHelpClick(Sender: TObject);
     procedure mnuNewWindowClick(Sender: TObject);
-    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
+    procedure ApplicationEventsException(Sender: TObject; E: Exception);
     procedure mnuIntervalClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
     procedure btnAlignVClick(Sender: TObject);
@@ -162,7 +162,7 @@ type
     procedure mnuExpWMFClick(Sender: TObject);
     procedure mnuExpBMPClick(Sender: TObject);
     procedure mnuExpJPEGClick(Sender: TObject);
-    procedure Stop1Click(Sender: TObject);
+    procedure StopClick(Sender: TObject);
     procedure mnuRepErrorClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure mnuUndoClick(Sender: TObject);
@@ -291,7 +291,7 @@ begin
   if ChildForm.FindStartBlok
   then begin
          ChildForm.FindStartBlok:=False;
-         MainForm.Panel1.Visible:=false;
+         pnlSelectFirstBlock.Visible:=false;
          Exit;
        end;
 
@@ -402,7 +402,7 @@ begin
   ChildForm.Refresh;
 end;
 
-procedure TMainForm.Options1Click(Sender: TObject);
+procedure TMainForm.OptionsClick(Sender: TObject);
 var
   i: Integer;
   t: TBlock;
@@ -425,11 +425,11 @@ end;
 
 procedure TMainForm.mnuSelFirstClick(Sender: TObject);
 begin
-  MainForm.Panel1.Visible:=true;
+  pnlSelectFirstBlock.Visible:=true;
   ChildForm.FindStartBlok:=True;
 end;
 
-procedure TMainForm.Go1Click(Sender: TObject);
+procedure TMainForm.StepClick(Sender: TObject);
 begin
   if ChildForm.StartBlok=Nil then
   begin
@@ -496,7 +496,7 @@ begin
   ShellExecuteW(0, Nil, PChar(AplName), Nil, Nil, SW_NORMAL);
 end;
 
-procedure TMainForm.ApplicationEvents1Exception(Sender: TObject;
+procedure TMainForm.ApplicationEventsException(Sender: TObject;
   E: Exception);
 begin
   AutoTimer.Enabled:=false;
@@ -730,7 +730,7 @@ begin
        end;
 end;
 
-procedure TMainForm.Stop1Click(Sender: TObject);
+procedure TMainForm.StopClick(Sender: TObject);
 begin
   ChildForm.ANew.New:=false;
   ChildForm.DefCursor:=crDefault;
@@ -970,7 +970,7 @@ begin
          if ChildForm.StartBlok=nil
          then begin
                 ChildForm.FindStartBlok:=true;
-                Panel1.Visible:=true;
+                pnlSelectFirstBlock.Visible:=true;
               end
          else AutoResume;
        end

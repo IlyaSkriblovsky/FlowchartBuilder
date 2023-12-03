@@ -12,9 +12,9 @@ type
   TfrmOpt = class(TForm)
     BitOk: TBitBtn;
     BitCansel: TBitBtn;
-    ColorDialog1: TColorDialog;
+    ColorDialog: TColorDialog;
     grpColor: TGroupBox;
-    ListBox1: TListBox;
+    lstColors: TListBox;
     Label3: TLabel;
     Shape1: TShape;
     ChangeColor: TButton;
@@ -28,7 +28,7 @@ type
     BitHelp: TBitBtn;
     Memo1: TMemo;
     Memo2: TMemo;
-    Shape2: TShape;
+    shpHelp: TShape;
     Label4: TLabel;
     Label7: TLabel;
     ConflRad: TEdit;
@@ -40,7 +40,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure BitOkClick(Sender: TObject);
     procedure BitCanselClick(Sender: TObject);
-    procedure ListBox1Click(Sender: TObject);
+    procedure lstColorsClick(Sender: TObject);
     procedure ChangeColorClick(Sender: TObject);
     procedure BitHelpClick(Sender: TObject);
     procedure btnBlockFontClick(Sender: TObject);
@@ -64,7 +64,7 @@ uses Main, Child, About, EdTypes;
 procedure TfrmOpt.FormCreate(Sender: TObject);
 begin
   default_width_nohelp:=BitHelp.Left+BitHelp.Width+12;
-  default_width_help:=Shape2.Left+Shape2.Width+12;
+  default_width_help:=shpHelp.Left+shpHelp.Width+12;
 
   Width:=default_width_nohelp;
 
@@ -101,31 +101,31 @@ begin
   Close;
 end;
 
-procedure TfrmOpt.ListBox1Click(Sender: TObject);
+procedure TfrmOpt.lstColorsClick(Sender: TObject);
 begin
-  if ListBox1.Selected[0] then
+  if lstColors.Selected[0] then
     Shape1.Brush.Color:=ChildForm.ColorBlok;
-  if ListBox1.Selected[1] then
+  if lstColors.Selected[1] then
     Shape1.Brush.Color:=ChildForm.ColorFontBlok;
-  if ListBox1.Selected[2] then
+  if lstColors.Selected[2] then
     Shape1.Brush.Color:=ChildForm.ColorCurrentBlok;
-  if ListBox1.Selected[3] then
+  if lstColors.Selected[3] then
     Shape1.Brush.Color:=ChildForm.Color;
 end;
 
 procedure TfrmOpt.ChangeColorClick(Sender: TObject);
 begin
-  ColorDialog1.Color:=Shape1.Brush.Color;
-  if ColorDialog1.Execute then
-    Shape1.Brush.Color:=ColorDialog1.Color;
+  ColorDialog.Color:=Shape1.Brush.Color;
+  if ColorDialog.Execute then
+    Shape1.Brush.Color:=ColorDialog.Color;
 
-  if ListBox1.Selected[0] then
+  if lstColors.Selected[0] then
     ChildForm.ColorBlok:=Shape1.Brush.Color;
-  if ListBox1.Selected[1] then
+  if lstColors.Selected[1] then
     ChildForm.ColorFontBlok:=Shape1.Brush.Color;
-  if ListBox1.Selected[2] then
+  if lstColors.Selected[2] then
     ChildForm.ColorCurrentBlok:=Shape1.Brush.Color;
-  if ListBox1.Selected[3] then
+  if lstColors.Selected[3] then
     ChildForm.Color:=Shape1.Brush.Color;
 end;
 

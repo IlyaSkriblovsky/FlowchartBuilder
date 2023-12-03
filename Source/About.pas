@@ -7,7 +7,7 @@ uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, DateUtils,
 
 type
   TAboutBox = class(TForm)
-    Timer1: TTimer;
+    Timer: TTimer;
     Panel1: TPanel;
     Shape2: TShape;
     Shape3: TShape;
@@ -30,17 +30,17 @@ type
     Shape6: TShape;
     Shape7: TShape;
     Shape8: TShape;
-    procedure Timer1Timer(Sender: TObject);
+    procedure OnTimer(Sender: TObject);
     procedure GoToWebClick(Sender: TObject);
     procedure GoToWebMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure FormShow(Sender: TObject);
-    procedure Label17Click(Sender: TObject);
+    procedure ReportErrorByMail(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure Panel1Click(Sender: TObject);
+    procedure OnPanelClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure Shape5MouseDown(Sender: TObject; Button: TMouseButton;
+    procedure OnShapeClick(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
@@ -56,9 +56,9 @@ uses Dialogs, ShellAPI, Version;
 
 {$R *.DFM}
 
-procedure TAboutBox.Timer1Timer(Sender: TObject);
+procedure TAboutBox.OnTimer(Sender: TObject);
 begin
- Timer1.Enabled:=false;
+ Timer.Enabled:=false;
  Close;
 end;
 
@@ -79,7 +79,7 @@ begin
   GoToWeb.Font.Style:=[fsBold, fsUnderline];
 end;
 
-procedure TAboutBox.Label17Click(Sender: TObject);
+procedure TAboutBox.ReportErrorByMail(Sender: TObject);
 begin
   ShellExecute(Handle, nil, 'mailto:ilyaskriblovsky@gmail.com?Subject=Сообщение об ошибке в программе Flowchart builder', nil, nil, SW_SHOWNORMAL);
 end;
@@ -90,7 +90,7 @@ begin
   CityAndYears.Caption:='Нижний Новгород, 2002—' + IntToStr(YearOf(BuildDate));
 end;
 
-procedure TAboutBox.Panel1Click(Sender: TObject);
+procedure TAboutBox.OnPanelClick(Sender: TObject);
 begin
   Close;
 end;
@@ -102,7 +102,7 @@ begin
   then Close;
 end;
 
-procedure TAboutBox.Shape5MouseDown(Sender: TObject; Button: TMouseButton;
+procedure TAboutBox.OnShapeClick(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   Close;

@@ -30,7 +30,7 @@ object AboutBox: TAboutBox
     BevelOuter = bvLowered
     Color = 16377565
     TabOrder = 0
-    OnClick = Panel1Click
+    OnClick = OnPanelClick
     object Shape5: TShape
       Left = 208
       Top = 96
@@ -40,7 +40,7 @@ object AboutBox: TAboutBox
       Brush.Style = bsDiagCross
       Pen.Color = 16377565
       Shape = stEllipse
-      OnMouseDown = Shape5MouseDown
+      OnMouseDown = OnShapeClick
     end
     object Shape7: TShape
       Left = 208
@@ -50,7 +50,7 @@ object AboutBox: TAboutBox
       Brush.Color = 16377565
       Pen.Color = 16377565
       Shape = stEllipse
-      OnMouseDown = Shape5MouseDown
+      OnMouseDown = OnShapeClick
     end
     object Shape6: TShape
       Left = 288
@@ -60,7 +60,7 @@ object AboutBox: TAboutBox
       Brush.Color = 16377565
       Pen.Color = 16377565
       Shape = stEllipse
-      OnMouseDown = Shape5MouseDown
+      OnMouseDown = OnShapeClick
     end
     object Shape2: TShape
       Left = 6
@@ -314,7 +314,7 @@ object AboutBox: TAboutBox
       Brush.Style = bsDiagCross
       Pen.Color = 16377565
       Shape = stEllipse
-      OnMouseDown = Shape5MouseDown
+      OnMouseDown = OnShapeClick
     end
     object GoToWeb: TLabel
       Left = 246
@@ -339,9 +339,9 @@ object AboutBox: TAboutBox
       IsControl = True
     end
   end
-  object Timer1: TTimer
+  object Timer: TTimer
     Interval = 2000
-    OnTimer = Timer1Timer
+    OnTimer = OnTimer
     Left = 301
     Top = 5
   end

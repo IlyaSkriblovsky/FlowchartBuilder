@@ -19,7 +19,7 @@ object frmOpt: TfrmOpt
     382)
   PixelsPerInch = 96
   TextHeight = 13
-  object Shape2: TShape
+  object shpHelp: TShape
     Left = 239
     Top = 16
     Width = 235
@@ -205,7 +205,7 @@ object frmOpt: TfrmOpt
       Width = 105
       Height = 33
     end
-    object ListBox1: TListBox
+    object lstColors: TListBox
       Left = 7
       Top = 16
       Width = 82
@@ -220,7 +220,7 @@ object frmOpt: TfrmOpt
         #1058#1077#1082#1091#1097#1080#1081' '#1073#1083#1086#1082
         #1060#1086#1085)
       TabOrder = 0
-      OnClick = ListBox1Click
+      OnClick = lstColorsClick
     end
     object ChangeColor: TButton
       Left = 96
@@ -391,7 +391,7 @@ object frmOpt: TfrmOpt
     TabOrder = 10
     WantReturns = False
   end
-  object ColorDialog1: TColorDialog
+  object ColorDialog: TColorDialog
     Left = 144
     Top = 50
   end
