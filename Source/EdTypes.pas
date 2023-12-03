@@ -37,9 +37,6 @@ type
     property Block: SetBlocks read FBlok write SetBlok;
   end;
 
-var
-  qwe: TBlock;
-
 implementation
 uses Child, Math, Main;
 
