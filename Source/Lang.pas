@@ -1553,16 +1553,17 @@ begin
 
   if n='calc'
   then begin
-         if (Params.Count<>2) or (P[1]._Type<>tyStr)
+         if not (Params.Count in [1, 2]) or (P[1]._Type<>tyStr)
          then RunTimeError('Неправильный список параметров функции Calc');
          Lines:=TStringList.Create;
          New(Lexs);
          XVars:=TVars.Create;
          tmpPos:=Pos;
          try
-           SetVarValue(XVars, 'x', nil, P[2]);
-           Lines.Add(P[1].Str);
+           if Params.Count = 2
+           then SetVarValue(XVars, 'x', nil, P[2]);
 
+           Lines.Add(P[1].Str);
            ReadBlock(Lines, Lexs);
            Pos:=1;
            CheckExpr(Lexs);
