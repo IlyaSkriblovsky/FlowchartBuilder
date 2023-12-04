@@ -529,7 +529,7 @@ begin
   begin
     StartBlok:=Sender as TBlock;
     FindStartBlok:=False;
-    MainForm.Panel1.Visible:=false;
+    MainForm.pnlSelectFirstBlock.Visible:=false;
     AutoResume;
     Exit;
   end;
