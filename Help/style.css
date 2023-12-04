@@ -2,7 +2,6 @@ BODY {
   BACKGROUND: #FFFFFF;
   COLOR : #000000;
   FONT-FAMILY : Verdana;
-  TEXT-ALIGN: justify;
   FONT-SIZE: 13pt;
 
   max-width: 1000px;
@@ -12,41 +11,42 @@ BODY {
 CODE {
   FONT-FAMILY: Courier;
   FONT-SIZE: 13pt;
+  white-space: pre-wrap;
+  white-space-collapse: preserve-breaks;
+  text-wrap: nowrap;
+}
+code span {
+  color: #886;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-style: italic;
+  padding-left: 2em;
 }
 
 TD {
-  FONT-FAMILY: Verdana;
-  TEXT-ALIGN: justify;
   FONT-SIZE: 13pt;
 }
 
 H1 {
-  FONT-FAMILY: Verdana;
   FONT-SIZE: 20pt;
 }
 
 H2 {
-  FONT-FAMILY: Verdana;
   FONT-SIZE: 18pt;
 }
 
 H3{
-  FONT-FAMILY: Verdana;
   FONT-SIZE: 16pt;
 }
 
 B {
-  FONT-FAMILY: Verdana;
   FONT-WEIGHT: bold;
 }
 
 BIG {
-  FONT-FAMILY: Verdana;
   FONT-SIZE : 14pt;
 }
 
 A {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 13pt;
   COLOR: #505050;
   FONT-WEIGHT: bold;
@@ -54,7 +54,6 @@ A {
 }
 
 A:hover {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 13pt;
   COLOR: #1E7289;
   FONT-WEIGHT: bold;
@@ -62,7 +61,6 @@ A:hover {
 }
 
 A.topmenu {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 8pt;
   COLOR: #707070;
   FONT-WEIGHT: normal;
@@ -70,7 +68,6 @@ A.topmenu {
 }
 
 A.topmenu:hover {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 8pt;
   COLOR: #909090;
   FONT-WEIGHT: normal;
@@ -78,7 +75,6 @@ A.topmenu:hover {
 }
 
 A.leftmenu {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 8pt;
   COLOR: #505050;
   FONT-WEIGHT: normal;
@@ -86,7 +82,6 @@ A.leftmenu {
 }
 
 A.leftmenu:hover {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 8pt;
   COLOR: #909090;
   FONT-WEIGHT: normal;
@@ -94,7 +89,6 @@ A.leftmenu:hover {
 }
 
 A.leftmenucurrent {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 8pt;
   COLOR: #303030;
   FONT-WEIGHT: bold;
@@ -102,7 +96,6 @@ A.leftmenucurrent {
 }
 
 A.leftmenucurrent:hover {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 8pt;
   COLOR: #606060;
   FONT-WEIGHT: bold;
@@ -110,7 +103,6 @@ A.leftmenucurrent:hover {
 }
 
 A.copyrights {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 7pt;
   COLOR: #A0A0A0;
   FONT-WEIGHT: normal;
@@ -118,7 +110,6 @@ A.copyrights {
 }
 
 A.copyrights:hover {
-  FONT-FAMILY: Tahoma, Verdana;
   FONT-SIZE: 7pt;
   COLOR: #A0A0A0;
   FONT-WEIGHT: normal;
@@ -126,7 +117,6 @@ A.copyrights:hover {
 }
 
 DIV.title {
-  FONT-FAMILY: Verdana;
   COLOR: #206080;
   FONT-WEIGHT: bold;
   FONT-SIZE: 14pt;
@@ -134,23 +124,19 @@ DIV.title {
 }
 
 TEXTAREA {
-  FONT-FAMILY: Verdana;
   FONT-SIZE: 13pt;
 }
 
 INPUT {
-  FONT-FAMILY: Verdana;
   FONT-SIZE: 13pt;
 }
 
 SELECT {
-  FONT-FAMILY: Verdana;
   FONT-SIZE: 13pt;
 }
 
 INPUT.test {
   COLOR: #000000;
-  FONT-FAMILY: Verdana;
   FONT-SIZE: 10px;
   FONT-WEIGHT: normal;
   BACKGROUND-COLOR: #FFFFFF;
