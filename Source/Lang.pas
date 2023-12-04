@@ -45,7 +45,7 @@ const
   LexMax=1000;// Max число лексем
   Alpha=['A'..'Z', 'a'..'z', '_'];
   Num=['0'..'9'];
-  Symbol=['+', '-', '*', '/', '(', ')', '<', '=', '>', '''', ',', ';', ':', '[', ']', '{', '}', '?', '&', ' ', '^'];
+  Symbol=['+', '-', '*', '/', '(', ')', '<', '=', '>', '''', '"', ',', ';', ':', '[', ']', '{', '}', '?', '&', ' ', '^'];
   Any=Alpha+Num+Symbol;
 
 type
@@ -144,6 +144,7 @@ var
   Word: string;
   tmp: string;
   f: boolean;
+  quote: string;
 
 const
   EOFChar=#0;
@@ -221,15 +222,16 @@ begin
            else Add(lxName, Word);
          end;
 
-    if c=''''       // читаем строку
+    if c in ['''', '"']       // читаем строку
     then begin
+           quote := c;
            Word:='';
            f:=false;
            repeat
              Read;
              if f
-             then Word:=Word+'''';
-             while c<>''''                    // repeat...until для чтения апострофов в строке
+             then Word:=Word+quote;
+             while c<>quote                    // repeat...until для чтения апострофов в строке
              do begin
                   Word:=Word+c;
                   Read;
@@ -240,7 +242,7 @@ begin
              if c=EOFChar
              then Break;
              Read;
-           until c<>'''';
+           until c<>quote;
            Add(lxString, Word);
          end;
 
