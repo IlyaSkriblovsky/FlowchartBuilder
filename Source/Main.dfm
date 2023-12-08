@@ -1,4 +1,4 @@
-﻿object MainForm: TMainForm
+object MainForm: TMainForm
   Left = 280
   Top = 183
   Caption = #1050#1086#1085#1089#1090#1088#1091#1082#1090#1086#1088' '#1073#1083#1086#1082'-'#1089#1093#1077#1084
@@ -164,7 +164,7 @@
       ParentShowHint = False
       ShowHint = True
       Transparent = False
-      OnClick = Options1Click
+      OnClick = OptionsClick
     end
     object btnZoom: TSpeedButton
       Left = 688
@@ -352,7 +352,7 @@
         ParentShowHint = False
         ShowHint = True
         Transparent = False
-        OnClick = Go1Click
+        OnClick = StepClick
       end
       object btnAuto: TSpeedButton
         Left = 55
@@ -1019,7 +1019,7 @@
     TabOrder = 2
     Visible = False
   end
-  object Panel1: TPanel
+  object pnlSelectFirstBlock: TPanel
     Left = 0
     Top = 32
     Width = 201
@@ -1230,7 +1230,7 @@
       object mnuStep: TMenuItem
         Caption = #1064#1072#1075#1085#1091#1090#1100
         ShortCut = 16467
-        OnClick = Go1Click
+        OnClick = StepClick
       end
       object mnuStop: TMenuItem
         Caption = #1055#1088#1077#1082#1088#1072#1090#1080#1090#1100
@@ -1256,7 +1256,7 @@
       object mnuSettings: TMenuItem
         Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
         ShortCut = 32848
-        OnClick = Options1Click
+        OnClick = OptionsClick
       end
       object mnuInterval: TMenuItem
         Caption = #1053#1072#1089#1090#1088#1086#1080#1090#1100' '#1079#1072#1076#1077#1088#1078#1082#1091
@@ -1319,7 +1319,7 @@
     Left = 151
     Top = 137
   end
-  object ApplicationEvents1: TApplicationEvents
+  object ApplicationEvents: TApplicationEvents
     OnException = ApplicationEventsException
     Left = 372
     Top = 153

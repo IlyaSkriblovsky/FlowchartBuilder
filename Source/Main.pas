@@ -236,14 +236,14 @@ uses Child, OutProg, Options, About, Watch, uInterval, Printers, ZoomForm;
 {$R *.DFM}
 
 {$WARNINGS OFF}
-function FloatToStr;
+function FloatToStr(Value: Extended): string;
 begin
   Result:=SysUtils.FloatToStr(Value);
   while System.Pos(GetLocaleChar(GetThreadLocale, LOCALE_SDECIMAL, '.'), Result)>0
   do Result[System.Pos(GetLocaleChar(GetThreadLocale, LOCALE_SDECIMAL, '.'), Result)]:='.';
 end;
 
-function StrToFloat;
+function StrToFloat(Value: string): Extended;
 begin
   while System.Pos('.', Value)>0
   do Value[System.Pos('.', Value)]:=GetLocaleChar(GetThreadLocale, LOCALE_SDECIMAL, '.');
@@ -261,14 +261,14 @@ begin
   MainForm.AutoTimer.Enabled:=MainForm.AutoExec;
 end;
 
-procedure TMainForm.SetModifed;
+procedure TMainForm.SetModifed(Value: boolean);
 begin
   FModifed:=Value;
   if ChildForm.FileName<>''
   then ChildForm.Caption:=IfThen(Value, ChildForm.FileName+' (изменен)', ChildForm.FileName)
 end;
 
-procedure TMainForm.SetAutoExec;
+procedure TMainForm.SetAutoExec(Value: boolean);
 begin
   FAutoExec:=Value;
   if Value=false
@@ -743,7 +743,7 @@ end;
 
 procedure TMainForm.mnuRepErrorClick(Sender: TObject);
 begin
-  AboutBox.Label17Click(Sender);
+  AboutBox.ReportErrorByMail(Sender);
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -793,13 +793,13 @@ begin
   ChildForm.DefCursor:=crCross;
 end;
 
-procedure TMainForm.AddUndo;
+procedure TMainForm.AddUndo(UN: PUndoNode);
 begin
   UndoStack.Add(UN);
   mnuUndo.Enabled:=true;
 end;
 
-procedure TMainForm.DoUndo;
+procedure TMainForm.DoUndo(UN: PUndoNode);
 var
   i: integer;
   A: TArrow;

@@ -288,7 +288,7 @@ begin
   do TArrow(ArrowList[i]).StandWell;
 end;
 
-procedure TChildForm.SetButtsEnable;
+procedure TChildForm.SetButtsEnable(b: boolean);
 begin
   MainForm.RectSB.Enabled:=b;
   MainForm.RombSB.Enabled:=b;
@@ -508,7 +508,7 @@ begin
   Tb.OnDblClick:=PaintBoxDblClick;
 end;
 
-procedure TChildForm.PaintBoxDblClick;
+procedure TChildForm.PaintBoxDblClick(Sender: TObject);
 begin
   if not (TBlock(Sender).Block in [stGlob, stInit])
   then begin
@@ -684,7 +684,7 @@ begin
   Execute(f, MakeTakt);
 end;
 
-procedure TChildForm.CheckStatement;
+procedure TChildForm.CheckStatement(BackUp: TStringList; Tb: TBlock);
 var
   Lexs: PLexemes;
   tmp: string;
@@ -1825,7 +1825,7 @@ begin
   Bevel.Canvas.LineTo(0, 0);
 end;
 
-procedure TChildForm.DeleteBlock;
+procedure TChildForm.DeleteBlock(B: TBlock; MakeUndo: boolean=true);
 var
   i: integer;
   t: TArrowTail;
@@ -1886,7 +1886,7 @@ begin
   then StartBlok:=nil;
 end;
 
-procedure TChildForm.DeleteArrow;
+procedure TChildForm.DeleteArrow(A: TArrow; MakeUndo: boolean=true);
 var
   UN: PUNdoNode;
 

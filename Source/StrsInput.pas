@@ -30,7 +30,7 @@ implementation
 
 {$R *.dfm}
 
-function MemoInput;
+function MemoInput(ACaption, APrompt: string; var Strs: TStringList): boolean;
 begin
   StrsForm.Caption:=ACaption;
   StrsForm.Prompt.Caption:=APrompt;

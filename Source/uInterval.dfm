@@ -23,7 +23,7 @@ object frmInterval: TfrmInterval
     Height = 13
     Caption = #1042#1074#1077#1076#1080#1090#1077' '#1079#1072#1076#1077#1088#1078#1082#1091' '#1074' '#1084#1080#1083#1080#1089#1077#1082#1091#1085#1076#1072#1093':'
   end
-  object Edit1: TEdit
+  object inpMilliseconds: TEdit
     Left = 8
     Top = 32
     Width = 57
@@ -36,7 +36,7 @@ object frmInterval: TfrmInterval
     Top = 32
     Width = 16
     Height = 21
-    Associate = Edit1
+    Associate = inpMilliseconds
     Max = 30000
     Position = 1000
     TabOrder = 1
@@ -53,13 +53,13 @@ object frmInterval: TfrmInterval
     TabOrder = 2
     OnClick = btnOKClick
   end
-  object CheckBox1: TCheckBox
+  object cbxNoDelay: TCheckBox
     Left = 88
     Top = 32
     Width = 97
     Height = 17
     Caption = #1073#1077#1079' '#1079#1072#1076#1077#1088#1078#1082#1080
     TabOrder = 3
-    OnClick = CheckBox1Click
+    OnClick = cbxNoDelayClick
   end
 end

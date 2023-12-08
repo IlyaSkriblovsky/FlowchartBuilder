@@ -222,7 +222,7 @@ begin
            else Add(lxName, Word);
          end;
 
-    if c in ['''', '"']       // читаем строку
+    if CharInSet(c, ['''', '"'])       // читаем строку
     then begin
            quote := c;
            Word:='';

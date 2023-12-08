@@ -41,7 +41,7 @@ implementation
 uses Child, Math, Main;
 
 (***  TBlock  ***)
-function TBlock.Isd;
+function TBlock.Isd: boolean;
 var
   i: integer;
 
@@ -52,7 +52,7 @@ begin
      then Result:=true;
 end;
 
-function TBlock.IsPortAvail;
+function TBlock.IsPortAvail(t: TArrowTail; p: TBlockPort; laa: boolean): boolean;
 var
   i: integer;
   w, s, e: bool;
@@ -169,7 +169,7 @@ begin
   do DrawCanvas.TextOut(XOffs+(W-tW)div 2, YOffs+(H-tH)div 2+i*(DrawCanvas.TextHeight('A')+LineInd), Lines[i]);
 end;
 
-procedure TBlock.SetBlok;
+procedure TBlock.SetBlok(Value: SetBlocks);
 begin
   FBlok:=Value;
   case Value of
@@ -212,7 +212,7 @@ begin
   end;
 end;
 
-procedure TBlock.DrawPort;
+procedure TBlock.DrawPort(Port: TBlockPort);
 const
   R=3;
 

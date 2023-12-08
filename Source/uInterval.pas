@@ -8,14 +8,14 @@ uses
 
 type
   TfrmInterval = class(TForm)
-    Edit1: TEdit;
+    inpMilliseconds: TEdit;
     UpDown: TUpDown;
     Label1: TLabel;
     btnOK: TBitBtn;
-    CheckBox1: TCheckBox;
+    cbxNoDelay: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
-    procedure CheckBox1Click(Sender: TObject);
+    procedure cbxNoDelayClick(Sender: TObject);
   end;
 
 var
@@ -31,20 +31,20 @@ procedure TfrmInterval.FormShow(Sender: TObject);
 begin
   if MainForm.AutoTimer.Interval<>1
   then begin
-         CheckBox1.Checked:=false;
+         cbxNoDelay.Checked:=false;
          UpDown.Position:=MainForm.AutoTimer.Interval;
-         Edit1.Text:=IntToStr(UpDown.Position);
+         inpMilliseconds.Text:=IntToStr(UpDown.Position);
        end
-  else CheckBox1.Checked:=true;
+  else cbxNoDelay.Checked:=true;
 end;
 
 procedure TfrmInterval.btnOKClick(Sender: TObject);
 begin
-  if CheckBox1.Checked
+  if cbxNoDelay.Checked
   then MainForm.AutoTimer.Interval:=1
   else begin
          try
-           MainForm.AutoTimer.Interval:=StrToInt(Edit1.Text);
+           MainForm.AutoTimer.Interval:=StrToInt(inpMilliseconds.Text);
          except
            on EConvertError
            do raise Exception.Create('Неверное число.');
@@ -52,9 +52,9 @@ begin
        end;
 end;
 
-procedure TfrmInterval.CheckBox1Click(Sender: TObject);
+procedure TfrmInterval.cbxNoDelayClick(Sender: TObject);
 begin
-  Edit1.Enabled:=not CheckBox1.Checked;
+  inpMilliseconds.Enabled:=not cbxNoDelay.Checked;
 end;
 
 end.

@@ -144,7 +144,7 @@ begin
 end;
 
 (***  TTmpBlock  ***)
-procedure TTmpBlock.MouseDown;
+procedure TTmpBlock.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if ChildForm.ANew.New
   then begin
@@ -157,14 +157,14 @@ begin
   ChildForm.Refresh;
 end;
 
-procedure TTmpBlock.MouseMove;
+procedure TTmpBlock.MouseMove(Shift: TShiftState; X, Y: Integer);
 begin
   if ChildForm.ANew.New
   then ChildForm.FormMouseMove(nil, [], Left+x, Top+y)
   else inherited;
 end;
 
-procedure TTmpBlock.MouseUp;
+procedure TTmpBlock.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if ChildForm.ANew.New
   then ChildForm.FormMouseUp(nil, mbLeft, [], Left+x, Top+y)
@@ -174,7 +174,7 @@ begin
        end;  
 end;
 
-function TTmpBlock.GetPortPoint;
+function TTmpBlock.GetPortPoint(Port: TBlockPort): TPoint;
 begin
   case Port of
     North: Result:=Point(Left+Width div 2, Top);
@@ -184,7 +184,7 @@ begin
   end;  
 end;
 
-function TTmpBlock.GetPort;
+function TTmpBlock.GetPort(x, y: integer): TBlockPort;
 begin
   Dec(x, Left);
   Dec(y, Top);
@@ -199,7 +199,7 @@ begin
   then Result:=West;
 end;
 
-function TTmpBlock.IsPortAvail;
+function TTmpBlock.IsPortAvail(t: TArrowTail; p: TBlockPort; LookAtAlready: boolean): boolean;
 var
   i: integer;
   
@@ -220,7 +220,7 @@ begin
        end;
 end;
 
-function TTmpBlock.CanIDock;
+function TTmpBlock.CanIDock(x, y: integer; tail: TArrowTail; LookAtAlready: boolean): boolean;
 var
   t: TBlockPort;
 
@@ -271,7 +271,7 @@ begin
 end;
 
 (***  TArrow  ***)
-function TArrow.GetReallyTail;
+function TArrow.GetReallyTail(t: TArrowTail): TPoint;
 begin
   if Blocks[t].Block=nil
   then Result:=Tail[t]
@@ -608,7 +608,7 @@ begin
   DrawCanvas:=ChildForm.Canvas;
 end;
 
-procedure TArrow.UnDock;
+procedure TArrow.UnDock(tl: TArrowTail);
 begin
   Blocks[Tl].Block:=nil;
 
@@ -624,7 +624,7 @@ begin
 //  ChildForm.OnPaint(nil);
 end;
 
-procedure TArrow.Dock;
+procedure TArrow.Dock(Block: TTmpBlock; Tl: TArrowTail; Port: TBlockPort);
 begin
   Blocks[Tl].Block:=Block;
   Blocks[Tl].Port:=Port;
@@ -645,7 +645,7 @@ begin
 //  ChildForm.OnPaint(nil);
 end;
 
-function TArrow.GetP;
+function TArrow.GetP: integer;
 begin
   Result:=0;    // Run away the warning
   case _Type of
@@ -654,7 +654,7 @@ begin
   end;
 end;
 
-procedure TArrow.SetP;
+procedure TArrow.SetP(Value: integer);
 begin
   case _Type of
      vert: Fp:=Value+sh;
@@ -662,7 +662,7 @@ begin
   end;
 end;
 
-function TArrow.GetTail;
+function TArrow.GetTail(t: TArrowTail): TPoint;
 var
   B: TTmpBlock;
   q: TPoint;
@@ -681,7 +681,7 @@ begin
   Result:=Point(q.x-sh, q.y-sv);
 end;
 
-procedure TArrow.SetTail;
+procedure TArrow.SetTail(t: TArrowTail; Value: TPoint);
 begin
   FTail[t]:=Point(Value.X+sh, Value.Y+sv);
   if Style=eg2
@@ -849,7 +849,7 @@ begin
   DragObj:=t;
 end;
 
-procedure TArrow.Drag;
+procedure TArrow.Drag(x, y: integer);
 var
   i, j: integer;
 
@@ -965,7 +965,7 @@ begin
   end;
 end;
 
-procedure TArrow.MouseDown;
+procedure TArrow.MouseDown(Shift: TShiftState);
 var
   i: TArrowTail;
   j: integer;
