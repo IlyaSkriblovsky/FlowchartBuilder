@@ -5,8 +5,8 @@ interface
 uses
   Windows, Forms, EdTypes, Classes, Controls, StdCtrls, ExtCtrls, Buttons;
 
-const without_help=246;
-      with_help=455;
+const without_help=318;
+      with_help=526;
 
 type
   TfrmProps = class(TForm)

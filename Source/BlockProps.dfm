@@ -4,7 +4,7 @@ object frmProps: TfrmProps
   BorderStyle = bsToolWindow
   Caption = #1057#1074#1086#1081#1089#1090#1074#1072
   ClientHeight = 400
-  ClientWidth = 344
+  ClientWidth = 441
   Color = 15066597
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object frmProps: TfrmProps
   PixelsPerInch = 96
   TextHeight = 13
   object Shape1: TShape
-    Left = 240
+    Left = 312
     Top = 16
     Width = 201
     Height = 345
@@ -26,7 +26,7 @@ object frmProps: TfrmProps
     Pen.Color = clBlue
   end
   object Label4: TLabel
-    Left = 240
+    Left = 312
     Top = 16
     Width = 70
     Height = 17
@@ -44,7 +44,7 @@ object frmProps: TfrmProps
   object GroupBox1: TGroupBox
     Left = 8
     Top = 8
-    Width = 225
+    Width = 298
     Height = 353
     Caption = #1057#1074#1086#1081#1089#1090#1074#1072' '#1073#1083#1086#1082#1072
     TabOrder = 0
@@ -70,33 +70,45 @@ object frmProps: TfrmProps
       Caption = #1055#1086#1076#1089#1082#1072#1079#1082#1072':'
     end
     object OpMemo: TMemo
-      Left = 16
-      Top = 32
-      Width = 193
+      Left = 8
+      Top = 35
+      Width = 281
       Height = 113
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      ParentFont = False
       ScrollBars = ssBoth
       TabOrder = 0
       OnKeyDown = OpMemoKeyDown
     end
     object TxMemo: TMemo
-      Left = 16
-      Top = 176
-      Width = 193
+      Left = 8
+      Top = 179
+      Width = 281
       Height = 113
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      ParentFont = False
       ScrollBars = ssBoth
       TabOrder = 1
       OnKeyDown = TxMemoKeyDown
     end
     object RmEdit: TEdit
-      Left = 16
-      Top = 320
-      Width = 193
+      Left = 8
+      Top = 323
+      Width = 281
       Height = 21
       TabOrder = 2
     end
   end
   object Memo1: TMemo
-    Left = 241
+    Left = 313
     Top = 32
     Width = 199
     Height = 169
@@ -117,7 +129,7 @@ object frmProps: TfrmProps
     TabOrder = 1
   end
   object Memo2: TMemo
-    Left = 241
+    Left = 313
     Top = 200
     Width = 199
     Height = 105
@@ -133,7 +145,7 @@ object frmProps: TfrmProps
     TabOrder = 2
   end
   object Memo3: TMemo
-    Left = 241
+    Left = 313
     Top = 304
     Width = 199
     Height = 56
