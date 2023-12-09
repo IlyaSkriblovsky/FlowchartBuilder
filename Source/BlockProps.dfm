@@ -47,7 +47,7 @@ object frmProps: TfrmProps
     Width = 298
     Height = 353
     Caption = #1057#1074#1086#1081#1089#1090#1074#1072' '#1073#1083#1086#1082#1072
-    TabOrder = 0
+    TabOrder = 2
     object Label1: TLabel
       Left = 8
       Top = 16
@@ -112,6 +112,7 @@ object frmProps: TfrmProps
     Top = 32
     Width = 199
     Height = 169
+    TabStop = False
     BorderStyle = bsNone
     Color = clInfoBk
     Lines.Strings = (
@@ -133,6 +134,7 @@ object frmProps: TfrmProps
     Top = 200
     Width = 199
     Height = 105
+    TabStop = False
     BorderStyle = bsNone
     Color = clInfoBk
     Lines.Strings = (
@@ -142,13 +144,14 @@ object frmProps: TfrmProps
       #1045#1089#1083#1080' '#1085#1072#1076#1087#1080#1089#1100' '#1087#1091#1089#1090#1072', '#1090#1086' '#1085#1072' '#1073#1083#1086#1082#1077' '#1073#1091#1076#1077#1090' '
       #1086#1090#1086#1073#1088#1072#1078#1072#1090#1100#1089#1103' '#1086#1087#1077#1088#1072#1090#1086#1088'.')
     ReadOnly = True
-    TabOrder = 2
+    TabOrder = 0
   end
   object Memo3: TMemo
     Left = 313
     Top = 304
     Width = 199
     Height = 56
+    TabStop = False
     BorderStyle = bsNone
     Color = clInfoBk
     Lines.Strings = (
@@ -157,7 +160,7 @@ object frmProps: TfrmProps
       #1089#1086#1089#1090#1086#1103#1085#1080#1103' '#1087#1088#1080' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1080' '#1076#1072#1085#1085#1086#1075#1086' '
       #1073#1083#1086#1082#1072'.')
     ReadOnly = True
-    TabOrder = 3
+    TabOrder = 6
   end
   object btnOK: TBitBtn
     Left = 10
@@ -187,7 +190,7 @@ object frmProps: TfrmProps
     ModalResult = 1
     NumGlyphs = 2
     ParentDoubleBuffered = False
-    TabOrder = 4
+    TabOrder = 3
     OnClick = btnOKClick
   end
   object btnCancel: TBitBtn
@@ -218,7 +221,7 @@ object frmProps: TfrmProps
     ModalResult = 2
     NumGlyphs = 2
     ParentDoubleBuffered = False
-    TabOrder = 5
+    TabOrder = 4
     OnClick = btnCancelClick
   end
   object btnHelp: TBitBtn
@@ -246,7 +249,7 @@ object frmProps: TfrmProps
       0000}
     NumGlyphs = 2
     ParentDoubleBuffered = False
-    TabOrder = 6
+    TabOrder = 5
     OnClick = btnHelpClick
   end
 end
