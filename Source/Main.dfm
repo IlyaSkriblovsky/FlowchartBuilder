@@ -1127,12 +1127,6 @@ object MainForm: TMainForm
         ShortCut = 16474
         OnClick = mnuUndoClick
       end
-      object N7: TMenuItem
-        Caption = '-'
-      end
-      object N8: TMenuItem
-        Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      end
       object N4: TMenuItem
         Caption = '-'
       end
@@ -1195,6 +1189,7 @@ object MainForm: TMainForm
       end
       object mnuArrow: TMenuItem
         Caption = #1053#1086#1074#1086#1077' '#1089#1086#1077#1076#1080#1085#1077#1085#1080#1077
+        ShortCut = 115
         OnClick = mnuArrowClick
       end
       object N28: TMenuItem
@@ -1229,7 +1224,7 @@ object MainForm: TMainForm
       end
       object mnuStep: TMenuItem
         Caption = #1064#1072#1075#1085#1091#1090#1100
-        ShortCut = 16467
+        ShortCut = 113
         OnClick = StepClick
       end
       object mnuStop: TMenuItem

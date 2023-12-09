@@ -134,8 +134,6 @@ type
     mnuZoom: TMenuItem;
     N5: TMenuItem;
     mnuBrowser: TMenuItem;
-    N7: TMenuItem;
-    N8: TMenuItem;
     procedure mnuExitClick(Sender: TObject);
     procedure mnuNewClick(Sender: TObject);
     procedure mnuArrowClick(Sender: TObject);
