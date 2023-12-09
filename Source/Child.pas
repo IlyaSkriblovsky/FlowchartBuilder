@@ -23,12 +23,7 @@ type
 
   TChildForm = class(TForm)
     BlockMenu: TPopupMenu;
-    mnuStat: TMenuItem;
-    mnuUnfText: TMenuItem;
-    mnuRem: TMenuItem;
     mnuDelete: TMenuItem;
-    mnuGlob: TMenuItem;
-    mnuInit: TMenuItem;
     Bevel: TPaintBox;
     mnuReplace: TMenuItem;
     mnuSequence: TMenuItem;
@@ -37,13 +32,13 @@ type
     mnuLoopPred: TMenuItem;
     mnuLoopPost: TMenuItem;
     N1: TMenuItem;
-    mnuRepBlock: TMenuItem;
     N3: TMenuItem;
     mnuRepNothing: TMenuItem;
     mnuRepStat: TMenuItem;
     mnuRepIO: TMenuItem;
     mnuRepCall: TMenuItem;
     mnuRepEnd: TMenuItem;
+    mnuEditBlock: TMenuItem;
     procedure DestroyList;
     procedure GoProc(f: Boolean; MakeTakt: Boolean = true);
     procedure PaintBoxMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -53,11 +48,8 @@ type
 
     procedure FormCreate(Sender: TObject);
     procedure SetParamBlok(T: TObject);
-    procedure mnuStatClick(Sender: TObject);
-    procedure mnuRemClick(Sender: TObject);
     procedure NStepClick(Sender: TObject);
     procedure mnuDeleteClick(Sender: TObject);
-    procedure mnuUnfTextClick(Sender: TObject);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -71,8 +63,6 @@ type
     procedure Execute(f: Boolean; MakeTakt: Boolean = true);
     procedure FormDestroy(Sender: TObject);
     procedure BlockMenuPopup(Sender: TObject);
-    procedure mnuGlobClick(Sender: TObject);
-    procedure mnuInitClick(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure BevelPaint(Sender: TObject);
 
@@ -97,6 +87,7 @@ type
     procedure mnuRepCallClick(Sender: TObject);
     procedure mnuRepNothingClick(Sender: TObject);
     procedure mnuRepEndClick(Sender: TObject);
+    procedure mnuEditBlockClick(Sender: TObject);
 
   private
     XOffset, YOffset: Integer;
@@ -511,18 +502,21 @@ end;
 
 procedure TChildForm.PaintBoxDblClick(Sender: TObject);
 begin
-  if not(TBlock(Sender).Block in [stGlob, stInit]) then
-  begin
+  case TBlock(Sender).Block of
+    stGlob:
+      begin
+        MemoInput('Введите значение', 'Введите список глобальных переменных', GlobBlock.GlobStrings);
+        GlobBlock.Paint;
+      end;
+    stInit:
+      begin
+        MemoInput('Введите значение', 'Введите иницилизационный код', InitBlock.InitCode);
+        InitBlock.Paint;
+      end;
+  else
     frmProps.Block := Sender as TBlock;
     frmProps.ShowModal;
-  end
-  else
-    case TBlock(Sender).Block of
-      stGlob:
-        mnuGlobClick(Sender);
-      stInit:
-        mnuInitClick(Sender);
-    end;
+  end;
   DblClicked := true;
 end;
 
@@ -799,62 +793,6 @@ begin
     end;
 end;
 
-procedure TChildForm.mnuStatClick(Sender: TObject);
-var
-  Tb: TBlock;
-  BackUp: TStringList;
-  UN: PUndoNode;
-
-begin
-  Tb := TmpBlok;
-
-  New(UN);
-  UN._ := utTextChange;
-  UN.Group := 1;
-  UN.Block := Tb;
-  UN.Statement := Tb.Statement.Text;
-  UN.Text := Tb.UnfText.Text;
-  UN.RemStr := Tb.RemText;
-
-  MainForm.Modifed := true;
-  BackUp := TStringList.Create;
-  BackUp.Assign(Tb.Statement);
-  MemoInput('Поле ввода', 'Введите оператор', Tb.Statement);
-  CheckStatement(BackUp, Tb);
-  BackUp.Free;
-
-  if not(Tb.Statement.Text = UN.Statement) then
-    MainForm.AddUndo(UN)
-  else
-    Dispose(UN);
-
-  Refresh;
-end;
-
-procedure TChildForm.mnuRemClick(Sender: TObject);
-var
-  Tb: TBlock;
-  UN: PUndoNode;
-
-begin
-  Tb := TmpBlok;
-
-  New(UN);
-  UN._ := utTextChange;
-  UN.Group := 1;
-  UN.Block := Tb;
-  UN.Statement := Tb.Statement.Text;
-  UN.Text := Tb.UnfText.Text;
-  UN.RemStr := Tb.RemText;
-
-  MainForm.Modifed := true;
-  Tb.RemText := InputBox('Поле ввода', 'Введите подсказку', Tb.RemText);
-  if not(Tb.RemText = UN.RemStr) then
-    MainForm.AddUndo(UN)
-  else
-    Dispose(UN);
-end;
-
 procedure TChildForm.Execute(f: Boolean; MakeTakt: Boolean = true);
 var
   Med: Integer;
@@ -875,12 +813,7 @@ begin
     MainForm.btnLineRun.Enabled := true;
     MainForm.mnuArrow.Enabled := true;
     SetButtsEnable(true);
-    mnuStat.Enabled := true;
-    mnuUnfText.Enabled := true;
-    mnuRem.Enabled := true;
     mnuDelete.Enabled := true;
-    mnuGlob.Enabled := true;
-    mnuInit.Enabled := true;
 
     if StackInfo.Count > 1 then
     begin
@@ -931,12 +864,7 @@ begin
       MainForm.mnuArrow.Enabled := false;
       // MainForm.Stop1.Enabled:=false; Removed by Roman Mitin
       SetButtsEnable(false);
-      mnuStat.Enabled := false;
-      mnuUnfText.Enabled := false;
-      mnuRem.Enabled := false;
       mnuDelete.Enabled := false;
-      mnuGlob.Enabled := false;
-      mnuInit.Enabled := false;
 
       for i := 0 to Vars.Count - 1 do
         Dispose(PVar(Vars[i]));
@@ -990,12 +918,7 @@ begin
 
     SetButtsEnable(true);
 
-    mnuStat.Enabled := true;
-    mnuUnfText.Enabled := true;
-    mnuRem.Enabled := true;
     mnuDelete.Enabled := true;
-    mnuGlob.Enabled := true;
-    mnuInit.Enabled := true;
 
     if StackInfo.Count > 1 then
     begin
@@ -1369,28 +1292,9 @@ begin
   // DeleteBlock(TmpBlok); <- old code by I. Skriblovsky
 end;
 
-procedure TChildForm.mnuUnfTextClick(Sender: TObject);
-var
-  Tb: TBlock;
-  UN: PUndoNode;
-
+procedure TChildForm.mnuEditBlockClick(Sender: TObject);
 begin
-  Tb := TmpBlok;
-
-  New(UN);
-  UN._ := utTextChange;
-  UN.Group := 1;
-  UN.Block := Tb;
-  UN.Statement := Tb.Statement.Text;
-  UN.Text := Tb.UnfText.Text;
-  UN.RemStr := Tb.RemText;
-
-  MainForm.Modifed := true;
-  MemoInput('Поле ввода', 'Введите надпись на блоке', Tb.UnfText);
-  if not(Tb.UnfText.Text = UN.Text) then
-    MainForm.AddUndo(UN)
-  else
-    Dispose(UN);
+  PaintBoxDblClick(TmpBlok);
   Refresh;
 end;
 
@@ -1853,25 +1757,12 @@ end;
 
 procedure TChildForm.BlockMenuPopup(Sender: TObject);
 var
-  b: Boolean;
   i: Integer;
   T: TArrowTail;
   Arrows: array [TArrowTail] of Boolean;
 
 begin
-  if not flagInWork then
-  begin
-    b := not((TmpBlok.Block = stGlob) or (TmpBlok.Block = stInit));
-    mnuStat.Enabled := b;
-    mnuUnfText.Enabled := b;
-    mnuRem.Enabled := b;
-  end;
-  mnuGlob.Visible := TmpBlok.Block = stGlob;
-  mnuInit.Visible := TmpBlok.Block = stInit;
-  mnuStat.Visible := TmpBlok.Block <> stComment;
   mnuReplace.Visible := (not Viewer) and (not flagInWork) and (TmpBlok.Block in [stStatement, stInOut, stCall]);
-  if not Viewer then
-    mnuRem.Visible := TmpBlok.Block <> stComment;
 
   FillChar(Arrows, SizeOf(Arrows), false);
   for i := 0 to ArrowList.Count - 1 do
@@ -1880,18 +1771,6 @@ begin
         Arrows[T] := true;
 
   mnuRepNothing.Visible := Arrows[atStart] and Arrows[atEnd];
-end;
-
-procedure TChildForm.mnuGlobClick(Sender: TObject);
-begin
-  MemoInput('Введите значение', 'Введите список глобальных переменных', GlobBlock.GlobStrings);
-  GlobBlock.Paint;
-end;
-
-procedure TChildForm.mnuInitClick(Sender: TObject);
-begin
-  MemoInput('Введите значение', 'Введите иницилизационный код', InitBlock.InitCode);
-  InitBlock.Paint;
 end;
 
 procedure TChildForm.FormPaint(Sender: TObject);

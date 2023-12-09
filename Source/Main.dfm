@@ -2,7 +2,7 @@ object MainForm: TMainForm
   Left = 280
   Top = 183
   Caption = #1050#1086#1085#1089#1090#1088#1091#1082#1090#1086#1088' '#1073#1083#1086#1082'-'#1089#1093#1077#1084
-  ClientHeight = 532
+  ClientHeight = 551
   ClientWidth = 757
   Color = 15066597
   UseDockManager = True
@@ -995,7 +995,7 @@ object MainForm: TMainForm
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 513
+    Top = 532
     Width = 757
     Height = 19
     AutoHint = True
@@ -1007,6 +1007,7 @@ object MainForm: TMainForm
       item
         Width = 50
       end>
+    ExplicitTop = 513
   end
   object pnlLine: TPanel
     Left = 0

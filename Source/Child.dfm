@@ -42,26 +42,28 @@ object ChildForm: TChildForm
     OnPopup = BlockMenuPopup
     Left = 40
     Top = 64
+    object mnuEditBlock: TMenuItem
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
+      Default = True
+      OnClick = mnuEditBlockClick
+    end
     object mnuReplace: TMenuItem
       Caption = #1047#1072#1084#1077#1085#1080#1090#1100' '#1085#1072
-      object mnuRepBlock: TMenuItem
-        Caption = #1041#1083#1086#1082
-        object mnuRepStat: TMenuItem
-          Caption = #1054#1087#1077#1088#1072#1090#1086#1088
-          OnClick = mnuRepStatClick
-        end
-        object mnuRepIO: TMenuItem
-          Caption = #1042#1074#1086#1076'/'#1042#1099#1074#1086#1076
-          OnClick = mnuRepIOClick
-        end
-        object mnuRepCall: TMenuItem
-          Caption = #1042#1099#1079#1086#1074
-          OnClick = mnuRepCallClick
-        end
-        object mnuRepEnd: TMenuItem
-          Caption = #1053#1072#1095#1072#1083#1086'/'#1050#1086#1085#1077#1094
-          OnClick = mnuRepEndClick
-        end
+      object mnuRepStat: TMenuItem
+        Caption = #1054#1087#1077#1088#1072#1090#1086#1088
+        OnClick = mnuRepStatClick
+      end
+      object mnuRepIO: TMenuItem
+        Caption = #1042#1074#1086#1076'/'#1042#1099#1074#1086#1076
+        OnClick = mnuRepIOClick
+      end
+      object mnuRepCall: TMenuItem
+        Caption = #1042#1099#1079#1086#1074
+        OnClick = mnuRepCallClick
+      end
+      object mnuRepEnd: TMenuItem
+        Caption = #1053#1072#1095#1072#1083#1086'/'#1050#1086#1085#1077#1094
+        OnClick = mnuRepEndClick
       end
       object N1: TMenuItem
         Caption = '-'
@@ -93,27 +95,6 @@ object ChildForm: TChildForm
         Caption = #1053#1080#1095#1077#1075#1086
         OnClick = mnuRepNothingClick
       end
-    end
-    object mnuInit: TMenuItem
-      Caption = #1053#1072#1095#1072#1083#1100#1085#1099#1081' '#1082#1086#1076
-      OnClick = mnuInitClick
-    end
-    object mnuGlob: TMenuItem
-      Caption = #1057#1087#1080#1089#1086#1082' '#1075#1083#1086#1073'. '#1087#1077#1088#1077#1084#1077#1085#1085#1099#1093
-      Visible = False
-      OnClick = mnuGlobClick
-    end
-    object mnuStat: TMenuItem
-      Caption = #1054#1087#1077#1088#1072#1090#1086#1088
-      OnClick = mnuStatClick
-    end
-    object mnuUnfText: TMenuItem
-      Caption = #1053#1072#1076#1087#1080#1089#1100
-      OnClick = mnuUnfTextClick
-    end
-    object mnuRem: TMenuItem
-      Caption = #1055#1086#1076#1089#1082#1072#1079#1082#1072
-      OnClick = mnuRemClick
     end
     object mnuDelete: TMenuItem
       Caption = #1059#1076#1072#1083#1080#1090#1100

@@ -74,7 +74,6 @@ begin
          with ChildForm
          do begin
               mnuDelete.Visible:=false;
-              mnuRem.Visible:=false;  // <-- Too lazy...
               mnuReplace.Visible:=false;
             end;
 
