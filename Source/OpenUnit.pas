@@ -44,7 +44,7 @@ var
 
   procedure LoadBlock;
   var
-    x, y: integer;
+    x, y, w: integer;
 
   begin
     B := TBlock.Create(ChildForm);
@@ -112,12 +112,14 @@ var
       str := DoRead;
     end;
 
-    // In this order!
+    // Order matters here
+    w := B.Width; // Ugly hack. Added to handle additional InOut block width added in 3.4
     ChildForm.SetParamBlok(B);
     B.Paint;
     B.WriteText;
     B.Left := x;
     B.Top := y;
+    B.Width := w;
 
     B.RemText := DoRead;
 

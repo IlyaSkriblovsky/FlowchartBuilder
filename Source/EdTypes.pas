@@ -147,15 +147,23 @@ begin
     tW := Max(tW, DrawCanvas.TextWidth(Lines[i]));
     tH := tH + DrawCanvas.TextHeight(Lines[0]) + LineInd;
   end;
-  w := tW + 2 * HInd;
-  H := tH + 2 * VInd;
 
-  if FBlok = stIf then
-  begin
-    b := Round((IfCoef * tH + tW) / 2);
-    a := Round(b / IfCoef);
-    w := 2 * b;
-    H := 2 * a;
+  case FBlok of
+    stIf:
+      begin
+        b := Round((IfCoef * tH + tW) / 2);
+        a := Round(b / IfCoef);
+        w := 2 * b;
+        H := 2 * a;
+      end;
+    stInOut:
+      begin
+        w := tW + 2 * HInd + 10;
+        H := tH + 2 * VInd;
+      end;
+  else
+    w := tW + 2 * HInd;
+    H := tH + 2 * VInd;
   end;
 
   if w < ChildForm.WidthBlok then
