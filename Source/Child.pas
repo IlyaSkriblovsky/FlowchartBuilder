@@ -63,8 +63,10 @@ type
     procedure FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 
     procedure CreateBlock(Q: SetBlocks);
+    function HasFirstBlock: Boolean;
 
     procedure SetRange;
+    function GetNext(Cur: TBlock; Cond: Boolean): TBlock;
     procedure Takt;
     procedure Execute(f: Boolean; MakeTakt: Boolean = true);
     procedure FormDestroy(Sender: TObject);
@@ -524,6 +526,50 @@ begin
   DblClicked := true;
 end;
 
+function TChildForm.HasFirstBlock: Boolean;
+var
+  i, j: Integer;
+  Block: TBlock;
+  suitableBlocks: TList;
+  hasIncomingArrows: Boolean;
+
+begin
+  if StartBlok <> nil then
+  begin
+    Result := true;
+    Exit;
+  end;
+
+  suitableBlocks := TList.Create;
+
+  for i := 0 to BlockList.Count - 1 do
+  begin
+    Block := TBlock(BlockList[i]);
+    hasIncomingArrows := false;
+    for j := 0 to ArrowList.Count - 1 do
+      if TArrow(ArrowList[j]).Blocks[atStart].Block = Block then
+      begin
+        hasIncomingArrows := true;
+        Break;
+      end;
+
+    if hasIncomingArrows then
+      continue;
+
+    if Block.Block in [stBeginEnd, stStatement, stIf, stInOut, stCall] then
+      suitableBlocks.Add(Block);
+  end;
+
+  if suitableBlocks.Count = 1 then
+  begin
+    StartBlok := suitableBlocks[0];
+    Result := true;
+  end
+  else
+    Result := false;
+  suitableBlocks.Free;
+end;
+
 procedure TChildForm.PaintBoxMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if (FindStartBlok) and ((Sender as TBlock).Block <> stGlob) and ((Sender as TBlock).Block <> stInit) then
@@ -976,6 +1022,34 @@ begin
     ChildForm.VertScrollBar.Position := FTbCur.Top + ChildForm.VertScrollBar.Position;
 end;
 
+function TChildForm.GetNext(Cur: TBlock; Cond: Boolean): TBlock;
+var
+  i: Integer;
+
+begin
+  Result := nil;
+  for i := 0 to ArrowList.Count - 1 do
+    if TArrow(ArrowList[i]).Blocks[atEnd].Block = Cur then
+      if Cur.Block <> stIf then
+        Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block)
+      else if Cond then
+      begin
+        if (Cur.Isd) and (TArrow(ArrowList[i]).Blocks[atEnd].Port = South) then
+          Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block);
+        if (not Cur.Isd) and (TArrow(ArrowList[i]).Blocks[atEnd].Port = East) then
+          Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block);
+      end
+      else
+      begin
+        if (Cur.Isd) and (TArrow(ArrowList[i]).Blocks[atEnd].Port = East) then
+          Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block);
+        if (not Cur.Isd) and (TArrow(ArrowList[i]).Blocks[atEnd].Port = West) then
+          Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block);
+      end;
+  if (Result <> nil) and (Result.Block = stConfl) then
+    Result := GetNext(Result, false);
+end;
+
 procedure TChildForm.Takt;
 var
   Tb: TBlock;
@@ -991,34 +1065,6 @@ var
   qVar: PVar;
   Lines: TStringList;
   fstr: string;
-
-  function GetNext(Cur: TBlock; Cond: Boolean): TBlock;
-  var
-    i: Integer;
-
-  begin
-    Result := nil;
-    for i := 0 to ChildForm.ArrowList.Count - 1 do
-      if TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Block = Cur then
-        if Cur.Block <> stIf then
-          Result := TBlock(TArrow(ChildForm.ArrowList[i]).Blocks[atStart].Block)
-        else if Cond then
-        begin
-          if (Cur.Isd) and (TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = South) then
-            Result := TBlock(TArrow(ChildForm.ArrowList[i]).Blocks[atStart].Block);
-          if (not Cur.Isd) and (TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = East) then
-            Result := TBlock(TArrow(ChildForm.ArrowList[i]).Blocks[atStart].Block);
-        end
-        else
-        begin
-          if (Cur.Isd) and (TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = East) then
-            Result := TBlock(TArrow(ChildForm.ArrowList[i]).Blocks[atStart].Block);
-          if (not Cur.Isd) and (TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = West) then
-            Result := TBlock(TArrow(ChildForm.ArrowList[i]).Blocks[atStart].Block);
-        end;
-    if (Result <> nil) and (Result.Block = stConfl) then
-      Result := GetNext(Result, false);
-  end;
 
   procedure OnEnd;
   var
@@ -1257,7 +1303,7 @@ begin
           end;
           SetRange;
           FTbCur.Color := ChildForm.ColorBlok;
-          if StartBlok = nil then
+          if not HasFirstBlock then
           begin
             AutoPause;
             MessageDlg(
@@ -2048,7 +2094,7 @@ end;
   do TBlock(BlockList[i]).Tag1:=0;
   Move(b1);
   end;
-*)
+  *)
 
 procedure TChildForm.MoveAllDown(b1: TTmpBlock; h: Integer);
 var

@@ -255,7 +255,7 @@ end;
 
 procedure AutoResume;
 begin
-  if ChildForm.StartBlok = Nil then
+  if not ChildForm.HasFirstBlock then
   begin
     MainForm.mnuSelFirstClick(nil);
     Exit;
@@ -447,7 +447,7 @@ end;
 
 procedure TMainForm.StepClick(Sender: TObject);
 begin
-  if ChildForm.StartBlok = Nil then
+  if not ChildForm.HasFirstBlock then
   begin
     mnuSelFirstClick(Sender);
     AutoPause;
@@ -1007,7 +1007,7 @@ begin
 
   if AutoExec then
   begin
-    if ChildForm.StartBlok = nil then
+    if not ChildForm.HasFirstBlock then
     begin
       ChildForm.FindStartBlok := true;
       pnlSelectFirstBlock.Visible := true;

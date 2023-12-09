@@ -6,6 +6,8 @@ uses Windows, Classes, Controls, Types, ExtCtrls, Graphics, Math;
 
 type
   TTmpBlock = class;
+  // Не перепутай: atStart - "голова" стрелки (<-), atEnd - "хвост" стрелки (--)
+  // То есть выполнение идёт от "хвоста" стрелки к "голове"
   TArrowTail = (atStart, atEnd);
   TArrowStyle = (eg2, eg4);
   TArrowType = (horiz, vert);
