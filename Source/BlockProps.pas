@@ -79,6 +79,11 @@ begin
 
   OpMemo.Enabled := (Block.Block <> stComment); // and not Viewer;
   RmEdit.Enabled := (Block.Block <> stComment); // and not Viewer;
+
+  if OpMemo.Enabled then
+    OpMemo.SetFocus
+  else
+    TxMemo.SetFocus;
 end;
 
 procedure TfrmProps.btnCancelClick(Sender: TObject);
@@ -118,11 +123,6 @@ begin
   if Block.RemText <> RmEdit.Text then
     MainForm.Modifed := true;
   Block.RemText := RmEdit.Text;
-
-  if OpMemo.Enabled then
-    OpMemo.SetFocus
-  else
-    TxMemo.SetFocus;
 end;
 
 procedure TfrmProps.OpMemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -132,6 +132,8 @@ begin
     Key := 0;
     btnOK.Click;
   end;
+  if Key = VK_ESCAPE then
+    btnCancel.Click;
 end;
 
 procedure TfrmProps.TxMemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -141,6 +143,8 @@ begin
     Key := 0;
     btnOK.Click;
   end;
+  if Key = VK_ESCAPE then
+    btnCancel.Click;
 end;
 
 end.
