@@ -5,8 +5,9 @@ interface
 uses
   Windows, Forms, EdTypes, Classes, Controls, StdCtrls, ExtCtrls, Buttons;
 
-const without_help=318;
-      with_help=526;
+const
+  without_help = 318;
+  with_help = 526;
 
 type
   TfrmProps = class(TForm)
@@ -30,10 +31,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
-    procedure OpMemoKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure TxMemoKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure OpMemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure TxMemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   public
     Block: TBlock;
 
@@ -43,42 +42,43 @@ var
   frmProps: TfrmProps;
 
 implementation
-uses Child, Main;
 
+uses Child, Main;
 {$R *.dfm}
 
 procedure TfrmProps.FormCreate(Sender: TObject);
 begin
-  Width:=without_help;
+  Width := without_help;
 end;
 
 procedure TfrmProps.btnHelpClick(Sender: TObject);
 begin
-  if Width=with_help
-  then Width:=without_help
-  else Width:=with_help;
+  if Width = with_help then
+    Width := without_help
+  else
+    Width := with_help;
 end;
 
 procedure TfrmProps.FormShow(Sender: TObject);
 begin
-  if Block=nil
-  then Exit;
-  if Block.Block=stConfl
-  then Close;
+  if Block = nil then
+    Exit;
+  if Block.Block = stConfl then
+    Close;
 
-  OpMemo.Enabled:=true;
+  OpMemo.Enabled := true;
   OpMemo.Lines.Assign(Block.Statement);
-  OpMemo.SelStart:=0;
+  OpMemo.SelStart := 0;
   TxMemo.Lines.Assign(Block.UnfText);
-  RmEdit.Text:=Block.RemText;
+  RmEdit.Text := Block.RemText;
 
-  if Block.Block=stComment
-  then OpMemo.Clear;
-  if Block.Block=stComment
-  then RmEdit.Clear;;
+  if Block.Block = stComment then
+    OpMemo.Clear;
+  if Block.Block = stComment then
+    RmEdit.Clear; ;
 
-  OpMemo.Enabled:=(Block.Block<>stComment);// and not Viewer;
-  RmEdit.Enabled:=(Block.Block<>stComment);// and not Viewer;
+  OpMemo.Enabled := (Block.Block <> stComment); // and not Viewer;
+  RmEdit.Enabled := (Block.Block <> stComment); // and not Viewer;
 end;
 
 procedure TfrmProps.btnCancelClick(Sender: TObject);
@@ -92,57 +92,55 @@ var
   UN: PUndoNode;
 
 begin
-  if Block=nil
-  then Exit;
-  BackUp:=TStringlist.Create;
+  if Block = nil then
+    Exit;
+  BackUp := TStringList.Create;
   BackUp.Assign(Block.Statement);
 
   New(UN);
-  UN._:=utTextChange;
-  UN.Group:=1;
-  UN.Block:=Block;
-  UN.Statement:=Block.Statement.Text;
-  UN.Text:=Block.UnfText.Text;
-  UN.RemStr:=Block.RemText;
+  UN._ := utTextChange;
+  UN.Group := 1;
+  UN.Block := Block;
+  UN.Statement := Block.Statement.Text;
+  UN.Text := Block.UnfText.Text;
+  UN.RemStr := Block.RemText;
   MainForm.AddUndo(UN);
-
 
   Block.Statement.Assign(OpMemo.Lines);
   ChildForm.CheckStatement(BackUp, Block);
-  if not Block.Statement.Equals(BackUp)
-  then MainForm.Modifed:=true;
+  if not Block.Statement.Equals(BackUp) then
+    MainForm.Modifed := true;
   BackUp.Free;
 
-  if not Block.UnfText.Equals(TxMemo.Lines)
-  then MainForm.Modifed:=true;
+  if not Block.UnfText.Equals(TxMemo.Lines) then
+    MainForm.Modifed := true;
   Block.UnfText.Assign(TxMemo.Lines);
-  if Block.RemText<>RmEdit.Text
-  then MainForm.Modifed:=true;
-  Block.RemText:=RmEdit.Text;
+  if Block.RemText <> RmEdit.Text then
+    MainForm.Modifed := true;
+  Block.RemText := RmEdit.Text;
 
-  if OpMemo.Enabled
-  then OpMemo.SetFocus
-  else TxMemo.SetFocus;
+  if OpMemo.Enabled then
+    OpMemo.SetFocus
+  else
+    TxMemo.SetFocus;
 end;
 
-procedure TfrmProps.OpMemoKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmProps.OpMemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if (Key=VK_RETURN) and (ssCtrl in Shift)
-  then begin
-         Key:=0;
-         btnOK.Click;
-       end;
+  if (Key = VK_RETURN) and (ssCtrl in Shift) then
+  begin
+    Key := 0;
+    btnOK.Click;
+  end;
 end;
 
-procedure TfrmProps.TxMemoKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmProps.TxMemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if (Key=VK_RETURN) and (ssCtrl in Shift)
-  then begin
-         Key:=0;
-         btnOK.Click;
-       end;
+  if (Key = VK_RETURN) and (ssCtrl in Shift) then
+  begin
+    Key := 0;
+    btnOK.Click;
+  end;
 end;
 
 end.

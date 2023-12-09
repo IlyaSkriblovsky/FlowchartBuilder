@@ -24,37 +24,38 @@ var
 implementation
 
 uses Main;
-
 {$R *.dfm}
 
 procedure TfrmInterval.FormShow(Sender: TObject);
 begin
-  if MainForm.AutoTimer.Interval<>1
-  then begin
-         cbxNoDelay.Checked:=false;
-         UpDown.Position:=MainForm.AutoTimer.Interval;
-         inpMilliseconds.Text:=IntToStr(UpDown.Position);
-       end
-  else cbxNoDelay.Checked:=true;
+  if MainForm.AutoTimer.Interval <> 1 then
+  begin
+    cbxNoDelay.Checked := false;
+    UpDown.Position := MainForm.AutoTimer.Interval;
+    inpMilliseconds.Text := IntToStr(UpDown.Position);
+  end
+  else
+    cbxNoDelay.Checked := true;
 end;
 
 procedure TfrmInterval.btnOKClick(Sender: TObject);
 begin
-  if cbxNoDelay.Checked
-  then MainForm.AutoTimer.Interval:=1
-  else begin
-         try
-           MainForm.AutoTimer.Interval:=StrToInt(inpMilliseconds.Text);
-         except
-           on EConvertError
-           do raise Exception.Create('Неверное число.');
-         end;
-       end;
+  if cbxNoDelay.Checked then
+    MainForm.AutoTimer.Interval := 1
+  else
+  begin
+    try
+      MainForm.AutoTimer.Interval := StrToInt(inpMilliseconds.Text);
+    except
+      on EConvertError do
+        raise Exception.Create('Неверное число.');
+    end;
+  end;
 end;
 
 procedure TfrmInterval.cbxNoDelayClick(Sender: TObject);
 begin
-  inpMilliseconds.Enabled:=not cbxNoDelay.Checked;
+  inpMilliseconds.Enabled := not cbxNoDelay.Checked;
 end;
 
 end.

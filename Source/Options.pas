@@ -53,26 +53,26 @@ type
 
 var
   frmOpt: TfrmOpt;
-  default_width_nohelp: integer=245;
-  default_width_help: integer=490;
+  default_width_nohelp: integer = 245;
+  default_width_help: integer = 490;
 
 implementation
-uses Main, Child, About, EdTypes;
 
+uses Main, Child, About, EdTypes;
 {$R *.DFM}
 
 procedure TfrmOpt.FormCreate(Sender: TObject);
 begin
-  default_width_nohelp:=BitHelp.Left+BitHelp.Width+12;
-  default_width_help:=shpHelp.Left+shpHelp.Width+12;
+  default_width_nohelp := BitHelp.Left + BitHelp.Width + 12;
+  default_width_help := shpHelp.Left + shpHelp.Width + 12;
 
-  Width:=default_width_nohelp;
+  Width := default_width_nohelp;
 
-  clbInterpr.Checked[0]:=ChildForm.AutoCheck;
+  clbInterpr.Checked[0] := ChildForm.AutoCheck;
 
-  WidthBlok.Text:=IntToStr(ChildForm.WidthBlok);
-  HeightBlok.Text:=IntToStr(ChildForm.HeightBlok);
-  ConflRad.Text:=IntToStr(ChildForm.ConflRadius);
+  WidthBlok.Text := IntToStr(ChildForm.WidthBlok);
+  HeightBlok.Text := IntToStr(ChildForm.HeightBlok);
+  ConflRad.Text := IntToStr(ChildForm.ConflRadius);
 end;
 
 procedure TfrmOpt.BitOkClick(Sender: TObject);
@@ -80,18 +80,18 @@ var
   i: integer;
 
 begin
-  ChildForm.WidthBlok:=StrToInt(WidthBlok.Text);
-  ChildForm.HeightBlok:=StrToInt(HeightBlok.Text);
-  ChildForm.ConflRadius:=StrToInt(ConflRad.Text);
-  for i:=0 to ChildForm.BlockList.Count-1
-  do if TBlock(ChildForm.BlockList[i]).Block=stConfl
-     then begin
-            TBlock(ChildForm.BlockList[i]).Width:=ChildForm.ConflRadius;
-            TBlock(ChildForm.BlockList[i]).Height:=ChildForm.ConflRadius;
-          end;
+  ChildForm.WidthBlok := StrToInt(WidthBlok.Text);
+  ChildForm.HeightBlok := StrToInt(HeightBlok.Text);
+  ChildForm.ConflRadius := StrToInt(ConflRad.Text);
+  for i := 0 to ChildForm.BlockList.Count - 1 do
+    if TBlock(ChildForm.BlockList[i]).Block = stConfl then
+    begin
+      TBlock(ChildForm.BlockList[i]).Width := ChildForm.ConflRadius;
+      TBlock(ChildForm.BlockList[i]).Height := ChildForm.ConflRadius;
+    end;
   ChildForm.Refresh;
 
-  ChildForm.AutoCheck:=clbInterpr.Checked[0];
+  ChildForm.AutoCheck := clbInterpr.Checked[0];
 
   Close;
 end;
@@ -104,45 +104,47 @@ end;
 procedure TfrmOpt.lstColorsClick(Sender: TObject);
 begin
   if lstColors.Selected[0] then
-    Shape1.Brush.Color:=ChildForm.ColorBlok;
+    Shape1.Brush.Color := ChildForm.ColorBlok;
   if lstColors.Selected[1] then
-    Shape1.Brush.Color:=ChildForm.ColorFontBlok;
+    Shape1.Brush.Color := ChildForm.ColorFontBlok;
   if lstColors.Selected[2] then
-    Shape1.Brush.Color:=ChildForm.ColorCurrentBlok;
+    Shape1.Brush.Color := ChildForm.ColorCurrentBlok;
   if lstColors.Selected[3] then
-    Shape1.Brush.Color:=ChildForm.Color;
+    Shape1.Brush.Color := ChildForm.Color;
 end;
 
 procedure TfrmOpt.ChangeColorClick(Sender: TObject);
 begin
-  ColorDialog.Color:=Shape1.Brush.Color;
+  ColorDialog.Color := Shape1.Brush.Color;
   if ColorDialog.Execute then
-    Shape1.Brush.Color:=ColorDialog.Color;
+    Shape1.Brush.Color := ColorDialog.Color;
 
   if lstColors.Selected[0] then
-    ChildForm.ColorBlok:=Shape1.Brush.Color;
+    ChildForm.ColorBlok := Shape1.Brush.Color;
   if lstColors.Selected[1] then
-    ChildForm.ColorFontBlok:=Shape1.Brush.Color;
+    ChildForm.ColorFontBlok := Shape1.Brush.Color;
   if lstColors.Selected[2] then
-    ChildForm.ColorCurrentBlok:=Shape1.Brush.Color;
+    ChildForm.ColorCurrentBlok := Shape1.Brush.Color;
   if lstColors.Selected[3] then
-    ChildForm.Color:=Shape1.Brush.Color;
+    ChildForm.Color := Shape1.Brush.Color;
 end;
 
 procedure TfrmOpt.BitHelpClick(Sender: TObject);
 begin
- if Width=default_width_help then Width:=default_width_nohelp
- else Width:=default_width_help;
+  if Width = default_width_help then
+    Width := default_width_nohelp
+  else
+    Width := default_width_help;
 end;
 
 procedure TfrmOpt.btnBlockFontClick(Sender: TObject);
 begin
   FontDialog.Font.Assign(ChildForm.BlockFont);
-  if FontDialog.Execute
-  then begin
-         ChildForm.BlockFont.Assign(FontDialog.Font);
-         ChildForm.Refresh;
-       end;
+  if FontDialog.Execute then
+  begin
+    ChildForm.BlockFont.Assign(FontDialog.Font);
+    ChildForm.Refresh;
+  end;
 end;
 
 procedure TfrmOpt.FontDialogApply(Sender: TObject; Wnd: HWND);

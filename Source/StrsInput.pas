@@ -32,26 +32,27 @@ implementation
 
 function MemoInput(ACaption, APrompt: string; var Strs: TStringList): boolean;
 begin
-  StrsForm.Caption:=ACaption;
-  StrsForm.Prompt.Caption:=APrompt;
+  StrsForm.Caption := ACaption;
+  StrsForm.Prompt.Caption := APrompt;
   StrsForm.Memo.Lines.Assign(Strs);
-  if StrsForm.ShowModal=mrOK
-  then begin
-         Strs.Assign(StrsForm.Memo.Lines);
-         Result:=true;
-       end
-  else Result:=false;
+  if StrsForm.ShowModal = mrOK then
+  begin
+    Strs.Assign(StrsForm.Memo.Lines);
+    Result := true;
+  end
+  else
+    Result := false;
 end;
 
 procedure TStrsForm.btnOKClick(Sender: TObject);
 begin
-  ModalResult:=mrOK;
-  Memo.SetFocus;     //Makes thish form easy to use. Modified by Roman Mitin
+  ModalResult := mrOK;
+  Memo.SetFocus; // Makes this form easy to use. Modified by Roman Mitin
 end;
 
 procedure TStrsForm.btnCancelClick(Sender: TObject);
 begin
-  ModalResult:=mrCancel;
+  ModalResult := mrCancel;
 end;
 
 end.

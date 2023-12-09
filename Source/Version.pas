@@ -1,13 +1,12 @@
-﻿unit Version;
+unit Version;
 
 interface
 
 const
-  BuildDate=45260.8082502431;
-  BuildNumber=382;
-  BuildVersion='3.4';
+  BuildDate = 45269.959075706;
+  BuildNumber = 384;
+  BuildVersion = '3.4';
 
 implementation
 
 end.
- 

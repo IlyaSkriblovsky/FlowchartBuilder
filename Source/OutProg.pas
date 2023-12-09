@@ -36,7 +36,7 @@ end;
 
 procedure TfrmOutProg.FormResize(Sender: TObject);
 begin
-  btnClose.Left:=Width-97;
+  btnClose.Left := Width - 97;
 end;
 
 procedure TfrmOutProg.btnCloseClick(Sender: TObject);

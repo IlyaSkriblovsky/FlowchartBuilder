@@ -32,16 +32,13 @@ type
     Shape8: TShape;
     procedure OnTimer(Sender: TObject);
     procedure GoToWebClick(Sender: TObject);
-    procedure GoToWebMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
+    procedure GoToWebMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);
     procedure ReportErrorByMail(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure OnPanelClick(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure OnShapeClick(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure OnShapeClick(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
   public
@@ -52,14 +49,14 @@ var
   AboutBox: TAboutBox;
 
 implementation
-uses Dialogs, ShellAPI, Version;
 
+uses Dialogs, ShellAPI, Version;
 {$R *.DFM}
 
 procedure TAboutBox.OnTimer(Sender: TObject);
 begin
- Timer.Enabled:=false;
- Close;
+  Timer.Enabled := false;
+  Close;
 end;
 
 procedure TAboutBox.GoToWebClick(Sender: TObject);
@@ -67,27 +64,28 @@ begin
   ShellExecute(Handle, nil, PChar('https://github.com/IlyaSkriblovsky/FlowchartBuilder'), nil, nil, SW_SHOWNORMAL);
 end;
 
-procedure TAboutBox.GoToWebMouseMove(Sender: TObject; Shift: TShiftState;
-  X, Y: Integer);
-begin
-  (Sender as TLabel).Font.Color:=clPurple;
+procedure TAboutBox.GoToWebMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin (Sender as TLabel)
+  .Font.Color := clPurple;
 end;
 
 procedure TAboutBox.FormShow(Sender: TObject);
 begin
-  GoToWeb.Font.Color:=clBlue;
-  GoToWeb.Font.Style:=[fsBold, fsUnderline];
+  GoToWeb.Font.Color := clBlue;
+  GoToWeb.Font.Style := [fsBold, fsUnderline];
 end;
 
 procedure TAboutBox.ReportErrorByMail(Sender: TObject);
 begin
-  ShellExecute(Handle, nil, 'mailto:ilyaskriblovsky@gmail.com?Subject=Сообщение об ошибке в программе Flowchart builder', nil, nil, SW_SHOWNORMAL);
+  ShellExecute(Handle, nil,
+    'mailto:ilyaskriblovsky@gmail.com?Subject=Сообщение об ошибке в программе Flowchart builder', nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TAboutBox.FormCreate(Sender: TObject);
 begin
-  Version.Caption:='Версия '+BuildVersion+' (сборка '+IntToStr(BuildNumber)+') от '+DateTimeToStr(BuildDate);
-  CityAndYears.Caption:='Нижний Новгород, 2002—' + IntToStr(YearOf(BuildDate));
+  Version.Caption := 'Версия ' + BuildVersion + ' (сборка ' + IntToStr(BuildNumber) + ') от ' + DateTimeToStr
+    (BuildDate);
+  CityAndYears.Caption := 'Нижний Новгород, 2002—' + IntToStr(YearOf(BuildDate));
 end;
 
 procedure TAboutBox.OnPanelClick(Sender: TObject);
@@ -95,18 +93,15 @@ begin
   Close;
 end;
 
-procedure TAboutBox.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TAboutBox.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if Key = VK_ESCAPE
-  then Close;
+  if Key = VK_ESCAPE then
+    Close;
 end;
 
-procedure TAboutBox.OnShapeClick(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TAboutBox.OnShapeClick(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   Close;
 end;
 
 end.
-
