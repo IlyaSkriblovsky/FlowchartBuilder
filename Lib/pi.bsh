@@ -1,6 +1,6 @@
 #FORMAT 0.1temp
 INIT
-n := 50;
+n := 100;
 /INIT
 NIL
 0
@@ -34,9 +34,9 @@ y := random() * 2 - 1;
 
 /BLOCK
 BLOCK 2
-618
+617
 243
-80
+82
 50
 INIT
   STATEMENT
@@ -110,9 +110,9 @@ pi := inside / n * 4
 
 /BLOCK
 BLOCK 8
-340
+335
 898
-322
+332
 50
 PARAL
   STATEMENT

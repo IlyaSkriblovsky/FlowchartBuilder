@@ -199,7 +199,6 @@ type
 
     procedure SetAutoExec(Value: boolean);
     property AutoExec: boolean read FAutoExec write SetAutoExec;
-
   end;
 
 var
@@ -256,7 +255,22 @@ end;
 
 procedure AutoResume;
 begin
-  MainForm.AutoTimer.Enabled := MainForm.AutoExec;
+  if ChildForm.StartBlok = Nil then
+  begin
+    MainForm.mnuSelFirstClick(nil);
+    Exit;
+  end;
+
+  if MainForm.AutoTimer.Interval = 1 then
+  begin
+    while MainForm.AutoExec do
+    begin
+      ChildForm.GoProc(true, ChildForm.flagInWork);
+      Application.ProcessMessages;
+    end;
+  end
+  else
+    MainForm.AutoTimer.Enabled := MainForm.AutoExec;
 end;
 
 procedure TMainForm.SetModifed(Value: boolean);
@@ -501,7 +515,7 @@ end;
 
 procedure TMainForm.ApplicationEventsException(Sender: TObject; E: Exception);
 begin
-  AutoTimer.Enabled := false;
+  AutoExec := false;
   if E is EConvertError then
     E.Message := 'Ошибка перевода значения';
   if E is EInOutError then
