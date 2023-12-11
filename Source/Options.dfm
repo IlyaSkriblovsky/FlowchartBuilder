@@ -71,21 +71,21 @@ object frmOpt: TfrmOpt
       Height = 13
       Caption = #1044#1080#1072#1084#1077#1090#1088' '#1073#1083#1086#1082#1072' '#1089#1083#1080#1103#1085#1080#1103
     end
-    object WidthBlok: TEdit
+    object WidthBlock: TEdit
       Left = 23
       Top = 31
       Width = 74
       Height = 21
       TabOrder = 0
-      Text = 'WidthBlok'
+      Text = 'WidthBlock'
     end
-    object HeightBlok: TEdit
+    object HeightBlock: TEdit
       Left = 119
       Top = 31
       Width = 74
       Height = 21
       TabOrder = 1
-      Text = 'HeightBlok'
+      Text = 'HeightBlock'
     end
     object ConflRad: TEdit
       Left = 24

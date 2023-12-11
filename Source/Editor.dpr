@@ -116,7 +116,7 @@ begin
   /// ///////////////////////////////////////////////////////////////
   if FileExists(ParamStr(1)) then
   begin
-    ChildForm.StartBlok := nil;
+    ChildForm.StartBlock := nil;
     ChildForm.FileName := ParamStr(1);
     ChildForm.DestroyList;
     ChildForm.RePaint;

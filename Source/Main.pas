@@ -300,9 +300,9 @@ end;
 
 procedure TMainForm.btnStopClick(Sender: TObject);
 begin
-  if ChildForm.FindStartBlok then
+  if ChildForm.FindStartBlock then
   begin
-    ChildForm.FindStartBlok := false;
+    ChildForm.FindStartBlock := false;
     pnlSelectFirstBlock.Visible := false;
     Exit;
   end;
@@ -322,13 +322,13 @@ begin
     Exit;
   end;
   Modifed := false;
-  ChildForm.StartBlok := Nil;
+  ChildForm.StartBlock := Nil;
   ChildForm.FileName := '';
   ChildForm.Caption := ChildForm.FileName;
   ChildForm.DestroyList;
   ChildForm.RePaint;
   ChildForm.Dragging := false;
-  ChildForm.FindStartBlok := false;
+  ChildForm.FindStartBlock := false;
   ChildForm.flagInWork := false;
   AlreadyGlob := false;
   AlreadyInit := false;
@@ -351,7 +351,7 @@ begin
       ShellExecuteW(0, Nil, PChar(AplName), PChar('"' + OpenDialog.FileName + '"'), Nil, SW_NORMAL);
       Exit;
     end;
-    ChildForm.StartBlok := Nil;
+    ChildForm.StartBlock := Nil;
     ChildForm.FileName := OpenDialog.FileName;
     ChildForm.DestroyList;
     ChildForm.Dragging := false;
@@ -429,8 +429,8 @@ begin
   for i := 0 to ChildForm.BlockList.Count - 1 do
   begin
     t := ChildForm.BlockList.Items[i];
-    t.Color := ChildForm.ColorBlok;
-    t.Font.Color := ChildForm.ColorFontBlok;
+    t.Color := ChildForm.ColorBlock;
+    t.Font.Color := ChildForm.ColorFontBlock;
   end;
 end;
 
@@ -442,7 +442,7 @@ end;
 procedure TMainForm.mnuSelFirstClick(Sender: TObject);
 begin
   pnlSelectFirstBlock.Visible := true;
-  ChildForm.FindStartBlok := true;
+  ChildForm.FindStartBlock := true;
 end;
 
 procedure TMainForm.StepClick(Sender: TObject);
@@ -1010,7 +1010,7 @@ begin
   begin
     if not ChildForm.HasFirstBlock then
     begin
-      ChildForm.FindStartBlok := true;
+      ChildForm.FindStartBlock := true;
       pnlSelectFirstBlock.Visible := true;
     end
     else

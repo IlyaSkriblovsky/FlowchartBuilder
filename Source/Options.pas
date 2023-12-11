@@ -20,9 +20,9 @@ type
     ChangeColor: TButton;
     grpSizes: TGroupBox;
     Label1: TLabel;
-    WidthBlok: TEdit;
+    WidthBlock: TEdit;
     Label2: TLabel;
-    HeightBlok: TEdit;
+    HeightBlock: TEdit;
     grpI13r: TGroupBox;
     clbInterpr: TCheckListBox;
     BitHelp: TBitBtn;
@@ -70,8 +70,8 @@ begin
 
   clbInterpr.Checked[0] := ChildForm.AutoCheck;
 
-  WidthBlok.Text := IntToStr(ChildForm.WidthBlok);
-  HeightBlok.Text := IntToStr(ChildForm.HeightBlok);
+  WidthBlock.Text := IntToStr(ChildForm.WidthBlock);
+  HeightBlock.Text := IntToStr(ChildForm.HeightBlock);
   ConflRad.Text := IntToStr(ChildForm.ConflRadius);
 end;
 
@@ -81,8 +81,8 @@ var
   block: TBlock;
 
 begin
-  ChildForm.WidthBlok := StrToInt(WidthBlok.Text);
-  ChildForm.HeightBlok := StrToInt(HeightBlok.Text);
+  ChildForm.WidthBlock := StrToInt(WidthBlock.Text);
+  ChildForm.HeightBlock := StrToInt(HeightBlock.Text);
   ChildForm.ConflRadius := StrToInt(ConflRad.Text);
   for i := 0 to ChildForm.BlockList.Count - 1 do
   begin
@@ -108,11 +108,11 @@ end;
 procedure TfrmOpt.lstColorsClick(Sender: TObject);
 begin
   if lstColors.Selected[0] then
-    Shape1.Brush.Color := ChildForm.ColorBlok;
+    Shape1.Brush.Color := ChildForm.ColorBlock;
   if lstColors.Selected[1] then
-    Shape1.Brush.Color := ChildForm.ColorFontBlok;
+    Shape1.Brush.Color := ChildForm.ColorFontBlock;
   if lstColors.Selected[2] then
-    Shape1.Brush.Color := ChildForm.ColorCurrentBlok;
+    Shape1.Brush.Color := ChildForm.ColorCurrentBlock;
   if lstColors.Selected[3] then
     Shape1.Brush.Color := ChildForm.Color;
 end;
@@ -124,11 +124,11 @@ begin
     Shape1.Brush.Color := ColorDialog.Color;
 
   if lstColors.Selected[0] then
-    ChildForm.ColorBlok := Shape1.Brush.Color;
+    ChildForm.ColorBlock := Shape1.Brush.Color;
   if lstColors.Selected[1] then
-    ChildForm.ColorFontBlok := Shape1.Brush.Color;
+    ChildForm.ColorFontBlock := Shape1.Brush.Color;
   if lstColors.Selected[2] then
-    ChildForm.ColorCurrentBlok := Shape1.Brush.Color;
+    ChildForm.ColorCurrentBlock := Shape1.Brush.Color;
   if lstColors.Selected[3] then
     ChildForm.Color := Shape1.Brush.Color;
 end;

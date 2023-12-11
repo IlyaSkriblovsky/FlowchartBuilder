@@ -47,7 +47,7 @@ type
     procedure PaintBoxDblClick(Sender: TObject);
 
     procedure FormCreate(Sender: TObject);
-    procedure SetParamBlok(T: TObject);
+    procedure SetParamBlock(T: TObject);
     procedure NStepClick(Sender: TObject);
     procedure mnuDeleteClick(Sender: TObject);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -107,12 +107,12 @@ type
 
     Actives: TActives;
 
-    ColorFontBlok, ColorCurrentBlok, ColorBlok, ColorChain: TColor;
+    ColorFontBlock, ColorCurrentBlock, ColorBlock, ColorChain: TColor;
     ConflRadius: Integer;
     AutoCheck: Boolean;
 
-    WidthBlok: Integer;
-    HeightBlok: Integer;
+    WidthBlock: Integer;
+    HeightBlock: Integer;
 
     Xt, Yt: Integer;
 
@@ -125,9 +125,9 @@ type
 
     BlockList: TList<TBlock>;
     pTmp: Pointer;
-    TmpBlok: TBlock;
-    FindStartBlok: Boolean;
-    StartBlok: TBlock;
+    TmpBlock: TBlock;
+    FindStartBlock: Boolean;
+    StartBlock: TBlock;
     FTbCur: TBlock;
     StrList: TStringList;
     Dragging: Boolean;
@@ -179,8 +179,8 @@ type
 
 var
   ChildForm: TChildForm;
-  CreateBlokFromButts: Boolean;
-  CreateBlokFromButtsPoint: TPoint;
+  CreateBlockFromButts: Boolean;
+  CreateBlockFromButtsPoint: TPoint;
 
   dP: TPoint;
 
@@ -471,29 +471,29 @@ begin
   Dragging := false;
   RamkaOn := false;
   flagBreak := false;
-  FindStartBlok := false;
+  FindStartBlock := false;
   ReadIniFile;
   CheckRegistry;
 
   Files := TList<PFile_Rec>.Create;
 end;
 
-procedure TChildForm.SetParamBlok(T: TObject);
+procedure TChildForm.SetParamBlock(T: TObject);
 var
   Tb: TBlock;
 begin
   Tb := T as TBlock;
-  Tb.Color := ColorBlok;
-  Tb.Font.Color := ColorFontBlok;
-  Tb.Width := WidthBlok;
-  Tb.Height := HeightBlok;
+  Tb.Color := ColorBlock;
+  Tb.Font.Color := ColorFontBlock;
+  Tb.Width := WidthBlock;
+  Tb.Height := HeightBlock;
   if Tb.Block = stConfl then
   begin
     Tb.Width := ConflRadius;
     Tb.Height := ConflRadius;
   end;
   Tb.PopupMenu := BlockMenu;
-  // Tb.OnPaint:=TmpBlok.ShowBlok;
+  // Tb.OnPaint := TmpBlock.ShowBlock;
   Tb.OnMouseDown := PaintBoxMouseDown;
   Tb.OnMouseMove := PaintBoxMouseMove;
   Tb.OnMouseUp := PaintBoxMouseUp;
@@ -528,7 +528,7 @@ var
   hasIncomingArrows: Boolean;
 
 begin
-  if StartBlok <> nil then
+  if StartBlock <> nil then
   begin
     Result := true;
     Exit;
@@ -556,7 +556,7 @@ begin
 
   if suitableBlocks.Count = 1 then
   begin
-    StartBlok := suitableBlocks[0];
+    StartBlock := suitableBlocks[0];
     Result := true;
   end
   else
@@ -566,10 +566,10 @@ end;
 
 procedure TChildForm.PaintBoxMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  if (FindStartBlok) and ((Sender as TBlock).Block <> stGlob) and ((Sender as TBlock).Block <> stInit) then
+  if (FindStartBlock) and ((Sender as TBlock).Block <> stGlob) and ((Sender as TBlock).Block <> stInit) then
   begin
-    StartBlok := Sender as TBlock;
-    FindStartBlok := false;
+    StartBlock := Sender as TBlock;
+    FindStartBlock := false;
     MainForm.pnlSelectFirstBlock.Visible := false;
     AutoResume;
     Exit;
@@ -577,7 +577,7 @@ begin
 
   if Button = mbRight then
   begin
-    TmpBlok := Sender as TBlock;
+    TmpBlock := Sender as TBlock;
     Exit;
   end
   else if not Viewer then
@@ -803,7 +803,7 @@ var
 begin
   if (flagInWork) and (f = false) then
   begin
-    FTbCur.Color := ChildForm.ColorBlok;
+    FTbCur.Color := ChildForm.ColorBlock;
     flagInWork := false;
     MainForm.AutoExec := false;
     MainForm.actNew.Enabled := true;
@@ -833,7 +833,7 @@ begin
       Vars.Clear;
       Vars.AddRange(StackInfo.Items[0].Vars);
 
-      StartBlok := BlockList[BlockList.IndexOf(StackInfo.Items[0].StartBlock)];
+      StartBlock := BlockList[BlockList.IndexOf(StackInfo.Items[0].StartBlock)];
 
       for i := 0 to StackInfo.Count - 1 do
       begin
@@ -853,10 +853,10 @@ begin
     Exit;
   end;
   if not flagInWork then
-    if ChildForm.StartBlok <> nil then
+    if ChildForm.StartBlock <> nil then
     begin
-      FTbCur := ChildForm.StartBlok;
-      FTbCur.Color := ChildForm.ColorCurrentBlok;
+      FTbCur := ChildForm.StartBlock;
+      FTbCur.Color := ChildForm.ColorCurrentBlock;
       MainForm.StatusBar.Panels[1].Text := FTbCur.RemText;
       flagInWork := true;
       MainForm.actNew.Enabled := false;
@@ -895,7 +895,7 @@ begin
       StackNode.BlockList.AddRange(BlockList);
       StackNode.ArrowList := TList<TArrow>.Create;
       StackNode.ArrowList.AddRange(ArrowList);
-      StackNode.StartBlock := StartBlok;
+      StackNode.StartBlock := StartBlock;
       StackNode.Vars := TList<PVar>.Create;
       StackNode.Vars.AddRange(Vars);
 
@@ -909,7 +909,7 @@ begin
   if Cur = nil then
   begin
     if FTbCur <> nil then
-      FTbCur.Color := ChildForm.ColorBlok;
+      FTbCur.Color := ChildForm.ColorBlock;
     flagInWork := false;
     MainForm.actNew.Enabled := true;
     MainForm.actOpen.Enabled := true;
@@ -933,7 +933,7 @@ begin
       ArrowList.AddRange(StackInfo.Items[1].ArrowList);
       Vars.Clear;
       Vars.AddRange(StackInfo.Items[1].Vars);
-      StartBlok := BlockList[BlockList.IndexOf(StackInfo.Items[1].StartBlock)];
+      StartBlock := BlockList[BlockList.IndexOf(StackInfo.Items[1].StartBlock)];
       StackInfo.Clear;
       for i := 0 to BlockList.Count - 1 do
         BlockList.Items[i].Show;
@@ -942,9 +942,9 @@ begin
     Exit;
   end;
   if FTbCur <> nil then
-    FTbCur.Color := ChildForm.ColorBlok;
+    FTbCur.Color := ChildForm.ColorBlock;
   FTbCur := Cur;
-  FTbCur.Color := ChildForm.ColorCurrentBlok;
+  FTbCur.Color := ChildForm.ColorCurrentBlock;
   MainForm.StatusBar.Panels[1].Text := FTbCur.RemText;
   Med := FTbCur.Top + FTbCur.Height div 2;
   if (Med > ChildForm.ClientHeight) or (Med < 0) then
@@ -1054,7 +1054,7 @@ var
       end;
     tmpVars.Free;
 
-    StartBlok := BlockList[BlockList.IndexOf(StackInfo.Items[StackInfo.Count - 1].StartBlock)];
+    StartBlock := BlockList[BlockList.IndexOf(StackInfo.Items[StackInfo.Count - 1].StartBlock)];
     StackNode := StackInfo.Items[StackInfo.Count - 1];
     AlreadyGlob := StackNode.AlreadyGlob;
     GlobBlock := StackNode.GlobBlock;
@@ -1185,7 +1185,7 @@ begin
           StackNode.ArrowList.AddRange(ArrowList);
           StackNode.Vars := TVars.Create;
           StackNode.Vars.AddRange(Vars);
-          StackNode.StartBlock := StartBlok;
+          StackNode.StartBlock := StartBlock;
           StackNode.AlreadyGlob := AlreadyGlob;
           StackNode.GlobBlock := GlobBlock;
           StackNode.AlreadyInit := AlreadyInit;
@@ -1194,7 +1194,7 @@ begin
           tmpVars.AddRange(Vars);
           Vars.Clear;
           StackInfo.Add(StackNode);
-          Cur := StartBlok;
+          Cur := StartBlock;
 
           for i := 0 to BlockList.Count - 1 do
             BlockList.Items[i].Hide;
@@ -1204,7 +1204,7 @@ begin
             ArrowList.Items[i].Hide := true;
           ArrowList.Clear;
           Actives.Clear;
-          StartBlok := nil;
+          StartBlock := nil;
           AlreadyGlob := false;
           AlreadyInit := false;
           LoadScheme(fstr + '.BSH');
@@ -1245,7 +1245,7 @@ begin
               ExecOperator(Lexs, Vars);
           end;
           SetRange;
-          FTbCur.Color := ChildForm.ColorBlok;
+          FTbCur.Color := ChildForm.ColorBlock;
           if not HasFirstBlock then
           begin
             AutoPause;
@@ -1257,8 +1257,8 @@ begin
           end
           else
           begin
-            FTbCur := StartBlok;
-            Cur := StartBlok;
+            FTbCur := StartBlock;
+            Cur := StartBlock;
           end;
         end
         else
@@ -1309,12 +1309,12 @@ begin
   MainForm.btnDeleteClick(Sender);
   // Modified by Roman Mitin
 
-  // DeleteBlock(TmpBlok); <- old code by I. Skriblovsky
+  // DeleteBlock(TmpBlock); <- old code by I. Skriblovsky
 end;
 
 procedure TChildForm.mnuEditBlockClick(Sender: TObject);
 begin
-  PaintBoxDblClick(TmpBlok);
+  PaintBoxDblClick(TmpBlock);
   Refresh;
 end;
 
@@ -1377,8 +1377,8 @@ begin
   Bevel.Height := 0;
   if MainForm.WhatDown <> wdNone then
   begin
-    CreateBlokFromButts := true;
-    CreateBlokFromButtsPoint := Point(X, Y);
+    CreateBlockFromButts := true;
+    CreateBlockFromButtsPoint := Point(X, Y);
     case MainForm.WhatDown of
       wdEllipse:
         begin
@@ -1428,7 +1428,7 @@ begin
     end;
     DefCursor := crDefault;
     MainForm.WhatDown := wdNone;
-    CreateBlokFromButts := false;
+    CreateBlockFromButts := false;
   end;
 end;
 
@@ -1584,43 +1584,43 @@ var
   UN: PUndoNode;
 
 begin
-  TmpBlok := TBlock.Create(ChildForm);
-  TmpBlok.Parent := ChildForm;
-  TmpBlok.Block := Q;
+  TmpBlock := TBlock.Create(ChildForm);
+  TmpBlock.Parent := ChildForm;
+  TmpBlock.Block := Q;
   if Q = stGlob then
   begin
-    GlobBlock := TmpBlok;
+    GlobBlock := TmpBlock;
     AlreadyGlob := true;
   end;
   if Q = stInit then
   begin
-    InitBlock := TmpBlok;
+    InitBlock := TmpBlock;
     AlreadyInit := true;
   end;
-  SetParamBlok(TmpBlok);
-  pTmp := TmpBlok;
+  SetParamBlock(TmpBlock);
+  pTmp := TmpBlock;
   BlockList.Add(ChildForm.pTmp);
-  if CreateBlokFromButts then
+  if CreateBlockFromButts then
     if Q <> stConfl then
     begin
-      TmpBlok.Left := CreateBlokFromButtsPoint.X - TmpBlok.Width div 2;
-      TmpBlok.Top := CreateBlokFromButtsPoint.Y - TmpBlok.Height div 2;
+      TmpBlock.Left := CreateBlockFromButtsPoint.X - TmpBlock.Width div 2;
+      TmpBlock.Top := CreateBlockFromButtsPoint.Y - TmpBlock.Height div 2;
     end
     else
     begin
-      TmpBlok.Left := CreateBlokFromButtsPoint.X - ConflRadius div 2;
-      TmpBlok.Top := CreateBlokFromButtsPoint.Y - ConflRadius div 2;
+      TmpBlock.Left := CreateBlockFromButtsPoint.X - ConflRadius div 2;
+      TmpBlock.Top := CreateBlockFromButtsPoint.Y - ConflRadius div 2;
     end;
 
   New(UN);
   UN^._ := utNewBlock;
   UN^.Group := 1;
-  UN^.Block := TmpBlok;
+  UN^.Block := TmpBlock;
   MainForm.AddUndo(UN);
 
   SetRange;
 
-  TmpBlok.Paint;
+  TmpBlock.Paint;
 end;
 
 procedure TChildForm.SetRange;
@@ -1782,12 +1782,12 @@ var
   Arrows: array [TArrowTail] of Boolean;
 
 begin
-  mnuReplace.Visible := (not Viewer) and (not flagInWork) and (TmpBlok.Block in [stStatement, stInOut, stCall]);
+  mnuReplace.Visible := (not Viewer) and (not flagInWork) and (TmpBlock.Block in [stStatement, stInOut, stCall]);
 
   FillChar(Arrows, SizeOf(Arrows), false);
   for i := 0 to ArrowList.Count - 1 do
     for T := atStart to atEnd do
-      if ArrowList.Items[i].Blocks[T].Block = TmpBlok then
+      if ArrowList.Items[i].Blocks[T].Block = TmpBlock then
         Arrows[T] := true;
 
   mnuRepNothing.Visible := Arrows[atStart] and Arrows[atEnd];
@@ -1870,12 +1870,12 @@ begin
     UN^.Group := counter + 1;
     UN^._ := utDelBlock;
     UN^.Block := b;
-    UN^.WasStartBlock := (StartBlok = b);
+    UN^.WasStartBlock := (StartBlock = b);
     MainForm.AddUndo(UN);
   end;
 
-  if StartBlok = b then
-    StartBlok := nil;
+  if StartBlock = b then
+    StartBlock := nil;
 end;
 
 procedure TChildForm.DeleteArrow(A: TArrow; MakeUndo: Boolean = true);
@@ -1908,7 +1908,7 @@ begin
   b := TBlock.Create(ChildForm);
   b.Parent := ChildForm;
   b.Block := Block;
-  ChildForm.SetParamBlok(b);
+  ChildForm.SetParamBlock(b);
   b.WriteText;
   // ChildForm.BlockList.Add(b);
 end;
@@ -2070,15 +2070,15 @@ const
   Ind = 30;
 
 begin
-  ToolCreate(b, TmpBlok.Block);
-  b.Left := TmpBlok.Left + TmpBlok.Width div 2 - b.Width div 2;
-  b.Top := TmpBlok.Top;
+  ToolCreate(b, TmpBlock.Block);
+  b.Left := TmpBlock.Left + TmpBlock.Width div 2 - b.Width div 2;
+  b.Top := TmpBlock.Top;
 
-  ToolCreate(b1, TmpBlok.Block);
-  b1.Left := TmpBlok.Left + TmpBlok.Width div 2 - b1.Width div 2;
+  ToolCreate(b1, TmpBlock.Block);
+  b1.Left := TmpBlock.Left + TmpBlock.Width div 2 - b1.Width div 2;
   b1.Top := b.Top + b.Height + Ind;
 
-  MoveAllDown(TmpBlok, b1.Top - b.Top);
+  MoveAllDown(TmpBlock, b1.Top - b.Top);
 
   BlockList.Add(b);
   BlockList.Add(b1);
@@ -2095,10 +2095,10 @@ begin
   A.p := A.Tail[atEnd].X;
   A.StandWell;
 
-  MakeReplace(TmpBlok, b, atStart);
-  MakeReplace(TmpBlok, b1, atEnd);
+  MakeReplace(TmpBlock, b, atStart);
+  MakeReplace(TmpBlock, b1, atEnd);
 
-  DeleteBlock(TmpBlok, false);
+  DeleteBlock(TmpBlock, false);
 
   AllArrowsStandWell;
 
@@ -2116,8 +2116,8 @@ const
 
 begin
   ToolCreate(if1, stIf);
-  if1.Left := TmpBlok.Left + TmpBlok.Width div 2 - if1.Width div 2;
-  if1.Top := TmpBlok.Top;
+  if1.Left := TmpBlock.Left + TmpBlock.Width div 2 - if1.Width div 2;
+  if1.Top := TmpBlock.Top;
   ToolCreate(s1, stStatement);
   s1.Left := if1.Left - s1.Width;
   s1.Top := if1.Top + if1.Height + Ind;
@@ -2128,8 +2128,8 @@ begin
   c.Left := if1.Left + if1.Width div 2 - c.Width div 2;
   c.Top := s1.Top + s1.Height + Ind;
 
-  MoveAllDown(TmpBlok, c.Top - if1.Top); // c.Top-if1.Top-s1.Height+c.Height);
-  MoveAllLeftRight(TmpBlok, TmpBlok.Left - s1.Left, s2.Left + s2.Width - TmpBlok.Left - TmpBlok.Width);
+  MoveAllDown(TmpBlock, c.Top - if1.Top); // c.Top-if1.Top-s1.Height+c.Height);
+  MoveAllLeftRight(TmpBlock, TmpBlock.Left - s1.Left, s2.Left + s2.Width - TmpBlock.Left - TmpBlock.Width);
 
   BlockList.Add(if1);
   BlockList.Add(s1);
@@ -2176,10 +2176,10 @@ begin
   A._Type := vert;
   A.StandWell;
 
-  MakeReplace(TmpBlok, if1, atStart);
-  MakeReplace(TmpBlok, c, atEnd);
+  MakeReplace(TmpBlock, if1, atStart);
+  MakeReplace(TmpBlock, c, atEnd);
 
-  DeleteBlock(TmpBlok, false);
+  DeleteBlock(TmpBlock, false);
 
   AllArrowsStandWell;
 
@@ -2197,8 +2197,8 @@ const
 
 begin
   ToolCreate(if1, stIf);
-  if1.Left := TmpBlok.Left + TmpBlok.Width div 2 - if1.Width div 2;
-  if1.Top := TmpBlok.Top;
+  if1.Left := TmpBlock.Left + TmpBlock.Width div 2 - if1.Width div 2;
+  if1.Top := TmpBlock.Top;
   ToolCreate(s2, stStatement);
   s2.Left := if1.Left + s2.Width;
   s2.Top := if1.Top + if1.Height + Ind;
@@ -2206,8 +2206,8 @@ begin
   c.Left := if1.Left + if1.Width div 2 - c.Width div 2;
   c.Top := s2.Top + s2.Height + Ind;
 
-  MoveAllDown(TmpBlok, c.Top - if1.Top - s2.Height + c.Height);
-  MoveAllLeftRight(TmpBlok, l, s2.Left + s2.Width - TmpBlok.Left - TmpBlok.Width);
+  MoveAllDown(TmpBlock, c.Top - if1.Top - s2.Height + c.Height);
+  MoveAllLeftRight(TmpBlock, l, s2.Left + s2.Width - TmpBlock.Left - TmpBlock.Width);
 
   BlockList.Add(if1);
   BlockList.Add(s2);
@@ -2243,10 +2243,10 @@ begin
   A._Type := vert;
   A.StandWell;
 
-  MakeReplace(TmpBlok, if1, atStart);
-  MakeReplace(TmpBlok, c, atEnd);
+  MakeReplace(TmpBlock, if1, atStart);
+  MakeReplace(TmpBlock, c, atEnd);
 
-  DeleteBlock(TmpBlok, false);
+  DeleteBlock(TmpBlock, false);
 
   AllArrowsStandWell;
 
@@ -2264,20 +2264,20 @@ const
 
 begin
   ToolCreate(c, stConfl);
-  c.Left := TmpBlok.Left + TmpBlok.Width div 2 - c.Width div 2;
-  c.Top := TmpBlok.Top;
+  c.Left := TmpBlock.Left + TmpBlock.Width div 2 - c.Width div 2;
+  c.Top := TmpBlock.Top;
   ToolCreate(f, stIf);
-  f.Left := TmpBlok.Left + TmpBlok.Width div 2 - f.Width div 2;
+  f.Left := TmpBlock.Left + TmpBlock.Width div 2 - f.Width div 2;
   f.Top := c.Top + c.Height + Ind;
   ToolCreate(s, stStatement);
-  s.Left := TmpBlok.Left + TmpBlok.Width div 2 - s.Width div 2;
+  s.Left := TmpBlock.Left + TmpBlock.Width div 2 - s.Width div 2;
   s.Top := f.Top + f.Height + Ind;
   ToolCreate(c1, stConfl);
-  c1.Left := TmpBlok.Left + TmpBlok.Width div 2 - c1.Width div 2;
+  c1.Left := TmpBlock.Left + TmpBlock.Width div 2 - c1.Width div 2;
   c1.Top := s.Top + s.Height + Ind;
 
-  MoveAllDown(TmpBlok, c1.Top - c.Top - s.Height + c1.Height);
-  MoveAllLeftRight(TmpBlok, Ind, Ind);
+  MoveAllDown(TmpBlock, c1.Top - c.Top - s.Height + c1.Height);
+  MoveAllLeftRight(TmpBlock, Ind, Ind);
 
   BlockList.Add(f);
   BlockList.Add(s);
@@ -2324,10 +2324,10 @@ begin
   A.p := f.Left + f.Width + Ind;
   A.StandWell;
 
-  MakeReplace(TmpBlok, c, atStart);
-  MakeReplace(TmpBlok, c1, atEnd);
+  MakeReplace(TmpBlock, c, atStart);
+  MakeReplace(TmpBlock, c1, atEnd);
 
-  DeleteBlock(TmpBlok, false);
+  DeleteBlock(TmpBlock, false);
 
   AllArrowsStandWell;
 
@@ -2345,20 +2345,20 @@ const
 
 begin
   ToolCreate(c, stConfl);
-  c.Left := TmpBlok.Left + TmpBlok.Width div 2 - c.Width div 2;
-  c.Top := TmpBlok.Top;
+  c.Left := TmpBlock.Left + TmpBlock.Width div 2 - c.Width div 2;
+  c.Top := TmpBlock.Top;
   ToolCreate(s, stStatement);
-  s.Left := TmpBlok.Left + TmpBlok.Width div 2 - s.Width div 2;
+  s.Left := TmpBlock.Left + TmpBlock.Width div 2 - s.Width div 2;
   s.Top := c.Top + c.Height + Ind;
   ToolCreate(f, stIf);
-  f.Left := TmpBlok.Left + TmpBlok.Width div 2 - f.Width div 2;
+  f.Left := TmpBlock.Left + TmpBlock.Width div 2 - f.Width div 2;
   f.Top := s.Top + s.Height + Ind;
   ToolCreate(c1, stConfl);
-  c1.Left := TmpBlok.Left + TmpBlok.Width div 2 - c1.Width div 2;
+  c1.Left := TmpBlock.Left + TmpBlock.Width div 2 - c1.Width div 2;
   c1.Top := f.Top + f.Height + Ind;
 
-  MoveAllDown(TmpBlok, c1.Top - c.Top - s.Height + c1.Height);
-  MoveAllLeftRight(TmpBlok, Ind, Ind);
+  MoveAllDown(TmpBlock, c1.Top - c.Top - s.Height + c1.Height);
+  MoveAllLeftRight(TmpBlock, Ind, Ind);
 
   BlockList.Add(f);
   BlockList.Add(s);
@@ -2405,10 +2405,10 @@ begin
   A.p := f.Left + f.Width + Ind;
   A.StandWell;
 
-  MakeReplace(TmpBlok, c, atStart);
-  MakeReplace(TmpBlok, c1, atEnd);
+  MakeReplace(TmpBlock, c, atStart);
+  MakeReplace(TmpBlock, c1, atEnd);
 
-  DeleteBlock(TmpBlok, false);
+  DeleteBlock(TmpBlock, false);
 
   AllArrowsStandWell;
 
@@ -2418,23 +2418,23 @@ end;
 
 procedure TChildForm.mnuRepStatClick(Sender: TObject);
 begin
-  TmpBlok.Block := stStatement;
+  TmpBlock.Block := stStatement;
   MainForm.Modifed := true;
-  TmpBlok.Refresh;
+  TmpBlock.Refresh;
 end;
 
 procedure TChildForm.mnuRepIOClick(Sender: TObject);
 begin
-  TmpBlok.Block := stInOut;
+  TmpBlock.Block := stInOut;
   MainForm.Modifed := true;
-  TmpBlok.Refresh;
+  TmpBlock.Refresh;
 end;
 
 procedure TChildForm.mnuRepCallClick(Sender: TObject);
 begin
-  TmpBlok.Block := stCall;
+  TmpBlock.Block := stCall;
   MainForm.Modifed := true;
-  TmpBlok.Refresh;
+  TmpBlock.Refresh;
 end;
 
 procedure TChildForm.mnuRepNothingClick(Sender: TObject);
@@ -2446,7 +2446,7 @@ var
 begin
   for i := 0 to ArrowList.Count - 1 do
     for T := atStart to atEnd do
-      if ArrowList.Items[i].Blocks[T].Block = TmpBlok then
+      if ArrowList.Items[i].Blocks[T].Block = TmpBlock then
         Arrows[T] := ArrowList[i];
   Arrows[atStart].Style := eg4;
   Arrows[atStart].StandWell;
@@ -2455,7 +2455,7 @@ begin
   Arrows[atStart].Tail[atStart] := Arrows[atEnd].Tail[atStart];
   Arrows[atStart].StandWell;
   DeleteArrow(Arrows[atEnd], false);
-  DeleteBlock(TmpBlok, false);
+  DeleteBlock(TmpBlock, false);
   Refresh;
 end;
 
@@ -2465,11 +2465,11 @@ var
   A: TArrow;
 
 begin
-  TmpBlok.Block := stBeginEnd;
+  TmpBlock.Block := stBeginEnd;
   for i := 0 to ArrowList.Count - 1 do
   begin
     A := ArrowList[i];
-    if (A.Blocks[atEnd].Block = TmpBlok) then
+    if (A.Blocks[atEnd].Block = TmpBlock) then
     begin
       A.Blocks[atEnd].Block := nil;
       A.StandWell;
@@ -2477,7 +2477,7 @@ begin
     end;
   end;
   MainForm.Modifed := true;
-  TmpBlok.Refresh;
+  TmpBlock.Refresh;
 end;
 
 end.

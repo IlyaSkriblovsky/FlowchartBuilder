@@ -46,13 +46,13 @@ begin
   ini := TIniFile.Create(IniFile);
   with ChildForm do
   begin
-    ini.WriteInteger('Color', 'ColorBlok', ColorBlok);
-    ini.WriteInteger('Color', 'ColorCurrentBlok', ColorCurrentBlok);
-    ini.WriteInteger('Color', 'ColorFontBlok', ColorFontBlok);
+    ini.WriteInteger('Color', 'ColorBlok', ColorBlock);
+    ini.WriteInteger('Color', 'ColorCurrentBlok', ColorCurrentBlock);
+    ini.WriteInteger('Color', 'ColorFontBlok', ColorFontBlock);
     ini.WriteInteger('Color', 'ColorForm', Color);
 
-    ini.WriteInteger('Size', 'WidthBlok', WidthBlok);
-    ini.WriteInteger('Size', 'HeightBlok', HeightBlok);
+    ini.WriteInteger('Size', 'WidthBlok', WidthBlock);
+    ini.WriteInteger('Size', 'HeightBlok', HeightBlock);
     ini.WriteInteger('Size', 'ConflRadius', ConflRadius);
 
     ini.WriteBool('I13r', 'AutoCheck', AutoCheck);
@@ -87,12 +87,12 @@ var
 
 begin
   ini := TIniFile.Create(IniFile);
-  ChildForm.ColorBlok := ini.ReadInteger('Color', 'ColorBlok', clWhite);
-  ChildForm.ColorCurrentBlok := ini.ReadInteger('Color', 'ColorCurrentBlok', clMoneyGreen);
-  ChildForm.ColorFontBlok := ini.ReadInteger('Color', 'ColorFontBlok', clBlack);
+  ChildForm.ColorBlock := ini.ReadInteger('Color', 'ColorBlok', clWhite);
+  ChildForm.ColorCurrentBlock := ini.ReadInteger('Color', 'ColorCurrentBlok', clMoneyGreen);
+  ChildForm.ColorFontBlock := ini.ReadInteger('Color', 'ColorFontBlok', clBlack);
   ChildForm.Color := ini.ReadInteger('Color', 'ColorForm', clWhite);
-  ChildForm.WidthBlok := ini.ReadInteger('Size', 'WidthBlok', 80);
-  ChildForm.HeightBlok := ini.ReadInteger('Size', 'HeightBlok', 50);
+  ChildForm.WidthBlock := ini.ReadInteger('Size', 'WidthBlok', 80);
+  ChildForm.HeightBlock := ini.ReadInteger('Size', 'HeightBlok', 50);
   ChildForm.ConflRadius := ini.ReadInteger('Size', 'ConflRadius', 10);
   ChildForm.AutoCheck := ini.ReadBool('I13r', 'AutoCheck', false);
   with ChildForm.BlockFont do

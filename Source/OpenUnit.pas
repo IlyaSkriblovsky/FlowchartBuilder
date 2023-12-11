@@ -6,12 +6,6 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls;
 
-var
-  OpenFileBlok: string;
-  tmp: integer;
-  GlobLines: TStringList;
-  InitLines: TStringList;
-
 procedure LoadScheme(FileName: string);
 
 implementation
@@ -52,8 +46,8 @@ var
     ChildForm.BlockList.Add(B);
     B.Parent := ChildForm;
     B.PopupMenu := ChildForm.BlockMenu;
-    B.Color := ChildForm.ColorBlok;
-    B.Font.Color := ChildForm.ColorFontBlok;
+    B.Color := ChildForm.ColorBlock;
+    B.Font.Color := ChildForm.ColorFontBlock;
     B.OnMouseDown := ChildForm.PaintBoxMouseDown;
     B.OnMouseMove := ChildForm.PaintBoxMouseMove;
     B.OnMouseUp := ChildForm.PaintBoxMouseUp;
@@ -114,7 +108,7 @@ var
 
     // Order matters here
     w := B.Width; // Ugly hack. Added to handle additional InOut block width added in 3.4
-    ChildForm.SetParamBlok(B);
+    ChildForm.SetParamBlock(B);
     B.Paint;
     B.WriteText;
     B.Left := x;
@@ -217,7 +211,7 @@ begin
       LoadArrow;
 
     if start <> -1 then
-      ChildForm.StartBlok := ChildForm.BlockList[start];
+      ChildForm.StartBlock := ChildForm.BlockList[start];
   except
     else
       MessageBox(0, 'Ошибка при открытии схемы', 'Конструктор Блок-Схем', MB_ICONERROR or MB_OK);

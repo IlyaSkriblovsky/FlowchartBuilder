@@ -131,8 +131,8 @@ begin
 
     for i := 0 to ChildForm.BlockList.Count - 1 do
       ChildForm.BlockList.Items[i].Tag := i;
-    if ChildForm.StartBlok <> nil then
-      WriteLn(F, ChildForm.StartBlok.Tag)
+    if ChildForm.StartBlock <> nil then
+      WriteLn(F, ChildForm.StartBlock.Tag)
     else
       WriteLn(F, -1);
     for i := 0 to ChildForm.BlockList.Count - 1 do

@@ -14,7 +14,7 @@ type
     procedure Paint; override;
 
   private
-    FBlok: SetBlocks;
+    FBlockType: SetBlocks;
 
   public
     Statement: TStringList;
@@ -30,11 +30,11 @@ type
 
     function IsPortAvail(t: TArrowTail; p: TBlockPort; laa: boolean): boolean; override;
 
-    procedure SetBlok(Value: SetBlocks);
+    procedure SetBlockType(Value: SetBlocks);
     procedure WriteText;
 
     procedure DrawPort(Port: TBlockPort); override;
-    property Block: SetBlocks read FBlok write SetBlok;
+    property Block: SetBlocks read FBlockType write SetBlockType;
   end;
 
 implementation
@@ -149,7 +149,7 @@ begin
     tH := tH + DrawCanvas.TextHeight(Lines[0]) + LineInd;
   end;
 
-  case FBlok of
+  case FBlockType of
     stIf:
       begin
         b := Round((IfCoef * tH + tW) / 2);
@@ -167,10 +167,10 @@ begin
     H := tH + 2 * VInd;
   end;
 
-  if w < ChildForm.WidthBlok then
-    w := ChildForm.WidthBlok;
-  if H < ChildForm.HeightBlok then
-    H := ChildForm.HeightBlok;
+  if w < ChildForm.WidthBlock then
+    w := ChildForm.WidthBlock;
+  if H < ChildForm.HeightBlock then
+    H := ChildForm.HeightBlock;
 
   Left := Left - (w - Width) div 2;
   Top := Top - (H - Height) div 2;
@@ -182,9 +182,9 @@ begin
       Lines[i]);
 end;
 
-procedure TBlock.SetBlok(Value: SetBlocks);
+procedure TBlock.SetBlockType(Value: SetBlocks);
 begin
-  FBlok := Value;
+  FBlockType := Value;
   case Value of
     stBeginEnd:
       begin
