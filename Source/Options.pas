@@ -87,7 +87,7 @@ begin
   for i := 0 to ChildForm.BlockList.Count - 1 do
   begin
     block := ChildForm.BlockList.Items[i];
-    if block.Block = stConfl then
+    if block.BlockType = stConfl then
     begin
       block.Width := ChildForm.ConflRadius;
       block.Height := ChildForm.ConflRadius;

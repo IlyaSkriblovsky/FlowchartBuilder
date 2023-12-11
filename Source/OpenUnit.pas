@@ -63,29 +63,29 @@ var
     B.Height := StrToInt(str);
     str := DoRead;
     if str = 'ELLIPSE' then
-      B.Block := stBeginEnd;
+      B.BlockType := stBeginEnd;
     if str = 'RECT' then
-      B.Block := stStatement;
+      B.BlockType := stStatement;
     if str = 'ROMB' then
-      B.Block := stIf;
+      B.BlockType := stIf;
     if str = 'PARAL' then
-      B.Block := stInOut;
+      B.BlockType := stInOut;
     if str = 'CALL' then
-      B.Block := stCall;
+      B.BlockType := stCall;
     if str = 'COMMENT' then
-      B.Block := stComment;
+      B.BlockType := stComment;
     if str = 'CONFLUENCE' then
-      B.Block := stConfl;
+      B.BlockType := stConfl;
     if str = 'INIT' then
     begin
-      B.Block := stInit;
+      B.BlockType := stInit;
       InitBlock := B;
       AlreadyInit := true;
       B.InitCode.Assign(Init);
     end;
     if str = 'GLOB' then
     begin
-      B.Block := stGlob;
+      B.BlockType := stGlob;
       GlobBlock := B;
       AlreadyGlob := true;
       B.GlobStrings.Assign(Glob);

@@ -34,7 +34,7 @@ type
     procedure WriteText;
 
     procedure DrawPort(Port: TBlockPort); override;
-    property Block: SetBlocks read FBlockType write SetBlockType;
+    property BlockType: SetBlocks read FBlockType write SetBlockType;
   end;
 
 implementation
@@ -60,7 +60,7 @@ var
   blockRec: TBlockRec;
 
 begin
-  if Block <> stIf then
+  if BlockType <> stIf then
     Result := inherited IsPortAvail(t, p, laa)
   else
   begin
@@ -132,13 +132,13 @@ begin
   else
     Lines := Statement;
 
-  if Block = stGlob then
+  if BlockType = stGlob then
     Lines := GlobStrings;
-  if Block = stInit then
+  if BlockType = stInit then
     Lines := InitCode;
-  if Block = stComment then
+  if BlockType = stComment then
     Lines := UnfText;
-  if Block = stConfl then
+  if BlockType = stConfl then
     exit;
 
   tW := 0;
@@ -244,7 +244,7 @@ const
   end;
 
 begin
-  if not(Block in [stIf, stConfl]) then
+  if not(BlockType in [stIf, stConfl]) then
     case Port of
       North:
         Circle(Width div 2, 0, 2 * R);
@@ -255,7 +255,7 @@ begin
       South:
         Circle(Width div 2, Height, 2 * R);
     end;
-  if Block = stIf then
+  if BlockType = stIf then
     case Port of
       North:
         Circle(Width div 2, R, 2 * R - 1);
@@ -266,7 +266,7 @@ begin
       South:
         Circle(Width div 2, Height - R, 2 * R - 1);
     end;
-  if Block = stConfl then
+  if BlockType = stConfl then
     case Port of
       North:
         Circle(Width div 2, 0, 6);
@@ -314,7 +314,7 @@ begin
 
   DrawCanvas.Font.Assign(ChildForm.BlockFont);
 
-  if Block = stIf then
+  if BlockType = stIf then
     with DrawCanvas do
     begin
       Font.Color := clGray;
@@ -339,7 +339,7 @@ begin
   begin
     DrawCanvas.Brush.Style := bs;
 
-    case Block of
+    case BlockType of
       stBeginEnd:
         begin
           DrawCanvas.Ellipse(XOffs, YOffs, XOffs + Width, YOffs + Height);

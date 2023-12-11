@@ -63,7 +63,7 @@ procedure TfrmProps.FormShow(Sender: TObject);
 begin
   if Block = nil then
     Exit;
-  if Block.Block = stConfl then
+  if Block.BlockType = stConfl then
     Close;
 
   OpMemo.Enabled := true;
@@ -72,13 +72,13 @@ begin
   TxMemo.Lines.Assign(Block.UnfText);
   RmEdit.Text := Block.RemText;
 
-  if Block.Block = stComment then
+  if Block.BlockType = stComment then
     OpMemo.Clear;
-  if Block.Block = stComment then
+  if Block.BlockType = stComment then
     RmEdit.Clear; ;
 
-  OpMemo.Enabled := (Block.Block <> stComment); // and not Viewer;
-  RmEdit.Enabled := (Block.Block <> stComment); // and not Viewer;
+  OpMemo.Enabled := (Block.BlockType <> stComment); // and not Viewer;
+  RmEdit.Enabled := (Block.BlockType <> stComment); // and not Viewer;
 
   if OpMemo.Enabled then
     OpMemo.SetFocus

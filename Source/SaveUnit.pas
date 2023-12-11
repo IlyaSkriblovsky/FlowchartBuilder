@@ -32,7 +32,7 @@ var
     WriteLn(F, B.Top);
     WriteLn(F, B.Width);
     WriteLn(F, B.Height);
-    case B.Block of
+    case B.BlockType of
       stBeginEnd:
         WriteLn(F, 'ELLIPSE');
       stStatement:

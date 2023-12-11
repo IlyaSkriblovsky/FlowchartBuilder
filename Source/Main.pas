@@ -892,9 +892,9 @@ begin
       utDelBlock:
         begin
           BlockList.Add(UN.Block);
-          if UN.Block.Block = stGlob then
+          if UN.Block.BlockType = stGlob then
             AlreadyGlob := true;
-          if UN.Block.Block = stInit then
+          if UN.Block.BlockType = stInit then
             AlreadyInit := true;
           UN.Block.Show;
         end;

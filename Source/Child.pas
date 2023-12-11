@@ -487,7 +487,7 @@ begin
   Tb.Font.Color := ColorFontBlock;
   Tb.Width := WidthBlock;
   Tb.Height := HeightBlock;
-  if Tb.Block = stConfl then
+  if Tb.BlockType = stConfl then
   begin
     Tb.Width := ConflRadius;
     Tb.Height := ConflRadius;
@@ -502,7 +502,7 @@ end;
 
 procedure TChildForm.PaintBoxDblClick(Sender: TObject);
 begin
-  case TBlock(Sender).Block of
+  case TBlock(Sender).BlockType of
     stGlob:
       begin
         MemoInput('Введите значение', 'Введите список глобальных переменных', GlobBlock.GlobStrings);
@@ -550,7 +550,7 @@ begin
     if hasIncomingArrows then
       continue;
 
-    if Block.Block in [stBeginEnd, stStatement, stIf, stInOut, stCall] then
+    if Block.BlockType in [stBeginEnd, stStatement, stIf, stInOut, stCall] then
       suitableBlocks.Add(Block);
   end;
 
@@ -566,7 +566,7 @@ end;
 
 procedure TChildForm.PaintBoxMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  if (FindStartBlock) and ((Sender as TBlock).Block <> stGlob) and ((Sender as TBlock).Block <> stInit) then
+  if (FindStartBlock) and ((Sender as TBlock).BlockType <> stGlob) and ((Sender as TBlock).BlockType <> stInit) then
   begin
     StartBlock := Sender as TBlock;
     FindStartBlock := false;
@@ -740,7 +740,7 @@ begin
       New(Lexs);
       FillChar(Lexs^, SizeOf(Lexs^), 0);
       ReadBlock(Tb.Statement, Lexs);
-      case Tb.Block of
+      case Tb.BlockType of
         stInOut:
           begin
             begin
@@ -962,7 +962,7 @@ begin
   begin
     arrow := ArrowList.Items[i];
     if arrow.Blocks[atEnd].Block = Cur then
-      if Cur.Block <> stIf then
+      if Cur.BlockType <> stIf then
         Result := TBlock(arrow.Blocks[atStart].Block)
       else if Cond then
       begin
@@ -979,7 +979,7 @@ begin
           Result := TBlock(arrow.Blocks[atStart].Block);
       end;
   end;
-  if (Result <> nil) and (Result.Block = stConfl) then
+  if (Result <> nil) and (Result.BlockType = stConfl) then
     Result := GetNext(Result, false);
 end;
 
@@ -1081,7 +1081,7 @@ begin
   Tb := FTbCur;
   New(Lexs);
 
-  case Tb.Block of
+  case Tb.BlockType of
     stBeginEnd:
       begin
         if Tb.Statement.Count = 0 then
@@ -1586,7 +1586,7 @@ var
 begin
   TmpBlock := TBlock.Create(ChildForm);
   TmpBlock.Parent := ChildForm;
-  TmpBlock.Block := Q;
+  TmpBlock.BlockType := Q;
   if Q = stGlob then
   begin
     GlobBlock := TmpBlock;
@@ -1782,7 +1782,7 @@ var
   Arrows: array [TArrowTail] of Boolean;
 
 begin
-  mnuReplace.Visible := (not Viewer) and (not flagInWork) and (TmpBlock.Block in [stStatement, stInOut, stCall]);
+  mnuReplace.Visible := (not Viewer) and (not flagInWork) and (TmpBlock.BlockType in [stStatement, stInOut, stCall]);
 
   FillChar(Arrows, SizeOf(Arrows), false);
   for i := 0 to ArrowList.Count - 1 do
@@ -1826,10 +1826,10 @@ var
   counter: Integer;
 
 begin
-  if b.Block = stGlob then
+  if b.BlockType = stGlob then
     AlreadyGlob := false;
 
-  if b.Block = stInit then
+  if b.BlockType = stInit then
     AlreadyInit := false;
 
   counter := 0;
@@ -1907,7 +1907,7 @@ procedure ToolCreate(var b: TBlock; Block: SetBlocks);
 begin
   b := TBlock.Create(ChildForm);
   b.Parent := ChildForm;
-  b.Block := Block;
+  b.BlockType := Block;
   ChildForm.SetParamBlock(b);
   b.WriteText;
   // ChildForm.BlockList.Add(b);
@@ -2070,11 +2070,11 @@ const
   Ind = 30;
 
 begin
-  ToolCreate(b, TmpBlock.Block);
+  ToolCreate(b, TmpBlock.BlockType);
   b.Left := TmpBlock.Left + TmpBlock.Width div 2 - b.Width div 2;
   b.Top := TmpBlock.Top;
 
-  ToolCreate(b1, TmpBlock.Block);
+  ToolCreate(b1, TmpBlock.BlockType);
   b1.Left := TmpBlock.Left + TmpBlock.Width div 2 - b1.Width div 2;
   b1.Top := b.Top + b.Height + Ind;
 
@@ -2418,21 +2418,21 @@ end;
 
 procedure TChildForm.mnuRepStatClick(Sender: TObject);
 begin
-  TmpBlock.Block := stStatement;
+  TmpBlock.BlockType := stStatement;
   MainForm.Modifed := true;
   TmpBlock.Refresh;
 end;
 
 procedure TChildForm.mnuRepIOClick(Sender: TObject);
 begin
-  TmpBlock.Block := stInOut;
+  TmpBlock.BlockType := stInOut;
   MainForm.Modifed := true;
   TmpBlock.Refresh;
 end;
 
 procedure TChildForm.mnuRepCallClick(Sender: TObject);
 begin
-  TmpBlock.Block := stCall;
+  TmpBlock.BlockType := stCall;
   MainForm.Modifed := true;
   TmpBlock.Refresh;
 end;
@@ -2465,7 +2465,7 @@ var
   A: TArrow;
 
 begin
-  TmpBlock.Block := stBeginEnd;
+  TmpBlock.BlockType := stBeginEnd;
   for i := 0 to ArrowList.Count - 1 do
   begin
     A := ArrowList[i];
