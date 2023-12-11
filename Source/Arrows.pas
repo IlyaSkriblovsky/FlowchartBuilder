@@ -73,7 +73,6 @@ type
   public
     Ins: set of TBlockPort;
     Blocked: set of TBlockPort;
-    Tag1: integer; // may be usable
 
     procedure DrawPort(p: TBlockPort); virtual; abstract;
 
@@ -227,8 +226,8 @@ begin
       Result := false;
     if LookAtAlready then
       for i := 0 to ChildForm.ArrowList.Count - 1 do
-        if (TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Block = Self) and
-          (TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = p) then
+        if (ChildForm.ArrowList.Items[i].Blocks[atEnd].Block = Self) and
+          (ChildForm.ArrowList.Items[i].Blocks[atEnd].Port = p) then
           Result := false;
   end;
 end;

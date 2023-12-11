@@ -39,7 +39,7 @@ unit Lang;
 
 interface
 
-uses SysUtils, Classes;
+uses SysUtils, Classes, Generics.Collections;
 
 const
   LexMax = 1000; // Max число лексем
@@ -60,16 +60,17 @@ type
     Real: TReal;
   end;
 
+  PValue = ^TValue;
+
   TVar = record
     Name: string;
     Value: TValue;
-    Sizes: TList;
-    Arr: TList;
+    Sizes: TList<PInteger>;
+    Arr: TList<PValue>;
   end;
 
   PVar = ^TVar;
-  PValue = ^TValue;
-  TVars = TList;
+  TVars = TList<PVar>;
 
   TLexeme = (lxUndef { # } , lxName { a } , lxNumber { 10 } , lxPlus { + } , lxMinus { - } , lxAsterisk { * } , lxSlash
     { / } , lxPower { ^ } , lxLBracket { ( } , lxRBracket { ) } , lxDiv { div } , lxMod { mod } , lxNot { not } , lxAnd
@@ -95,7 +96,7 @@ type
   ERunTimeError = class(Exception)
   end;
 
-  TGetFuncProc = function(Vars: TVars; Name: string; Params: TList): TValue;
+  TGetFuncProc = function(Vars: TVars; Name: string; Params: TList<PValue>): TValue;
 
   PFile_Rec = ^TFile_Rec;
 
@@ -119,7 +120,7 @@ var
   Pos: Cardinal;
   GetFuncValue: TGetFuncProc;
 
-  Files: TList;
+  Files: TList<PFile_Rec>;
   CurFile: integer = 0;
 
 procedure ReadBlock(ALines: TStrings; Lexemes: PLexemes);
@@ -127,8 +128,8 @@ procedure ReadBlock(ALines: TStrings; Lexemes: PLexemes);
 function CheckExpr(Lexemes: PLexemes): boolean;
 function ExecExpr(Lexemes: PLexemes; Vars: TVars): TValue;
 
-function GetVarValue(Vars: TVars; Name: string; ArrIndex: TList): TValue;
-procedure SetVarValue(Vars: TVars; Name: string; ArrIndex: TList; Value: TValue);
+function GetVarValue(Vars: TVars; Name: string; ArrIndex: TList<PInteger>): TValue;
+procedure SetVarValue(Vars: TVars; Name: string; ArrIndex: TList<PInteger>; Value: TValue);
 
 function CheckOperator(Lexemes: PLexemes): boolean;
 procedure ExecOperator(Lexemes: PLexemes; Vars: TVars);
@@ -137,7 +138,7 @@ procedure RunTimeError(Error: string);
 
 function GetVarIndex(Vars: TVars; Name: string): integer;
 
-function GetFuncResult(Vars: TVars; Name: string; Params: TList): TValue;
+function GetFuncResult(Vars: TVars; Name: string; Params: TList<PValue>): TValue;
 
 implementation
 
@@ -407,7 +408,7 @@ begin
   AlreadyError := true;
 end;
 
-function GetVarValue(Vars: TVars; Name: string; ArrIndex: TList): TValue;
+function GetVarValue(Vars: TVars; Name: string; ArrIndex: TList<PInteger>): TValue;
 var
   i, VarNo: LongInt;
   PlainNo: Cardinal;
@@ -417,7 +418,7 @@ var
 
 begin
   if ArrIndex = nil then
-    ArrIndex := TList.Create;
+    ArrIndex := TList<PInteger>.Create;
 
   if Vars.Count = 0 then
   begin
@@ -428,7 +429,7 @@ begin
   end;
 
   VarNo := 0;
-  while UpperCase(TVar(Vars[VarNo]^).Name) <> UpperCase(Name) do
+  while UpperCase(Vars.Items[VarNo].Name) <> UpperCase(Name) do
   begin
     Inc(VarNo);
     if VarNo = Vars.Count then
@@ -440,7 +441,7 @@ begin
     end;
   end;
 
-  _Var := TVar(Vars[VarNo]^);
+  _Var := Vars[VarNo]^;
 
   if (_Var.Value._Type = tyStr) and (_Var.Sizes.Count = 0) and (ArrIndex.Count = 1) // Обработка выбора символа строки
     then
@@ -473,7 +474,7 @@ begin
     end;
 
     for i := 0 to ArrIndex.Count - 1 do
-      if integer(ArrIndex[i]^) > integer(_Var.Sizes[i]^) - 1 then
+      if ArrIndex[i]^ > _Var.Sizes[i]^ - 1 then
       begin
         RunTimeError('Выход за пределы массива');
         Result._Type := tyReal;
@@ -487,9 +488,9 @@ begin
     for i := 0 to _Var.Sizes.Count - 1 do
     begin
       Inc(PlainNo, q * integer(ArrIndex[i]^));
-      q := q * integer(_Var.Sizes[i]^);
+      q := q * _Var.Sizes[i]^;
     end;
-    Result := TValue(_Var.Arr[PlainNo]^);
+    Result := _Var.Arr[PlainNo]^;
   end;
 end;
 
@@ -505,7 +506,7 @@ begin
   end;
 
   VarNo := 0;
-  while UpperCase(TVar(Vars[VarNo]^).Name) <> UpperCase(Name) do
+  while UpperCase(Vars.Items[VarNo].Name) <> UpperCase(Name) do
   begin
     Inc(VarNo);
     if VarNo = Vars.Count then
@@ -517,7 +518,7 @@ begin
   Result := VarNo;
 end;
 
-procedure SetVarValue(Vars: TVars; Name: string; ArrIndex: TList; Value: TValue);
+procedure SetVarValue(Vars: TVars; Name: string; ArrIndex: TList<PInteger>; Value: TValue);
 var
   i, VarNo: LongInt;
   PlainNo: Cardinal;
@@ -527,14 +528,14 @@ var
 
 begin
   if ArrIndex = nil then
-    ArrIndex := TList.Create;
+    ArrIndex := TList<PInteger>.Create;
 
   VarNo := 0;
   New(myVar);
   if Vars.Count = 0 then
     VarNo := -1
   else
-    while UpperCase(TVar(Vars[VarNo]^).Name) <> UpperCase(Name) do
+    while UpperCase(Vars.Items[VarNo].Name) <> UpperCase(Name) do
     begin
       Inc(VarNo);
       if VarNo = Vars.Count then
@@ -552,8 +553,8 @@ begin
     myVar^.Value._Type := tyReal;
     myVar^.Value.Str := '';
     myVar^.Value.Real := 0;
-    myVar^.Sizes := TList.Create;
-    myVar^.Arr := TList.Create;
+    myVar^.Sizes := TList<PInteger>.Create;
+    myVar^.Arr := TList<PValue>.Create;
     { VarNo:= } Vars.Add(myVar);
   end;
 
@@ -586,7 +587,7 @@ begin
     end;
 
     for i := 0 to ArrIndex.Count - 1 do
-      if integer(ArrIndex[i]^) > integer(myVar.Sizes[i]^) - 1 then
+      if ArrIndex[i]^ > myVar.Sizes[i]^ - 1 then
       begin
         RunTimeError('Выход за пределы массива');
         Exit;
@@ -599,7 +600,7 @@ begin
       Inc(PlainNo, q * integer(ArrIndex[i]^));
       q := q * integer(myVar.Sizes[i]^);
     end;
-    TValue(myVar.Arr[PlainNo]^) := Value;
+    myVar.Arr[PlainNo]^ := Value;
   end;
 end;
 
@@ -760,17 +761,19 @@ function Expr: TValue; forward;
   var
     Name: string;
     tmp: TValue;
-    ArrIndex: TList;
-    pInt: ^integer;
+    FuncArguments: TList<PValue>;
+    ArrIndex: TList<PInteger>;
+    pInt: PInteger;
     pVal: PValue;
 
   begin
-    if Lexemes^[Pos]._Type = lxName // Возвращаем значение переменной
-      then
+    if Lexemes^[Pos]._Type = lxName then
     begin
+      // Возвращаем значение переменной
       Name := Lexemes^[Pos].Value;
       Inc(Pos);
-      ArrIndex := TList.Create;
+      FuncArguments := TList<PValue>.Create;
+      ArrIndex := TList<PInteger>.Create;
       if Lexemes^[Pos]._Type = lxLBracket then
         if Assigned(GetFuncValue) then
         begin
@@ -779,17 +782,17 @@ function Expr: TValue; forward;
           begin
             New(pVal);
             pVal^ := Expr;
-            ArrIndex.Add(pVal);
+            FuncArguments.Add(pVal);
             while Lexemes^[Pos]._Type <> lxRBracket do
             begin
               Inc(Pos);
               New(pVal);
               pVal^ := Expr;
-              ArrIndex.Add(pVal);
+              FuncArguments.Add(pVal);
             end;
           end;
           Inc(Pos);
-          Result := GetFuncValue(Vars, Name, ArrIndex);
+          Result := GetFuncValue(Vars, Name, FuncArguments);
         end
         else
           RunTimeError('Внутренняя ошибка: не установлена процедура обработки функций')
@@ -1229,7 +1232,7 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка с
     VarNo: LongInt;
     myVar: PVar;
     tmpExpr: TValue;
-    pInt: ^integer;
+    pInt: PInteger;
     pVal: PValue;
     i, MultSizes: LongInt;
 
@@ -1241,7 +1244,7 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка с
     if Vars.Count = 0 then
       VarNo := -1
     else
-      while UpperCase(TVar(Vars[VarNo]^).Name) <> UpperCase(Name) do
+      while UpperCase(Vars.Items[VarNo].Name) <> UpperCase(Name) do
       begin
         Inc(VarNo);
         if VarNo = Vars.Count then
@@ -1262,8 +1265,8 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка с
     begin
       New(myVar);
       myVar^.Name := Name;
-      myVar^.Sizes := TList.Create;
-      myVar^.Arr := TList.Create;
+      myVar^.Sizes := TList<PInteger>.Create;
+      myVar^.Arr := TList<PValue>.Create;
       Vars.Add(myVar);
     end;
 
@@ -1310,9 +1313,9 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка с
   procedure Oper; // Обработка одного оператора
   var
     Name: string;
-    ArrIndex: TList;
+    ArrIndex: TList<PInteger>;
     Value: TValue;
-    pInt: ^integer;
+    pInt: PInteger;
     tmp: TValue;
     FirstPos: Cardinal;
 
@@ -1337,7 +1340,7 @@ procedure ExecOperator(Lexemes: PLexemes; Vars: TVars); // Обработка с
         ExecExpr(Lexemes, Vars);
         Exit;
       end;
-      ArrIndex := TList.Create;
+      ArrIndex := TList<PInteger>.Create;
       if Lexemes^[Pos]._Type = lxLSBracket then
       begin
         Inc(Pos);
@@ -1383,7 +1386,7 @@ begin
   end;
 end;
 
-function GetFuncResult(Vars: TVars; Name: string; Params: TList): TValue;
+function GetFuncResult(Vars: TVars; Name: string; Params: TList<PValue>): TValue;
 type
   FuncType = (ftMath, ftString, ftOther);
 
@@ -1557,7 +1560,7 @@ begin
   end;
 
   for j := 0 to Params.Count - 1 do
-    P[j + 1] := TValue(Params[j]^);
+    P[j + 1] := Params[j]^;
 
   case Funcs[i]._Type of
     ftMath:
@@ -1772,24 +1775,24 @@ begin
   if n = 'read' then
   begin
     for i := 0 to Files.Count - 1 do
-      if PFile_Rec(Files[i]).ID = P[1].Real then
+      if Files.Items[i].ID = P[1].Real then
       begin
-        Result := MakeVal(PFile_Rec(Files[i]).Strings[PFile_Rec(Files[i]).Pos]);
-        Inc(PFile_Rec(Files[i]).Pos);
+        Result := MakeVal(Files.Items[i].Strings[Files.Items[i].Pos]);
+        Inc(Files.Items[i].Pos);
       end;
   end;
   if n = 'eof' then
   begin
     for i := 0 to Files.Count - 1 do
-      if PFile_Rec(Files[i]).ID = P[1].Real then
-        Result := MakeVal(IfThen(PFile_Rec(Files[i]).Pos >= PFile_Rec(Files[i]).Strings.Count, 1, 0));
+      if Files.Items[i].ID = P[1].Real then
+        Result := MakeVal(IfThen(Files.Items[i].Pos >= Files.Items[i].Strings.Count, 1, 0));
   end;
   if n = 'write' then
   begin
     if (Params.Count < 1) or (P[1]._Type <> tyReal) then
       RunTimeError('Неправильный список параметров функции Write');
     for i := 0 to Files.Count - 1 do
-      if PFile_Rec(Files[i]).ID = P[1].Real then
+      if Files.Items[i].ID = P[1].Real then
       begin
         File_Rec := Files[i];
         s := '';
@@ -1808,7 +1811,7 @@ begin
     if (Params.Count < 1) or (P[1]._Type <> tyReal) then
       RunTimeError('Неправильный список параметров функции WriteOver');
     for i := 0 to Files.Count - 1 do
-      if PFile_Rec(Files[i]).ID = P[1].Real then
+      if Files.Items[i].ID = P[1].Real then
       begin
         File_Rec := Files[i];
         s := '';
@@ -1830,21 +1833,21 @@ begin
   begin
     Check(2, [tyReal, tyReal]);
     for i := 0 to Files.Count - 1 do
-      if PFile_Rec(Files[i]).ID = P[1].Real then
-        PFile_Rec(Files[i]).Pos := min(Trunc(P[2].Real), PFile_Rec(Files[i]).Strings.Count);
+      if Files.Items[i].ID = P[1].Real then
+        Files.Items[i].Pos := min(Trunc(P[2].Real), Files.Items[i].Strings.Count);
     Result := MakeVal(0);
   end;
   if n = 'filesize' then
   begin
     for i := 0 to Files.Count - 1 do
-      if PFile_Rec(Files[i]).ID = P[1].Real then
-        Result := MakeVal(PFile_Rec(Files[i]).Strings.Count);
+      if Files.Items[i].ID = P[1].Real then
+        Result := MakeVal(Files.Items[i].Strings.Count);
   end;
   if n = 'filepos' then
   begin
     for i := 0 to Files.Count - 1 do
-      if PFile_Rec(Files[i]).ID = P[1].Real then
-        Result := MakeVal(PFile_Rec(Files[i]).Pos);
+      if Files.Items[i].ID = P[1].Real then
+        Result := MakeVal(Files.Items[i].Pos);
   end;
 
   if n = 'pi' then

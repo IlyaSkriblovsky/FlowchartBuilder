@@ -130,15 +130,15 @@ begin
       WriteLn(F, 'NIL');
 
     for i := 0 to ChildForm.BlockList.Count - 1 do
-      TBlock(ChildForm.BlockList[i]).Tag := i;
+      ChildForm.BlockList.Items[i].Tag := i;
     if ChildForm.StartBlok <> nil then
       WriteLn(F, ChildForm.StartBlok.Tag)
     else
       WriteLn(F, -1);
     for i := 0 to ChildForm.BlockList.Count - 1 do
-      SaveBlock(TBlock(ChildForm.BlockList[i]));
+      SaveBlock(ChildForm.BlockList[i]);
     for i := 0 to ChildForm.ArrowList.Count - 1 do
-      SaveArrow(TArrow(ChildForm.ArrowList[i]));
+      SaveArrow(ChildForm.ArrowList[i]);
   except
     else
       MessageBox(0, 'Ошибка при сохранении схемы', 'Конструктор Блок-Схем', MB_ICONERROR or MB_OK);

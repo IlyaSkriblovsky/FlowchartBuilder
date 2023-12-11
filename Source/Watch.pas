@@ -45,6 +45,7 @@ var
   Lines: TStringList;
   Val: TValue;
   tmp: string;
+  varIndex: integer;
 
 begin
   if btnAll.Down then
@@ -55,9 +56,9 @@ begin
 
   for i := 0 to List.Items.Count - 1 do
   begin
-    if (GetVarIndex(ChildForm.Vars, List.Items[i].Caption) > -1) and
-      (TVar(ChildForm.Vars[GetVarIndex(ChildForm.Vars, List.Items[i].Caption)]^).Sizes.Count > 0) then
-      SetArrInWatch(i, TVar(ChildForm.Vars[GetVarIndex(ChildForm.Vars, List.Items[i].Caption)]^))
+    varIndex := GetVarIndex(ChildForm.Vars, List.Items[i].Caption);
+    if (varIndex > -1) and (ChildForm.Vars.Items[varIndex].Sizes.Count > 0) then
+      SetArrInWatch(i, ChildForm.Vars[varIndex]^)
     else
     begin
       try
@@ -117,15 +118,15 @@ var
 begin
   List.Items[index].SubItems[0] := '(';
   for i := 0 to r.Arr.Count - 2 do
-    if TValue(r.Arr[i]^)._Type = tyReal then
-      List.Items[index].SubItems[0] := List.Items[index].SubItems[0] + FloatToStr(TValue(r.Arr[i]^).Real) + ', '
+    if r.Arr.Items[i]._Type = tyReal then
+      List.Items[index].SubItems[0] := List.Items[index].SubItems[0] + FloatToStr(r.Arr.Items[i].Real) + ', '
     else
-      List.Items[index].SubItems[0] := List.Items[index].SubItems[0] + '''' + TValue(r.Arr[i]^).Str + ''', ';
-  if TValue(r.Arr[r.Arr.Count - 1]^)._Type = tyReal then
-    List.Items[index].SubItems[0] := List.Items[index].SubItems[0] + FloatToStr(TValue(r.Arr[r.Arr.Count - 1]^).Real)
+      List.Items[index].SubItems[0] := List.Items[index].SubItems[0] + '''' + r.Arr.Items[i].Str + ''', ';
+  if r.Arr.Items[r.Arr.Count - 1]._Type = tyReal then
+    List.Items[index].SubItems[0] := List.Items[index].SubItems[0] + FloatToStr(r.Arr.Items[r.Arr.Count - 1].Real)
       + ')'
   else
-    List.Items[index].SubItems[0] := List.Items[index].SubItems[0] + '''' + TValue(r.Arr[r.Arr.Count - 1]^).Str + ''')';
+    List.Items[index].SubItems[0] := List.Items[index].SubItems[0] + '''' + r.Arr.Items[r.Arr.Count - 1].Str + ''')';
 end;
 
 procedure TfrmWatch.btnDeleteClick(Sender: TObject);
@@ -166,10 +167,10 @@ begin
   // List.Clear;
   for i := 0 to ChildForm.Vars.Count - 1 do
   begin
-    if not Find(TVar(ChildForm.Vars[i]^).Name) then
+    if not Find(ChildForm.Vars.Items[i].Name) then
     begin
       Node := List.Items.Add;
-      Node.Caption := TVar(ChildForm.Vars[i]^).Name;
+      Node.Caption := ChildForm.Vars.Items[i].Name;
       Node.SubItems.Clear;
       Node.SubItems.Add('');
     end;

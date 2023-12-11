@@ -49,8 +49,7 @@ var
 begin
   Result := false;
   for i := 0 to ChildForm.ArrowList.Count - 1 do
-    if (TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Block = Self) and
-      (TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = South) then
+    if (ChildForm.ArrowList.Items[i].Blocks[atEnd].Block = Self) and (ChildForm.ArrowList.Items[i].Blocks[atEnd].Port = South) then
       Result := true;
 end;
 
@@ -58,6 +57,7 @@ function TBlock.IsPortAvail(t: TArrowTail; p: TBlockPort; laa: boolean): boolean
 var
   i: integer;
   w, s, e: bool;
+  blockRec: TBlockRec;
 
 begin
   if Block <> stIf then
@@ -76,13 +76,14 @@ begin
         s := false;
         e := false;
         for i := 0 to ChildForm.ArrowList.Count - 1 do
-          if TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Block = Self then
+          blockRec := ChildForm.ArrowList.Items[i].Blocks[atEnd];
+          if blockRec.Block = Self then
           begin
-            if TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = West then
+            if blockRec.Port = West then
               w := true;
-            if TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = South then
+            if blockRec.Port = South then
               s := true;
-            if TArrow(ChildForm.ArrowList[i]).Blocks[atEnd].Port = East then
+            if blockRec.Port = East then
               e := true;
           end;
         if (w and s) or (s and e) or (e and w) then

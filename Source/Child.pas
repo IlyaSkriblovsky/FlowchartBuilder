@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Menus, Buttons, ExtCtrls, StdCtrls, IniFiles, EdTypes, OpenUnit, SaveUnit,
-  ComCtrls, Printers, Lang, Math, Arrows, Ini, BlockProps;
+  ComCtrls, Printers, Lang, Math, Arrows, Ini, BlockProps, Generics.Collections;
 
 type
   TActives = class;
@@ -96,7 +96,7 @@ type
     RamkaOn: Boolean;
 
   public
-    ArrowList: TList;
+    ArrowList: TList<TArrow>;
     ANew: TANew;
 
     DefCursor: TCursor;
@@ -123,7 +123,7 @@ type
 
     Vars: TVars;
 
-    BlockList: TList;
+    BlockList: TList<TBlock>;
     pTmp: Pointer;
     TmpBlok: TBlock;
     FindStartBlok: Boolean;
@@ -148,7 +148,8 @@ type
 
   TActives = class
   public
-    Blocks, Arrows: TList;
+    Blocks: TList<TBlock>;
+    Arrows: TList<TArrow>;
 
     constructor Create;
 
@@ -164,8 +165,8 @@ type
 
   TStackNode = record
     ReturnPos: TBlock;
-    BlockList: TList;
-    ArrowList: TList;
+    BlockList: TList<TBlock>;
+    ArrowList: TList<TArrow>;
     Vars: TVars;
     StartBlock: TBlock;
     AlreadyGlob: Boolean;
@@ -185,7 +186,7 @@ var
 
   down: TDown;
 
-  StackInfo: TList;
+  StackInfo: TList<PStackNode>;
 
 implementation
 
@@ -196,8 +197,8 @@ uses Options, About, OutProg, Main, Watch, StrsInput, StrUtils;
 constructor TActives.Create;
 begin
   inherited;
-  Blocks := TList.Create;
-  Arrows := TList.Create;
+  Blocks := TList<TBlock>.Create;
+  Arrows := TList<TArrow>.Create;
 end;
 
 function TActives.GetActive(A: TArrow): Boolean;
@@ -279,7 +280,7 @@ var
 
 begin
   for i := 0 to ArrowList.Count - 1 do
-    TArrow(ArrowList[i]).StandWell;
+    ArrowList.Items[i].StandWell;
 end;
 
 procedure TChildForm.SetButtsEnable(b: Boolean);
@@ -323,7 +324,7 @@ begin
 
   lS := 0;
   for i := 0 to Actives.Blocks.Count - 1 do
-    Inc(lS, TBlock(Actives.Blocks[i]).Left + TBlock(Actives.Blocks[i]).Width div 2);
+    Inc(lS, Actives.Blocks.Items[i].Left + Actives.Blocks.Items[i].Width div 2);
   lS := lS div Actives.Blocks.Count;
   for i := 0 to Actives.Blocks.Count - 1 do
   begin
@@ -334,7 +335,7 @@ begin
     UN^.pnt := Point(UN^.Block.Left, UN^.Block.Top);
     MainForm.AddUndo(UN);
 
-    TBlock(Actives.Blocks[i]).Left := lS - TBlock(Actives.Blocks[i]).Width div 2;
+    Actives.Blocks.Items[i].Left := lS - Actives.Blocks.Items[i].Width div 2;
   end;
 
   cnt := 0;
@@ -381,7 +382,7 @@ begin
 
   lT := 0;
   for i := 0 to Actives.Blocks.Count - 1 do
-    Inc(lT, TBlock(Actives.Blocks[i]).Top + TBlock(Actives.Blocks[i]).Height div 2);
+    Inc(lT, Actives.Blocks.Items[i].Top + Actives.Blocks.Items[i].Height div 2);
   lT := lT div Actives.Blocks.Count;
   for i := 0 to Actives.Blocks.Count - 1 do
   begin
@@ -392,11 +393,11 @@ begin
     UN^.pnt := Point(UN^.Block.Left, UN^.Block.Top);
     MainForm.AddUndo(UN);
 
-    TBlock(Actives.Blocks[i]).Top := lT - TBlock(Actives.Blocks[i]).Height div 2;
+    Actives.Blocks.Items[i].Top := lT - Actives.Blocks.Items[i].Height div 2;
   end;
 
   for i := 0 to ArrowList.Count - 1 do
-    TArrow(ArrowList[i]).StandWell;
+    ArrowList.Items[i].StandWell;
 
   Invalidate;
 end;
@@ -435,11 +436,11 @@ var
 
 begin
   for i := BlockList.Count - 1 downto 0 do
-    TBlock(BlockList[i]).Free;
+    BlockList[i].Free;
   BlockList.Clear;
 
   for i := ArrowList.Count - 1 downto 0 do
-    TArrow(ArrowList[i]).Free;
+    ArrowList[i].Free;
   ArrowList.Clear;
 
   Actives.Clear;
@@ -451,23 +452,22 @@ begin
 
   IniFile := GetHomePath + '\flowcharts.ini';
 
-  UndoStack := TList.Create;
+  UndoStack := TList<PUndoNode>.Create;
 
-  BlockList := TList.Create;
-  ArrowList := TList.Create;
+  BlockList := TList<TBlock>.Create;
+  ArrowList := TList<TArrow>.Create;
 
   Actives := TActives.Create;
 
   DefCursor := crDefault;
 
-  StackInfo := TList.Create;
+  StackInfo := TList<PStackNode>.Create;
   Vars := TVars.Create;
 
   BlockFont := TFont.Create;
 
   Lang.GetFuncValue := Lang.GetFuncResult;
 
-  BlockList := TList.Create;
   Dragging := false;
   RamkaOn := false;
   flagBreak := false;
@@ -475,7 +475,7 @@ begin
   ReadIniFile;
   CheckRegistry;
 
-  Files := TList.Create;
+  Files := TList<PFile_Rec>.Create;
 end;
 
 procedure TChildForm.SetParamBlok(T: TObject);
@@ -524,7 +524,7 @@ function TChildForm.HasFirstBlock: Boolean;
 var
   i, j: Integer;
   Block: TBlock;
-  suitableBlocks: TList;
+  suitableBlocks: TList<TBlock>;
   hasIncomingArrows: Boolean;
 
 begin
@@ -534,14 +534,14 @@ begin
     Exit;
   end;
 
-  suitableBlocks := TList.Create;
+  suitableBlocks := TList<TBlock>.Create;
 
   for i := 0 to BlockList.Count - 1 do
   begin
-    Block := TBlock(BlockList[i]);
+    Block := BlockList[i];
     hasIncomingArrows := false;
     for j := 0 to ArrowList.Count - 1 do
-      if TArrow(ArrowList[j]).Blocks[atStart].Block = Block then
+      if ArrowList.Items[j].Blocks[atStart].Block = Block then
       begin
         hasIncomingArrows := true;
         Break;
@@ -622,9 +622,9 @@ var
 begin
   ChildForm.Canvas.Pen.Mode := pmNot;
   for i := 0 to ChildForm.BlockList.Count - 1 do
-    if ChildForm.Actives.GetActive(TBlock(ChildForm.BlockList[i])) then
+    if ChildForm.Actives.GetActive(ChildForm.BlockList[i]) then
     begin
-      b := TBlock(ChildForm.BlockList[i]);
+      b := ChildForm.BlockList[i];
       DrawFocusRect(Rect(b.Left + dP.X, b.Top + dP.Y, b.Left + b.Width + dP.X - 1, b.Top + b.Height + dP.Y - 1));
     end;
 end;
@@ -681,7 +681,7 @@ begin
     Dragging := false;
 
     for i := 0 to Actives.Blocks.Count - 1 do
-      with TBlock(Actives.Blocks[i]) do
+      with Actives.Blocks[i] do
       begin
         New(UN);
         UN._ := utBlocksMove;
@@ -695,8 +695,8 @@ begin
       end;
 
     for i := 0 to ArrowList.Count - 1 do
-      if Actives.GetActive(TArrow(ArrowList[i])) then
-        with TArrow(ArrowList[i]) do
+      if Actives.GetActive(ArrowList[i]) then
+        with ArrowList.Items[i] do
         begin
           e := Point(Tail[atEnd].X + X - XOffset, Tail[atEnd].Y + Y - YOffset);
           Tail[atStart] := Point(Tail[atStart].X + X - XOffset, Tail[atStart].Y + Y - YOffset);
@@ -710,14 +710,14 @@ begin
         end;
 
     for i := 0 to ArrowList.Count - 1 do
-      if (Actives.GetActive(TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block))) or
-        (Actives.GetActive(TBlock(TArrow(ArrowList[i]).Blocks[atEnd].Block))) then
-        TArrow(ArrowList[i]).StandWell;
+      if (Actives.GetActive(TBlock(ArrowList.Items[i].Blocks[atStart].Block))) or
+        (Actives.GetActive(TBlock(ArrowList.Items[i].Blocks[atEnd].Block))) then
+        ArrowList.Items[i].StandWell;
 
     MainForm.Modifed := true;
 
     for i := 0 to BlockList.Count - 1 do
-      TBlock(BlockList[i]).Paint;
+      BlockList.Items[i].Paint;
     SetRange;
   end;
 end;
@@ -819,18 +819,21 @@ begin
     begin
       // DestroyAllChain;
       for i := 0 to BlockList.Count - 1 do
-        TBlock(BlockList[i]).Hide;
-      BlockList.Assign(TStackNode(StackInfo[0]^).BlockList);
-      ArrowList.Assign(TStackNode(StackInfo[0]^).ArrowList);
+        BlockList.Items[i].Hide;
+      BlockList.Clear;
+      BlockList.AddRange(StackInfo.Items[0].BlockList);
+      ArrowList.Clear;
+      ArrowList.AddRange(StackInfo.Items[0].ArrowList);
 
-      AlreadyGlob := TStackNode(StackInfo[0]^).AlreadyGlob;
-      AlreadyInit := TStackNode(StackInfo[0]^).AlreadyInit;
-      GlobBlock := TStackNode(StackInfo[0]^).GlobBlock;
-      InitBlock := TStackNode(StackInfo[0]^).InitBlock;
+      AlreadyGlob := StackInfo.Items[0].AlreadyGlob;
+      AlreadyInit := StackInfo.Items[0].AlreadyInit;
+      GlobBlock := StackInfo.Items[0].GlobBlock;
+      InitBlock := StackInfo.Items[0].InitBlock;
 
-      Vars.Assign(TStackNode(StackInfo[0]^).Vars);
+      Vars.Clear;
+      Vars.AddRange(StackInfo.Items[0].Vars);
 
-      StartBlok := TBlock(BlockList[BlockList.IndexOf(TStackNode(StackInfo[0]^).StartBlock)]);
+      StartBlok := BlockList[BlockList.IndexOf(StackInfo.Items[0].StartBlock)];
 
       for i := 0 to StackInfo.Count - 1 do
       begin
@@ -839,9 +842,9 @@ begin
       end;
 
       for i := 0 to BlockList.Count - 1 do
-        TBlock(BlockList[i]).Show;
+        BlockList.Items[i].Show;
       for i := 0 to ArrowList.Count - 1 do
-        TArrow(ArrowList[i]).Hide := false;
+        ArrowList.Items[i].Hide := false;
       // CreateAllLines;
     end;
 
@@ -888,13 +891,13 @@ begin
       StackNode.GlobBlock := GlobBlock;
       StackNode.AlreadyInit := AlreadyInit;
       StackNode.InitBlock := InitBlock;
-      StackNode.BlockList := TList.Create;
-      StackNode.BlockList.Assign(BlockList);
-      StackNode.ArrowList := TList.Create;
-      StackNode.ArrowList.Assign(ArrowList);
+      StackNode.BlockList := TList<TBlock>.Create;
+      StackNode.BlockList.AddRange(BlockList);
+      StackNode.ArrowList := TList<TArrow>.Create;
+      StackNode.ArrowList.AddRange(ArrowList);
       StackNode.StartBlock := StartBlok;
-      StackNode.Vars := TList.Create;
-      StackNode.Vars.Assign(Vars);
+      StackNode.Vars := TList<PVar>.Create;
+      StackNode.Vars.AddRange(Vars);
 
       StackInfo.Clear;
       StackInfo.Add(StackNode);
@@ -923,14 +926,17 @@ begin
     if StackInfo.Count > 1 then
     begin
       for i := 0 to BlockList.Count - 1 do
-        TBlock(BlockList[i]).Hide;
-      BlockList.Assign(TStackNode(StackInfo[1]^).BlockList);
-      ArrowList.Assign(TStackNode(StackInfo[1]^).ArrowList);
-      Vars.Assign(TStackNode(StackInfo[1]^).Vars);
-      StartBlok := BlockList[BlockList.IndexOf(TStackNode(StackInfo[1]^).StartBlock)];
+        BlockList.Items[i].Hide;
+      BlockList.Clear;
+      BlockList.AddRange(StackInfo.Items[1].BlockList);
+      ArrowList.Clear;
+      ArrowList.AddRange(StackInfo.Items[1].ArrowList);
+      Vars.Clear;
+      Vars.AddRange(StackInfo.Items[1].Vars);
+      StartBlok := BlockList[BlockList.IndexOf(StackInfo.Items[1].StartBlock)];
       StackInfo.Clear;
       for i := 0 to BlockList.Count - 1 do
-        TBlock(BlockList[i]).Show;
+        BlockList.Items[i].Show;
     end;
 
     Exit;
@@ -948,27 +954,31 @@ end;
 function TChildForm.GetNext(Cur: TBlock; Cond: Boolean): TBlock;
 var
   i: Integer;
+  arrow: TArrow;
 
 begin
   Result := nil;
   for i := 0 to ArrowList.Count - 1 do
-    if TArrow(ArrowList[i]).Blocks[atEnd].Block = Cur then
+  begin
+    arrow := ArrowList.Items[i];
+    if arrow.Blocks[atEnd].Block = Cur then
       if Cur.Block <> stIf then
-        Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block)
+        Result := TBlock(arrow.Blocks[atStart].Block)
       else if Cond then
       begin
-        if (Cur.Isd) and (TArrow(ArrowList[i]).Blocks[atEnd].Port = South) then
-          Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block);
-        if (not Cur.Isd) and (TArrow(ArrowList[i]).Blocks[atEnd].Port = East) then
-          Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block);
+        if (Cur.Isd) and (arrow.Blocks[atEnd].Port = South) then
+          Result := TBlock(arrow.Blocks[atStart].Block);
+        if (not Cur.Isd) and (arrow.Blocks[atEnd].Port = East) then
+          Result := TBlock(arrow.Blocks[atStart].Block);
       end
       else
       begin
-        if (Cur.Isd) and (TArrow(ArrowList[i]).Blocks[atEnd].Port = East) then
-          Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block);
-        if (not Cur.Isd) and (TArrow(ArrowList[i]).Blocks[atEnd].Port = West) then
-          Result := TBlock(TArrow(ArrowList[i]).Blocks[atStart].Block);
+        if (Cur.Isd) and (arrow.Blocks[atEnd].Port = East) then
+          Result := TBlock(arrow.Blocks[atStart].Block);
+        if (not Cur.Isd) and (arrow.Blocks[atEnd].Port = West) then
+          Result := TBlock(arrow.Blocks[atStart].Block);
       end;
+  end;
   if (Result <> nil) and (Result.Block = stConfl) then
     Result := GetNext(Result, false);
 end;
@@ -992,29 +1002,34 @@ var
   procedure OnEnd;
   var
     i: Integer;
+    StackNode: PStackNode;
 
   begin
     if StackInfo.Count = 1 then
     begin
-      AlreadyGlob := TStackNode(StackInfo[0]^).AlreadyGlob;
-      GlobBlock := TStackNode(StackInfo[0]^).GlobBlock;
-      AlreadyInit := TStackNode(StackInfo[0]^).AlreadyInit;
-      InitBlock := TStackNode(StackInfo[0]^).InitBlock;
+      StackNode := StackInfo.Items[0];
+      AlreadyGlob := StackNode.AlreadyGlob;
+      GlobBlock := StackNode.GlobBlock;
+      AlreadyInit := StackNode.AlreadyInit;
+      InitBlock := StackNode.InitBlock;
       Cur := nil;
       Exit;
     end;
-    Cur := TStackNode(StackInfo[StackInfo.Count - 1]^).ReturnPos;
+    Cur := StackInfo.Items[StackInfo.Count - 1].ReturnPos;
     for i := BlockList.Count - 1 downto 0 do
-      TBlock(BlockList[i]).Free;
-    BlockList.Assign(TStackNode(StackInfo[StackInfo.Count - 1]^).BlockList);
+      BlockList[i].Free;
+    BlockList.Clear;
+    BlockList.AddRange(StackInfo.Items[StackInfo.Count - 1].BlockList);
 
     for i := ArrowList.Count - 1 downto 0 do
-      TArrow(ArrowList[i]).Free;
-    ArrowList.Assign(TStackNode(StackInfo[StackInfo.Count - 1]^).ArrowList);
+      ArrowList[i].Free;
+    ArrowList.Clear;
+    ArrowList.AddRange(StackInfo.Items[StackInfo.Count - 1].ArrowList);
 
     tmpVars := TVars.Create;
-    tmpVars.Assign(Vars);
-    Vars.Assign(TStackNode(StackInfo[StackInfo.Count - 1]^).Vars);
+    tmpVars.AddRange(Vars);
+    Vars.Clear;
+    Vars.AddRange(StackInfo.Items[StackInfo.Count - 1].Vars);
     if GlobVars.Count > 0 then
       for i := 0 to GlobVars.Count - 1 do
       begin
@@ -1026,27 +1041,30 @@ var
           begin
             New(qVar);
             qVar^.Name := GlobVars[i];
-            qVar^.Sizes := TList.Create;
-            qVar^.Arr := TList.Create;
+            qVar^.Sizes := TList<PInteger>.Create;
+            qVar^.Arr := TList<PValue>.Create;
             VarNo := Vars.Add(qVar);
           end;
-          TVar(Vars[VarNo]^).Value := TVar(tmpVars[tmpVarNo]^).Value;
-          TVar(Vars[VarNo]^).Sizes.Assign(TVar(tmpVars[tmpVarNo]^).Sizes);
-          TVar(Vars[VarNo]^).Arr.Assign(TVar(tmpVars[tmpVarNo]^).Arr);
+          Vars.Items[VarNo].Value := tmpVars.Items[tmpVarNo].Value;
+          Vars.Items[VarNo].Sizes.Clear;
+          Vars.Items[VarNo].Sizes.AddRange(tmpVars.Items[tmpVarNo].Sizes);
+          Vars.Items[VarNo].Arr.Clear;
+          Vars.Items[VarNo].Arr.AddRange(tmpVars.Items[tmpVarNo].Arr);
         end;
       end;
     tmpVars.Free;
 
-    StartBlok := BlockList[BlockList.IndexOf(TStackNode(StackInfo[StackInfo.Count - 1]^).StartBlock)];
-    AlreadyGlob := TStackNode(StackInfo[StackInfo.Count - 1]^).AlreadyGlob;
-    GlobBlock := TStackNode(StackInfo[StackInfo.Count - 1]^).GlobBlock;
-    AlreadyInit := TStackNode(StackInfo[StackInfo.Count - 1]^).AlreadyInit;
-    InitBlock := TStackNode(StackInfo[StackInfo.Count - 1]^).InitBlock;
+    StartBlok := BlockList[BlockList.IndexOf(StackInfo.Items[StackInfo.Count - 1].StartBlock)];
+    StackNode := StackInfo.Items[StackInfo.Count - 1];
+    AlreadyGlob := StackNode.AlreadyGlob;
+    GlobBlock := StackNode.GlobBlock;
+    AlreadyInit := StackNode.AlreadyInit;
+    InitBlock := StackNode.InitBlock;
     StackInfo.Delete(StackInfo.Count - 1);
     for i := 0 to BlockList.Count - 1 do
-      TBlock(BlockList[i]).Show;
+      BlockList.Items[i].Show;
     for i := 0 to ArrowList.Count - 1 do
-      TArrow(ArrowList[i]).Hide := false;
+      ArrowList.Items[i].Hide := false;
 
     Refresh;
 
@@ -1161,29 +1179,29 @@ begin
         begin
           New(StackNode);
           StackNode.ReturnPos := GetNext(Tb, false);
-          StackNode.BlockList := TList.Create;
-          StackNode.BlockList.Assign(BlockList);
-          StackNode.ArrowList := TList.Create;
-          StackNode.ArrowList.Assign(ArrowList);
+          StackNode.BlockList := TList<TBlock>.Create;
+          StackNode.BlockList.AddRange(BlockList);
+          StackNode.ArrowList := TList<TArrow>.Create;
+          StackNode.ArrowList.AddRange(ArrowList);
           StackNode.Vars := TVars.Create;
-          StackNode.Vars.Assign(Vars);
+          StackNode.Vars.AddRange(Vars);
           StackNode.StartBlock := StartBlok;
           StackNode.AlreadyGlob := AlreadyGlob;
           StackNode.GlobBlock := GlobBlock;
           StackNode.AlreadyInit := AlreadyInit;
           StackNode.InitBlock := InitBlock;
           tmpVars := TVars.Create;
-          tmpVars.Assign(Vars);
+          tmpVars.AddRange(Vars);
           Vars.Clear;
           StackInfo.Add(StackNode);
           Cur := StartBlok;
 
           for i := 0 to BlockList.Count - 1 do
-            TBlock(BlockList[i]).Hide;
+            BlockList.Items[i].Hide;
           BlockList.Clear;
 
           for i := 0 to ArrowList.Count - 1 do
-            TArrow(ArrowList[i]).Hide := true;
+            ArrowList.Items[i].Hide := true;
           ArrowList.Clear;
           Actives.Clear;
           StartBlok := nil;
@@ -1206,13 +1224,15 @@ begin
                   begin
                     New(qVar);
                     qVar^.Name := GlobVars[i];
-                    qVar^.Sizes := TList.Create;
-                    qVar^.Arr := TList.Create;
+                    qVar^.Sizes := TList<PInteger>.Create;
+                    qVar^.Arr := TList<PValue>.Create;
                     VarNo := Vars.Add(qVar);
                   end;
-                  TVar(Vars[VarNo]^).Value := TVar(tmpVars[tmpVarNo]^).Value;
-                  TVar(Vars[VarNo]^).Sizes.Assign(TVar(tmpVars[tmpVarNo]^).Sizes);
-                  TVar(Vars[VarNo]^).Arr.Assign(TVar(tmpVars[tmpVarNo]^).Arr);
+                  Vars.Items[VarNo].Value := tmpVars.Items[tmpVarNo].Value;
+                  Vars.Items[VarNo].Sizes.Clear;
+                  Vars.Items[VarNo].Sizes.AddRange(tmpVars.Items[tmpVarNo].Sizes);
+                  Vars.Items[VarNo].Arr.Clear;
+                  Vars.Items[VarNo].Arr.AddRange(tmpVars.Items[tmpVarNo].Arr);
                 end;
               end;
           end;
@@ -1337,8 +1357,8 @@ begin
   DoExit := false;
   for i := 0 to ArrowList.Count - 1 do
   begin
-    TArrow(ArrowList[i]).MouseDown(Shift);
-    if TArrow(ArrowList[i]).IsDrag then
+    ArrowList.Items[i].MouseDown(Shift);
+    if ArrowList.Items[i].IsDrag then
     begin
       DoExit := true;
       Break;
@@ -1431,9 +1451,9 @@ begin
   Cursor := DefCursor;
   for i := 0 to ArrowList.Count - 1 do
   begin
-    TArrow(ArrowList[i]).MouseTest;
-    if TArrow(ArrowList[i]).IsDrag then
-      TArrow(ArrowList[i]).Drag(X, Y);
+    ArrowList.Items[i].MouseTest;
+    if ArrowList.Items[i].IsDrag then
+      ArrowList.Items[i].Drag(X, Y);
   end;
 
   if Bevel.Visible then
@@ -1468,7 +1488,7 @@ var
 
 begin
   for i := 0 to ArrowList.Count - 1 do
-    TArrow(ArrowList[i]).DoesNotUnDock := false;
+    ArrowList.Items[i].DoesNotUnDock := false;
 
   if ANew.New then
   begin
@@ -1481,16 +1501,16 @@ begin
   end;
 
   for j := 0 to ArrowList.Count - 1 do
-    if (TArrow(ArrowList[j]).IsDrag) and (TArrow(ArrowList[j]).DragObj in [st, en]) then
+    if (ArrowList.Items[j].IsDrag) and (ArrowList.Items[j].DragObj in [st, en]) then
     begin
       for i := 0 to BlockList.Count - 1 do
-        if TTmpBlock(BlockList[i]).CanIDock(X, Y, Obj2Tail(TArrow(ArrowList[j]).DragObj), true) then
-          TArrow(ArrowList[j]).Dock(TTmpBlock(BlockList[i]), Obj2Tail(TArrow(ArrowList[j]).DragObj),
+        if TTmpBlock(BlockList[i]).CanIDock(X, Y, Obj2Tail(ArrowList.Items[j].DragObj), true) then
+          ArrowList.Items[j].Dock(TTmpBlock(BlockList[i]), Obj2Tail(ArrowList.Items[j].DragObj),
             TTmpBlock(BlockList[i]).GetPort(X, Y));
     end;
 
   for i := 0 to ArrowList.Count - 1 do
-    if TArrow(ArrowList[i]).IsDrag then
+    if ArrowList.Items[i].IsDrag then
     begin
       A := ArrowList[i];
 
@@ -1519,14 +1539,14 @@ begin
   begin
     for i := 0 to BlockList.Count - 1 do
     begin
-      b := TBlock(BlockList[i]);
+      b := BlockList[i];
       if (b.Left > Bevel.Left - b.Width) and (b.Left < Bevel.Left + Bevel.Width) and (b.Top > Bevel.Top - b.Height) and
         (b.Top < Bevel.Top + Bevel.Height) then
         Actives.SetActive(b);
     end;
     for i := 0 to ArrowList.Count - 1 do
     begin
-      A := TArrow(ArrowList[i]);
+      A := ArrowList[i];
       f := false;
       for T := atStart to atEnd do
         if (A.Tail[T].X > Bevel.Left) and (A.Tail[T].X < Bevel.Left + Bevel.Width) and (A.Tail[T].Y > Bevel.Top) and
@@ -1615,10 +1635,11 @@ var
 begin
   if BlockList.Count = 0 then
     Exit;
-  xi := TBlock(BlockList[0]).Left;
-  xa := TBlock(BlockList[0]).Left + TBlock(BlockList[0]).Width;
-  yi := TBlock(BlockList[0]).Top;
-  ya := TBlock(BlockList[0]).Top + TBlock(BlockList[0]).Height;
+  b := BlockList[0];
+  xi := b.Left;
+  xa := b.Left + b.Width;
+  yi := b.Top;
+  ya := b.Top + b.Height;
   for i := 1 to BlockList.Count - 1 do
   begin
     b := BlockList[i];
@@ -1712,7 +1733,6 @@ begin
   end;
 
   Refresh;
-
 end;
 
 procedure TChildForm.FormDestroy(Sender: TObject);
@@ -1767,7 +1787,7 @@ begin
   FillChar(Arrows, SizeOf(Arrows), false);
   for i := 0 to ArrowList.Count - 1 do
     for T := atStart to atEnd do
-      if TArrow(ArrowList[i]).Blocks[T].Block = TmpBlok then
+      if ArrowList.Items[i].Blocks[T].Block = TmpBlok then
         Arrows[T] := true;
 
   mnuRepNothing.Visible := Arrows[atStart] and Arrows[atEnd];
@@ -1781,8 +1801,8 @@ begin
   ChildForm.Canvas.Pen.Style := psSolid;
   ChildForm.Canvas.Pen.Color := clBlack;
   for i := 0 to ArrowList.Count - 1 do
-    if not TArrow(ArrowList[i]).Hide then
-      TArrow(ArrowList[i]).Draw;
+    if not ArrowList.Items[i].Hide then
+      ArrowList.Items[i].Draw;
 end;
 
 procedure TChildForm.BevelPaint(Sender: TObject);
@@ -1815,7 +1835,7 @@ begin
   counter := 0;
   for i := 0 to ArrowList.Count - 1 do
     for T := atStart to atEnd do
-      if TArrow(ArrowList[i]).Blocks[T].Block = b then
+      if ArrowList.Items[i].Blocks[T].Block = b then
       begin
         if MakeUndo then
         begin
@@ -1836,7 +1856,7 @@ begin
           MainForm.AddUndo(UN);
           Inc(counter);
         end;
-        TArrow(ArrowList[i]).UnDock(T);
+        ArrowList.Items[i].UnDock(T);
       end;
 
   MainForm.Modifed := true;
@@ -1901,12 +1921,12 @@ var
 begin
   Result := nil;
   for i := 0 to ArrowList.Count - 1 do
-    if TArrow(ArrowList[i]).Blocks[T].Block = b1 then
+    if ArrowList.Items[i].Blocks[T].Block = b1 then
     begin
-      TArrow(ArrowList[i]).Blocks[T].Block := b2;
+      ArrowList.Items[i].Blocks[T].Block := b2;
       if ChangePort then
-        TArrow(ArrowList[i]).Blocks[T].Port := Port;
-      TArrow(ArrowList[i]).StandWell;
+        ArrowList.Items[i].Blocks[T].Port := Port;
+      ArrowList.Items[i].StandWell;
       Result := ArrowList[i];
     end;
 end;
@@ -2426,7 +2446,7 @@ var
 begin
   for i := 0 to ArrowList.Count - 1 do
     for T := atStart to atEnd do
-      if TArrow(ArrowList[i]).Blocks[T].Block = TmpBlok then
+      if ArrowList.Items[i].Blocks[T].Block = TmpBlok then
         Arrows[T] := ArrowList[i];
   Arrows[atStart].Style := eg4;
   Arrows[atStart].StandWell;

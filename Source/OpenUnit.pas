@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, EdTypes, Arrows;
+  StdCtrls, ExtCtrls;
 
 var
   OpenFileBlok: string;
@@ -16,7 +16,7 @@ procedure LoadScheme(FileName: string);
 
 implementation
 
-uses Main, Child;
+uses Main, Child, EdTypes, Arrows;
 
 var
   F: TextFile;
@@ -164,7 +164,7 @@ var
         if str = 'SOUTH' then
           A.Blocks[t].Port := South;
         str := DoRead;
-        A.Blocks[t].Block := TBlock(ChildForm.BlockList[StrToInt(str) + OBC]);
+        A.Blocks[t].Block := ChildForm.BlockList[StrToInt(str) + OBC];
       end;
       { str:=DoRead; }
     end;

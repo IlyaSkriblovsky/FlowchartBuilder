@@ -6,7 +6,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Menus, Buttons, ExtCtrls, StdCtrls, EdTypes, OpenUnit, SaveUnit, Math,
+  Menus, Buttons, ExtCtrls, StdCtrls, EdTypes, OpenUnit, SaveUnit, Math, Generics.Collections,
   ComCtrls, ToolWin, ActnList, AppEvnts, ShellAPI, Arrows, JPEG, ini, StrUtils, Lang;
 
 type
@@ -215,7 +215,7 @@ var
 
   AplName: string;
 
-  UndoStack: TList;
+  UndoStack: TList<PUndoNode>;
 
 procedure AddToGlobVars(Lines: TStringList);
 procedure AutoPause;
@@ -361,12 +361,12 @@ begin
     ChildForm.Actives.Clear;
     LoadScheme(ChildForm.FileName);
     for i := 0 to ChildForm.ArrowList.Count - 1 do
-      TArrow(ChildForm.ArrowList[i]).StandWell;
+      ChildForm.ArrowList.Items[i].StandWell;
     ChildForm.Caption := OpenDialog.FileName;
     ChildForm.SetRange;
     Modifed := false;
     for i := 0 to UndoStack.Count - 1 do
-      Dispose(PUndoNode(UndoStack[i]));
+      Dispose(UndoStack[i]);
     UndoStack.Clear;
     mnuUndo.Enabled := false;
 
@@ -608,13 +608,14 @@ begin
   Min := Point(0, 0);
   if ChildForm.BlockList.Count > 0 then
   begin
-    Min.X := TBlock(ChildForm.BlockList[0]).Left;
-    Min.Y := TBlock(ChildForm.BlockList[0]).Top;
-    Max.X := TBlock(ChildForm.BlockList[0]).Left + TBlock(ChildForm.BlockList[0]).Width;
-    Max.Y := TBlock(ChildForm.BlockList[0]).Top + TBlock(ChildForm.BlockList[0]).Height;
+    b := ChildForm.BlockList[0];
+    Min.X := b.Left;
+    Min.Y := b.Top;
+    Max.X := b.Left + b.Width;
+    Max.Y := b.Top + b.Height;
     for i := 0 to ChildForm.BlockList.Count - 1 do
     begin
-      b := TBlock(ChildForm.BlockList[i]);
+      b := ChildForm.BlockList[i];
       if b.Left < Min.X then
         Min.X := b.Left;
       if b.Top < Min.Y then
@@ -626,7 +627,7 @@ begin
     end;
     for i := 0 to ChildForm.ArrowList.Count - 1 do
     begin
-      a := TArrow(ChildForm.ArrowList[i]);
+      a := ChildForm.ArrowList[i];
       for t := atStart to atEnd do
       begin
         if a.Tail[t].X < Min.X then
@@ -677,7 +678,7 @@ begin
     MainForm.SaveDialog.FileName);
   for i := 0 to ChildForm.BlockList.Count - 1 do
   begin
-    b := TBlock(ChildForm.BlockList[i]);
+    b := ChildForm.BlockList[i];
     b.DrawCanvas := MFC;
     b.XOffs := b.Left - Min.X;
     b.YOffs := b.Top - Min.Y;
@@ -688,7 +689,7 @@ begin
   end;
   for i := 0 to ChildForm.ArrowList.Count - 1 do
   begin
-    a := TArrow(ChildForm.ArrowList[i]);
+    a := ChildForm.ArrowList[i];
     a.DrawCanvas := MFC;
     a.xo := -Min.X;
     a.yo := -Min.Y;

@@ -78,17 +78,21 @@ end;
 procedure TfrmOpt.BitOkClick(Sender: TObject);
 var
   i: integer;
+  block: TBlock;
 
 begin
   ChildForm.WidthBlok := StrToInt(WidthBlok.Text);
   ChildForm.HeightBlok := StrToInt(HeightBlok.Text);
   ChildForm.ConflRadius := StrToInt(ConflRad.Text);
   for i := 0 to ChildForm.BlockList.Count - 1 do
-    if TBlock(ChildForm.BlockList[i]).Block = stConfl then
+  begin
+    block := ChildForm.BlockList.Items[i];
+    if block.Block = stConfl then
     begin
-      TBlock(ChildForm.BlockList[i]).Width := ChildForm.ConflRadius;
-      TBlock(ChildForm.BlockList[i]).Height := ChildForm.ConflRadius;
+      block.Width := ChildForm.ConflRadius;
+      block.Height := ChildForm.ConflRadius;
     end;
+  end;
   ChildForm.Refresh;
 
   ChildForm.AutoCheck := clbInterpr.Checked[0];
