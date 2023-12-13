@@ -1,18 +1,18 @@
 #FORMAT 0.1temp
 INIT
-N:=10;
+N := 10;
 arr A[N];
-A[0]:=Random(15);
-A[1]:=Random(15);
-A[2]:=Random(15);
-A[3]:=Random(15);
-A[4]:=Random(15);
-A[5]:=Random(15);
-A[6]:=Random(15);
-A[7]:=Random(15);
-A[8]:=Random(15);
-A[9]:=Random(15);
-Val:=Random(15)
+A[0] := Random(15);
+A[1] := Random(15);
+A[2] := Random(15);
+A[3] := Random(15);
+A[4] := Random(15);
+A[5] := Random(15);
+A[6] := Random(15);
+A[7] := Random(15);
+A[8] := Random(15);
+A[9] := Random(15);
+Val := Random(15)
 /INIT
 NIL
 0
@@ -43,14 +43,14 @@ ELLIPSE
 
 /BLOCK
 BLOCK 2
-368
+360
 248
-106
+122
 50
 RECT
   STATEMENT
-ResultOk:=0;
-Pos:=-1
+ResultOk := 0;
+Pos := -1;
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -63,7 +63,7 @@ BLOCK 3
 50
 RECT
   STATEMENT
-Cur:=0
+Cur := 0
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -82,40 +82,40 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 5
-381
+376
 453
-80
+90
 50
 ROMB
   STATEMENT
-Cur<N
+Cur < N
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 6
-376
-533
-90
-50
+356
+529
+130
+64
 ROMB
   STATEMENT
-A[Cur]=Val
+A[Cur] = Val
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 7
-448
+440
 613
-106
+122
 50
 RECT
   STATEMENT
-ResultOk:=1;
-Pos:=Cur
+ResultOk := 1;
+Pos := Cur
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -134,9 +134,9 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 9
+142
 150
-150
-146
+162
 231
 INIT
   STATEMENT
@@ -146,13 +146,13 @@ INIT
 
 /BLOCK
 BLOCK 10
-376
+368
 731
-90
+106
 50
 RECT
   STATEMENT
-Cur:=Cur+1
+Cur := Cur+1
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -256,7 +256,7 @@ ARROW
 VERT
 422
 832
-474
+478
 478
 578
 NORTH
@@ -266,11 +266,11 @@ EAST
 /ARROW
 ARROW
 VERT
-366
+344
 698
-364
-558
-364
+344
+561
+344
 WEST
 8
 WEST
@@ -281,8 +281,8 @@ HORIZ
 501
 601
 501
-558
-579
+561
+581
 NORTH
 7
 EAST
@@ -302,11 +302,11 @@ SOUTH
 /ARROW
 ARROW
 VERT
-359
+330
 418
 421
 803
-332
+307
 WEST
 4
 SOUTH

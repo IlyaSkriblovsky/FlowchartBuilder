@@ -22,11 +22,11 @@ BLOCK 1
 50
 PARAL
   STATEMENT
-?a
+? a
   /STATEMENT
   UNFORMAL
   /UNFORMAL
-
+Введите первое число
 /BLOCK
 BLOCK 2
 570
@@ -35,11 +35,11 @@ BLOCK 2
 50
 PARAL
   STATEMENT
-?b
+? b
   /STATEMENT
   UNFORMAL
   /UNFORMAL
-
+Введите второе число
 /BLOCK
 BLOCK 3
 570
@@ -48,20 +48,20 @@ BLOCK 3
 50
 PARAL
   STATEMENT
-?c
+? c
   /STATEMENT
   UNFORMAL
   /UNFORMAL
-
+Введите третье число
 /BLOCK
 BLOCK 4
-561
-500
-98
-50
+533
+492
+154
+76
 ROMB
   STATEMENT
-a>b and a>c
+a > b and a > c
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -74,7 +74,7 @@ BLOCK 5
 50
 ROMB
   STATEMENT
-b>c
+b > c
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -87,7 +87,7 @@ BLOCK 6
 50
 RECT
   STATEMENT
-max:=a
+max := a
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -100,7 +100,7 @@ BLOCK 7
 50
 RECT
   STATEMENT
-max:=c
+max := c
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -113,7 +113,7 @@ BLOCK 8
 50
 RECT
   STATEMENT
-max:=b
+max := b
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -144,13 +144,13 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 11
-521
+512
 878
-178
+196
 50
 PARAL
   STATEMENT
-'Максимум равен ',max
+'Максимум равен ', max
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -267,9 +267,9 @@ SOUTH
 ARROW
 VERT
 610
-488
+480
 610
-488
+480
 610
 NORTH
 4
@@ -281,8 +281,8 @@ HORIZ
 775
 584
 775
-525
-554
+530
+557
 NORTH
 6
 EAST
@@ -293,8 +293,8 @@ HORIZ
 479
 565
 479
-525
-545
+530
+547
 NORTH
 5
 WEST

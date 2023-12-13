@@ -31,9 +31,9 @@ End
 
 /BLOCK
 BLOCK 2
-426
+421
 242
-106
+116
 50
 PARAL
   STATEMENT
@@ -42,7 +42,7 @@ PARAL
   UNFORMAL
 Ввод числа А
   /UNFORMAL
-
+Введите начало диапазона
 /BLOCK
 BLOCK 3
 406
@@ -59,13 +59,13 @@ sum:=((b-a+1)*(a+b))/2
 
 /BLOCK
 BLOCK 4
-430
+425
 480
-98
+108
 50
 PARAL
   STATEMENT
-'Сумма чисел от ',a, '  до ', b ,' =  ',sum
+'Сумма чисел от ',a, '  до ', b ,' = ',sum
   /STATEMENT
   UNFORMAL
 Вывод суммы
@@ -113,9 +113,9 @@ COMMENT
 
 /BLOCK
 BLOCK 8
-426
+421
 319
-106
+116
 50
 PARAL
   STATEMENT
@@ -124,7 +124,7 @@ PARAL
   UNFORMAL
 Ввод числа В
   /UNFORMAL
-
+Введите конец диапазона
 /BLOCK
 BLOCK 9
 569

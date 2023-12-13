@@ -1,17 +1,17 @@
 #FORMAT 0.1temp
 INIT
-N:=10;
+N := 10;
 arr A[N];
-A[0]:=Random(15);
-A[1]:=Random(15);
-A[2]:=Random(15);
-A[3]:=Random(15);
-A[4]:=Random(15);
-A[5]:=Random(15);
-A[6]:=Random(15);
-A[7]:=Random(15);
-A[8]:=Random(15);
-A[9]:=Random(15)
+A[0] := Random(15);
+A[1] := Random(15);
+A[2] := Random(15);
+A[3] := Random(15);
+A[4] := Random(15);
+A[5] := Random(15);
+A[6] := Random(15);
+A[7] := Random(15);
+A[8] := Random(15);
+A[9] := Random(15);
 /INIT
 NIL
 0
@@ -48,7 +48,7 @@ BLOCK 2
 50
 RECT
   STATEMENT
-i:=0
+i := 0
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -67,28 +67,28 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 4
-436
+431
 375
-80
+90
 50
 ROMB
   STATEMENT
-i<N-1
+i < N-1
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 5
-423
+411
 450
-106
+130
 61
 RECT
   STATEMENT
-j:=i+1;
-min:=A[i];
-min_index:=i
+j := i+1;
+min := A[i];
+min_index := i;
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -113,7 +113,7 @@ BLOCK 7
 50
 ROMB
   STATEMENT
-j<N
+j < N
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -132,27 +132,27 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 9
-436
-655
-80
-50
+419
+652
+114
+56
 ROMB
   STATEMENT
-a[j]<min
+a[j] < min
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 10
-503
+491
 735
-106
+130
 50
 RECT
   STATEMENT
-min:=A[j];
-min_index:=j
+min := A[j];
+min_index := j;
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -177,22 +177,22 @@ BLOCK 12
 50
 RECT
   STATEMENT
-j:=j+1
+j := j+1
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 13
-395
+387
 1009
-162
+178
 61
 RECT
   STATEMENT
-t:=A[i];
-A[i]:=A[min_index];
-A[min_index]:=t
+t := A[i];
+A[i] := A[min_index];
+A[min_index] := t;
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -205,16 +205,16 @@ BLOCK 14
 50
 RECT
   STATEMENT
-i:=i+1
+i := i+1
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 15
+142
 150
-150
-146
+162
 214
 INIT
   STATEMENT
@@ -307,7 +307,7 @@ ARROW
 VERT
 476
 1192
-528
+533
 400
 687
 NORTH

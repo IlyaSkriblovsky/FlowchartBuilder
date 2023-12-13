@@ -9,11 +9,11 @@ BLOCK 0
 50
 PARAL
   STATEMENT
-?a
+? a
   /STATEMENT
   UNFORMAL
   /UNFORMAL
-
+Введите первое число
 /BLOCK
 BLOCK 1
 539
@@ -22,20 +22,20 @@ BLOCK 1
 50
 PARAL
   STATEMENT
-?b
+? b
   /STATEMENT
   UNFORMAL
   /UNFORMAL
-
+Введите второе число
 /BLOCK
 BLOCK 2
-438
+413
 661
-282
+332
 50
 PARAL
   STATEMENT
-'Максимум из ',a,' и ',b,' = ',max
+'Максимум из ', a, ' и ', b, ' = ' ,max
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -48,7 +48,7 @@ BLOCK 3
 50
 RECT
   STATEMENT
-max:=b;
+max := b
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -61,7 +61,7 @@ BLOCK 4
 50
 ROMB
   STATEMENT
-a>b
+a > b
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -74,7 +74,7 @@ BLOCK 5
 50
 RECT
   STATEMENT
-max:=a;
+max := a
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -119,13 +119,13 @@ ELLIPSE
 
 /BLOCK
 BLOCK 9
-526
+522
 771
-106
+114
 50
 RECT
   STATEMENT
-result:=max;
+result := max
   /STATEMENT
   UNFORMAL
   /UNFORMAL

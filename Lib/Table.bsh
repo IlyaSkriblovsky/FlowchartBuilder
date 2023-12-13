@@ -41,7 +41,7 @@ PARAL
   /STATEMENT
   UNFORMAL
   /UNFORMAL
-
+Введите количество испытаний
 /BLOCK
 BLOCK 3
 567
@@ -75,7 +75,7 @@ BLOCK 5
 50
 ROMB
   STATEMENT
-i<s
+i < s
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -94,28 +94,28 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 7
-428
+420
 431
-122
+138
 61
 RECT
   STATEMENT
-a:=random(10);
-b:=random(10);
-i:=i+1
+a := random(10);
+b := random(10);
+i := i+1;
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 8
-424
+407
 516
-130
+164
 50
 PARAL
   STATEMENT
-a,' * ',b,' = '
+a, ' * ', b, ' = '
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -128,33 +128,33 @@ BLOCK 9
 50
 PARAL
   STATEMENT
-?c
+? c
   /STATEMENT
   UNFORMAL
   /UNFORMAL
-
+Чему равно произведение?
 /BLOCK
 BLOCK 10
-449
-681
-80
-50
+436
+680
+106
+52
 ROMB
   STATEMENT
-a*b=c
+a * b = c
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 11
-520
+512
 761
-98
+114
 50
 RECT
   STATEMENT
-bal:=Bal+1;
+bal := bal+1;
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -173,26 +173,26 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 13
-451
-959
-80
-50
+438
+958
+106
+52
 ROMB
   STATEMENT
-bal>s/2
+bal > s/2
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 14
-150
+142
 1222
-122
+138
 50
 RECT
   STATEMENT
-os:='Оценка 2'
+os := 'Оценка 2'
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -211,26 +211,26 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 16
-531
+526
 1039
-80
+90
 50
 ROMB
   STATEMENT
-bal=s
+bal = s
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 17
-704
+696
 1222
-122
+138
 50
 RECT
   STATEMENT
-os:='Оценка 5'
+os := 'Оценка 5'
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -249,9 +249,9 @@ CONFLUENCE
 
 /BLOCK
 BLOCK 19
-437
+432
 1492
-106
+116
 50
 PARAL
   STATEMENT
@@ -263,40 +263,40 @@ os
 
 /BLOCK
 BLOCK 20
-432
-1129
-114
-50
+395
+1125
+188
+94
 ROMB
   STATEMENT
-(bal>s/2) and
- (bal<s/4*3)
+(bal > s/2) and
+  (bal < s/4*3)
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 21
-297
+289
 1222
-122
+138
 50
 RECT
   STATEMENT
-os:='Оценка 4'
+os := 'Оценка 4'
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 22
-557
+549
 1222
-122
+138
 50
 RECT
   STATEMENT
-os:='Оценка 3'
+os := 'Оценка 3'
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -325,6 +325,19 @@ COMMENT
   UNFORMAL
 Подсчёт результатов 
    и вывод оценки
+  /UNFORMAL
+
+/BLOCK
+BLOCK 25
+541
+152
+274
+50
+COMMENT
+  STATEMENT
+  /STATEMENT
+  UNFORMAL
+Проверка знания таблицы умножения
   /UNFORMAL
 
 /BLOCK
@@ -414,9 +427,9 @@ SOUTH
 /ARROW
 ARROW
 HORIZ
-629
+637
 907
-629
+637
 381
 873
 EAST
@@ -427,7 +440,7 @@ EAST
 ARROW
 HORIZ
 489
-669
+668
 489
 658
 663
@@ -478,7 +491,7 @@ HORIZ
 749
 569
 706
-728
+727
 NORTH
 11
 EAST
@@ -609,8 +622,8 @@ HORIZ
 358
 1186
 358
-1154
-1170
+1172
+1179
 NORTH
 21
 WEST
@@ -621,8 +634,8 @@ HORIZ
 618
 1186
 618
-1154
-1170
+1172
+1179
 NORTH
 22
 EAST

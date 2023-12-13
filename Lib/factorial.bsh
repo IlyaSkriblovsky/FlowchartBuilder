@@ -24,20 +24,20 @@ BLOCK 1
 50
 ROMB
   STATEMENT
-f=0
+f = 0
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 2
-512
+504
 536
-82
+98
 50
 RECT
   STATEMENT
-Result:=1
+Result := 1
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -50,7 +50,7 @@ BLOCK 3
 50
 RECT
   STATEMENT
-f:=f-1
+f := f-1
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -70,13 +70,13 @@ factorial
 
 /BLOCK
 BLOCK 5
-266
+250
 671
-138
+170
 50
 RECT
   STATEMENT
-Result:=Result*t
+Result := Result * t
   /STATEMENT
   UNFORMAL
   /UNFORMAL
@@ -126,17 +126,17 @@ BLOCK 9
 50
 RECT
   STATEMENT
-t:=f
+t := f
   /STATEMENT
   UNFORMAL
   /UNFORMAL
 
 /BLOCK
 BLOCK 10
-523
-150
-402
-197
+532
+189
+546
+180
 COMMENT
   STATEMENT
   /STATEMENT
@@ -150,8 +150,7 @@ COMMENT
   Переменная Result равняется факториалу числа f.
 
 Примечание:
-  Для выполнения вызовите этот алгоритм из другой
-  блок-схемы.
+  Для выполнения вызовите этот алгоритм из блок-схемы factorial_run
   /UNFORMAL
 
 /BLOCK
