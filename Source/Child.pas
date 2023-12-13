@@ -446,6 +446,18 @@ begin
   Actives.Clear;
 end;
 
+function GetFuncResult(Vars: TVars; Name: string; Params: TList<PValue>): TValue;
+begin
+  if LowerCase(Name) = 'message' then
+  begin
+    CheckFuncParams(Name, Params, 1, [tyStr]);
+    MessageBox(MainForm.Handle, PChar(Params.Items[0].Str), 'Конструктор блок-схем', MB_ICONINFORMATION);
+    Result := MakeVal(Params.Items[0].Str);
+  end
+  else
+    Result := GetBaseFuncResult(Vars, Name, Params);
+end;
+
 procedure TChildForm.FormCreate(Sender: TObject);
 begin
   Randomize;
@@ -466,7 +478,7 @@ begin
 
   BlockFont := TFont.Create;
 
-  Lang.GetFuncValue := Lang.GetFuncResult;
+  Lang.GetFuncValue := GetFuncResult;
 
   Dragging := false;
   RamkaOn := false;

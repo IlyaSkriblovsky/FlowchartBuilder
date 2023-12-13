@@ -138,11 +138,15 @@ procedure RunTimeError(Error: string);
 
 function GetVarIndex(Vars: TVars; Name: string): integer;
 
-function GetFuncResult(Vars: TVars; Name: string; Params: TList<PValue>): TValue;
+function MakeVal(s: string): TValue; overload;
+function MakeVal(r: TReal): TValue; overload;
+
+procedure CheckFuncParams(FuncName: string; Params: TList<PValue>; Count: integer; types: array of TValType);
+function GetBaseFuncResult(Vars: TVars; Name: string; Params: TList<PValue>): TValue;
 
 implementation
 
-uses Main, Math, Windows;
+uses Math;
 
 procedure ReadBlock(ALines: TStrings; Lexemes: PLexemes); // Разбиваем программу на лексемы
 var
@@ -1386,7 +1390,38 @@ begin
   end;
 end;
 
-function GetFuncResult(Vars: TVars; Name: string; Params: TList<PValue>): TValue;
+function MakeVal(s: string): TValue; overload;
+begin
+  Result._Type := tyStr;
+  Result.Str := s;
+end;
+function MakeVal(r: TReal): TValue; overload;
+begin
+  Result._Type := tyReal;
+  Result.Real := r;
+end;
+
+procedure CheckFuncParams(FuncName: string; Params: TList<PValue>; Count: integer; types: array of TValType);
+var
+  f: boolean;
+  i: integer;
+
+begin
+  f := true;
+  if Params.Count <> Count then
+    f := false;
+  i := 0;
+  while f and (i < Count) do
+  begin
+    if (Params.Items[i]._Type <> types[i]) then
+      f := false;
+    Inc(i);
+  end;
+  if not f then
+    RunTimeError('Неправильный список параметров функции ' + FuncName);
+end;
+
+function GetBaseFuncResult(Vars: TVars; Name: string; Params: TList<PValue>): TValue;
 type
   FuncType = (ftMath, ftString, ftOther);
 
@@ -1395,7 +1430,7 @@ type
     _Type: FuncType;
   end;
 const
-  Funcs: array [1 .. 42] of Func = (
+  Funcs: array [1 .. 41] of Func = (
     (Name: 'Sin'; _Type: ftMath),
     (Name: 'Cos'; _Type: ftMath),
     (Name: 'Tan'; _Type: ftMath),
@@ -1428,7 +1463,7 @@ const
     (Name: 'Pos'; _Type: ftOther),
     (Name: 'UpCase'; _Type: ftString),
     (Name: 'DownCase'; _Type: ftString),
-    (Name: 'Message'; _Type: ftString),
+//    (Name: 'Message'; _Type: ftString),
     (Name: 'Insert'; _Type: ftOther),
     (Name: 'Delete'; _Type: ftOther),
     (Name: 'Copy'; _Type: ftOther),
@@ -1460,37 +1495,6 @@ var
   tmpPos: Cardinal;
 
   File_Rec: PFile_Rec;
-
-  function MakeVal(s: string): TValue; overload;
-  begin
-    Result._Type := tyStr;
-    Result.Str := s;
-  end;
-  function MakeVal(r: TReal): TValue; overload;
-  begin
-    Result._Type := tyReal;
-    Result.Real := r;
-  end;
-
-  procedure Check(Count: integer; types: array of TValType);
-  var
-    f: boolean;
-    i: integer;
-
-  begin
-    f := true;
-    if Params.Count <> Count then
-      f := false;
-    i := 0;
-    while f and (i < Count) do
-    begin
-      if (P[i + 1]._Type <> types[i]) then
-        f := false;
-      Inc(i);
-    end;
-    if not f then
-      RunTimeError('Неправильный список параметров функции ' + Name);
-  end;
 
   procedure CheckFileName(Path: string);
   const
@@ -1564,9 +1568,9 @@ begin
 
   case Funcs[i]._Type of
     ftMath:
-      Check(1, [tyReal]);
+      CheckFuncParams(Name, Params, 1, [tyReal]);
     ftString:
-      Check(1, [tyStr]);
+      CheckFuncParams(Name, Params, 1, [tyStr]);
   end;
 
   n := LowerCase(Name);
@@ -1592,53 +1596,53 @@ begin
     Result := MakeVal(Sign(P[1].Real));
   if n = 'pos' then
   begin
-    Check(2, [tyStr, tyStr]);
+    CheckFuncParams(Name, Params, 2, [tyStr, tyStr]);
     Result := MakeVal(System.Pos(P[1].Str, P[2].Str));
   end;
   if n = 'upcase' then
     Result := MakeVal(AnsiUpperCase(P[1].Str));
   if n = 'downcase' then
     Result := MakeVal(AnsiLowerCase(P[1].Str));
-  if n = 'message' then
-  begin
-    MessageBox(MainForm.Handle, PChar(P[1].Str), 'Конструктор блок-схем', MB_ICONINFORMATION);
-    Result := MakeVal(P[1].Str);
-  end;
+//  if n = 'message' then
+//  begin
+//    MessageBox(MainForm.Handle, PChar(P[1].Str), 'Конструктор блок-схем', MB_ICONINFORMATION);
+//    Result := MakeVal(P[1].Str);
+//  end;
   if n = 'insert' then
   begin
-    Check(3, [tyStr, tyStr, tyReal]);
+    CheckFuncParams(Name, Params, 3, [tyStr, tyStr, tyReal]);
     s := P[2].Str;
     Insert(P[1].Str, s, Trunc(P[3].Real));
     Result := MakeVal(s);
   end;
   if n = 'delete' then
   begin
-    Check(3, [tyStr, tyReal, tyReal]);
+    CheckFuncParams(Name, Params, 3, [tyStr, tyReal, tyReal]);
     s := P[1].Str;
     Delete(s, Trunc(P[2].Real), Trunc(P[3].Real));
     Result := MakeVal(s);
   end;
   if n = 'copy' then
   begin
-    Check(3, [tyStr, tyReal, tyReal]);
+    CheckFuncParams(Name, Params, 3, [tyStr, tyReal, tyReal]);
     s := P[1].Str;
     s := Copy(s, Trunc(P[2].Real), Trunc(P[3].Real));
     Result := MakeVal(s);
   end;
   if n = 'str' then
   begin
-    Check(1, [tyReal]);
+    CheckFuncParams(Name, Params, 1, [tyReal]);
     s := FloatToStr(P[1].Real);
     Result := MakeVal(s);
   end;
   if n = 'length' then
   begin
-    Check(1, [tyStr]);
+    CheckFuncParams(Name, Params, 1, [tyStr]);
     Result := MakeVal(Length(P[1].Str));
   end;
   if n = 'val' then
   begin
-    Check(1, [tyStr]);
+    CheckFuncParams(Name, Params, 1, [tyStr]);
     try
       Result := MakeVal(StrToFloat(P[1].Str));
     except
@@ -1656,11 +1660,11 @@ begin
     end;
     if Params.Count = 1 then
     begin
-      Check(1, [tyReal]);
+      CheckFuncParams(Name, Params, 1, [tyReal]);
       Result := MakeVal(Random(Trunc(P[1].Real)));
       Exit;
     end;
-    Check(0, []);
+    CheckFuncParams(Name, Params, 0, []);
   end;
 
   if n = 'calc' then
@@ -1711,10 +1715,10 @@ begin
   if n = 'open' then
   begin
     try
-      Check(1, [tyStr]);
+      CheckFuncParams(Name, Params, 1, [tyStr]);
     except
       try
-        Check(2, [tyStr, tyReal]);
+        CheckFuncParams(Name, Params, 2, [tyStr, tyReal]);
       except
         RunTimeError('Неправильный список аргументоф функции Open');
       end;
@@ -1829,7 +1833,7 @@ begin
   end;
   if n = 'seek' then
   begin
-    Check(2, [tyReal, tyReal]);
+    CheckFuncParams(Name, Params, 2, [tyReal, tyReal]);
     for i := 0 to Files.Count - 1 do
       if Files.Items[i].ID = P[1].Real then
         Files.Items[i].Pos := min(Trunc(P[2].Real), Files.Items[i].Strings.Count);
@@ -1850,7 +1854,7 @@ begin
 
   if n = 'pi' then
   begin
-    Check(0, []);
+    CheckFuncParams(Name, Params, 0, []);
     Result := MakeVal(pi);
   end;
   if n = 'exp' then
@@ -1859,7 +1863,7 @@ begin
     Result := MakeVal(Ln(P[1].Real));
   if n = 'log' then
   begin
-    Check(2, [tyReal, tyReal]);
+    CheckFuncParams(Name, Params, 2, [tyReal, tyReal]);
     Result := MakeVal(LogN(P[1].Real, P[2].Real));
   end;
 
@@ -1874,13 +1878,13 @@ begin
 
   if n = 'char' then
   begin
-    Check(1, [tyReal]);
+    CheckFuncParams(Name, Params, 1, [tyReal]);
     Result := MakeVal(Char(Trunc(P[1].Real)));
   end;
 
   if n = 'order' then
   begin
-    Check(1, [tyStr]);
+    CheckFuncParams(Name, Params, 1, [tyStr]);
     if Length(P[1].Str) < 1 then
       RunTimeError('Аргумент функции Order не может быть пустой строкой');
     Result := MakeVal(Ord(P[1].Str[1]));
