@@ -146,7 +146,23 @@ function GetBaseFuncResult(Vars: TVars; Name: string; Params: TList<PValue>): TV
 
 implementation
 
-uses Math;
+uses Math, Windows;
+
+{$WARNINGS OFF}
+function FloatToStr(Value: Extended): string;
+begin
+  Result := SysUtils.FloatToStr(Value);
+  while System.Pos(GetLocaleChar(GetThreadLocale, LOCALE_SDECIMAL, '.'), Result) > 0 do
+    Result[System.Pos(GetLocaleChar(GetThreadLocale, LOCALE_SDECIMAL, '.'), Result)] := '.';
+end;
+
+function StrToFloat(Value: string): Extended;
+begin
+  while System.Pos('.', Value) > 0 do
+    Value[System.Pos('.', Value)] := GetLocaleChar(GetThreadLocale, LOCALE_SDECIMAL, '.');
+  Result := SysUtils.StrToFloat(Value);
+end;
+{$WARNINGS ON}
 
 procedure ReadBlock(ALines: TStrings; Lexemes: PLexemes); // Разбиваем программу на лексемы
 var
