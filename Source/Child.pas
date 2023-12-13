@@ -342,7 +342,7 @@ begin
   for i := 0 to ArrowList.Count - 1 do
   begin
     A := ArrowList[i];
-    if Actives.GetActive(TBlock(A.Blocks[atStart].Block)) and Actives.GetActive(TBlock(A.Blocks[atEnd].Block)) and
+    if Actives.GetActive(A.Blocks[atStart].Block) and Actives.GetActive(A.Blocks[atEnd].Block) and
       (A.Blocks[atStart].Port in [North, South]) and (A.Blocks[atEnd].Port in [North, South]) then
     begin
       Inc(cnt);
@@ -409,8 +409,8 @@ var
 
 begin
   for i := 0 to BlockList.Count - 1 do
-    if TBlock(BlockList[i]).CanIDock(Mouse.X, Mouse.Y, ANew.Tail, true) then
-      ANew.Arrow.Dock(TBlock(BlockList[i]), atStart, TBlock(BlockList[i]).GetPort(Mouse.X, Mouse.Y));
+    if BlockList.Items[i].CanIDock(Mouse.X, Mouse.Y, ANew.Tail, true) then
+      ANew.Arrow.Dock(BlockList.Items[i], atStart, BlockList.Items[i].GetPort(Mouse.X, Mouse.Y));
 
   ANew.New := false;
   MainForm.btnLineRun.down := false;
@@ -502,7 +502,7 @@ end;
 
 procedure TChildForm.PaintBoxDblClick(Sender: TObject);
 begin
-  case TBlock(Sender).BlockType of
+  case (Sender as TBlock).BlockType of
     stGlob:
       begin
         MemoInput('Введите значение', 'Введите список глобальных переменных', GlobBlock.GlobStrings);
@@ -710,8 +710,8 @@ begin
         end;
 
     for i := 0 to ArrowList.Count - 1 do
-      if (Actives.GetActive(TBlock(ArrowList.Items[i].Blocks[atStart].Block))) or
-        (Actives.GetActive(TBlock(ArrowList.Items[i].Blocks[atEnd].Block))) then
+      if (Actives.GetActive(ArrowList.Items[i].Blocks[atStart].Block)) or
+        (Actives.GetActive(ArrowList.Items[i].Blocks[atEnd].Block)) then
         ArrowList.Items[i].StandWell;
 
     MainForm.Modifed := true;
@@ -963,20 +963,20 @@ begin
     Arrow := ArrowList.Items[i];
     if Arrow.Blocks[atEnd].Block = Cur then
       if Cur.BlockType <> stIf then
-        Result := TBlock(Arrow.Blocks[atStart].Block)
+        Result := Arrow.Blocks[atStart].Block
       else if Cond then
       begin
         if (Cur.Isd) and (Arrow.Blocks[atEnd].Port = South) then
-          Result := TBlock(Arrow.Blocks[atStart].Block);
+          Result := Arrow.Blocks[atStart].Block;
         if (not Cur.Isd) and (Arrow.Blocks[atEnd].Port = East) then
-          Result := TBlock(Arrow.Blocks[atStart].Block);
+          Result := Arrow.Blocks[atStart].Block;
       end
       else
       begin
         if (Cur.Isd) and (Arrow.Blocks[atEnd].Port = East) then
-          Result := TBlock(Arrow.Blocks[atStart].Block);
+          Result := Arrow.Blocks[atStart].Block;
         if (not Cur.Isd) and (Arrow.Blocks[atEnd].Port = West) then
-          Result := TBlock(Arrow.Blocks[atStart].Block);
+          Result := Arrow.Blocks[atStart].Block;
       end;
   end;
   if (Result <> nil) and (Result.BlockType = stConfl) then
@@ -1504,9 +1504,8 @@ begin
     if (ArrowList.Items[j].IsDrag) and (ArrowList.Items[j].DragObj in [st, en]) then
     begin
       for i := 0 to BlockList.Count - 1 do
-        if TBlock(BlockList[i]).CanIDock(X, Y, Obj2Tail(ArrowList.Items[j].DragObj), true) then
-          ArrowList.Items[j].Dock(TBlock(BlockList[i]), Obj2Tail(ArrowList.Items[j].DragObj),
-            TBlock(BlockList[i]).GetPort(X, Y));
+        if BlockList.Items[i].CanIDock(X, Y, Obj2Tail(ArrowList.Items[j].DragObj), true) then
+          ArrowList.Items[j].Dock(BlockList[i], Obj2Tail(ArrowList.Items[j].DragObj), BlockList.Items[i].GetPort(X, Y));
     end;
 
   for i := 0 to ArrowList.Count - 1 do
@@ -1849,8 +1848,8 @@ begin
           UN^.ArrowStyle := A.Style;
           UN^.pnt := A.Tail[atStart];
           UN^.pnt1 := A.Tail[atEnd];
-          UN^.Block := TBlock(A.Blocks[atStart].Block);
-          UN^.Block1 := TBlock(A.Blocks[atEnd].Block);
+          UN^.Block := A.Blocks[atStart].Block;
+          UN^.Block1 := A.Blocks[atEnd].Block;
           UN^.Port[atStart] := A.Blocks[atStart].Port;
           UN^.Port[atEnd] := A.Blocks[atEnd].Port;
           MainForm.AddUndo(UN);
@@ -1930,70 +1929,6 @@ begin
       Result := ArrowList[i];
     end;
 end;
-
-(*
-  procedure TChildForm.MoveAllDown(b1: TTmpBlock; h: integer);
-  const Ind=30;
-  var i: integer;
-
-  procedure Check(b: TTmpBlock);
-  var
-  a: TArrow;
-  i: integer;
-
-  begin
-  for i:=0 to ArrowList.Count-1
-  do begin
-  a:=ArrowList[i];
-  if (a.Blocks[atEnd].Block=b) and (a.Blocks[atStart].Block<>nil) and (a.Blocks[atStart].Block.Tag1=0)//and (a.Tail[atStart].y>=a.Tail[atEnd].y)
-  then begin
-  //                if (a.Blocks[atStart].Block.Top>=b{1}.Top) and (a.Blocks[atStart].Block.Top<=b{1}.Top+h) //+ind)
-  if (A.Blocks[atStart].Block.Top>=b.Top) and (a.Blocks[atStart].Block.Top<=b.Top+b.Height+ind+h)
-  then a.Blocks[atStart].Block.Tag:=1;
-  a.Blocks[atStart].Block.Tag1:=1;
-  Check(a.Blocks[atStart].Block);
-  end;
-  end;
-  end;
-
-  procedure Move(b: TTmpBlock);
-  var
-  a: TArrow;
-  i: integer;
-
-  begin
-  b.Tag:=0;
-  for i:=0 to ArrowList.Count-1
-  do begin
-  a:=ArrowList[i];
-  if (a.Blocks[atEnd].Block=b) and (a.Blocks[atStart].Block<>nil) and (a.Blocks[atStart].Block.Tag1=0)
-  then if true
-  then begin
-  if a.Blocks[atStart].Block.Tag=1
-  then begin
-  //                            a.Blocks[atStart].Block.Top:=b.Top+b.Height+Ind;//a.Blocks[atStart].Block.Top+h;
-  if a.Blocks[atStart].Block.Top>=b1.Top
-  then a.Blocks[atStart].Block.Top:=a.Blocks[atStart].Block.Top+h;
-  a.Blocks[atStart].Block.Tag:=0;
-  end;
-  a.Blocks[atStart].Block.Tag1:=1;
-  Move(a.Blocks[atStart].Block);
-  end;
-  end;
-  end;
-
-  begin
-  for i:=0 to BlockList.Count-1
-  do TBlock(BlockList[i]).Tag:=0;
-  for i:=0 to BlockList.Count-1
-  do TBlock(BlockList[i]).Tag1:=0;
-  Check(b1);
-  b1.Top:=b1.Top+h;
-  for i:=0 to BlockList.Count-1
-  do TBlock(BlockList[i]).Tag1:=0;
-  Move(b1);
-  end;
-  *)
 
 procedure TChildForm.MoveAllDown(b1: TBlock; h: Integer);
 var
@@ -2481,4 +2416,3 @@ begin
 end;
 
 end.
-

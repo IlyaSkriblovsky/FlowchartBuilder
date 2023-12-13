@@ -1007,7 +1007,6 @@ object MainForm: TMainForm
       item
         Width = 50
       end>
-    ExplicitTop = 513
   end
   object pnlLine: TPanel
     Left = 0

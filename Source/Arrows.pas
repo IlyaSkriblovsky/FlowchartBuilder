@@ -828,11 +828,11 @@ begin
   if not DoesNotUnDock then
   begin
     for i := 0 to ChildForm.BlockList.Count - 1 do
-      if TBlock(ChildForm.BlockList[i]).CanIDock(x, y, Obj2Tail(DragObj), true) then
+      if ChildForm.BlockList.Items[i].CanIDock(x, y, Obj2Tail(DragObj), true) then
       begin
         if Blocks[Obj2Tail(DragObj)].Block <> nil then
           UnDock(Obj2Tail(DragObj));
-        Dock(TBlock(ChildForm.BlockList[i]), Obj2Tail(DragObj), TBlock(ChildForm.BlockList[i]).GetPort(x, y));
+        Dock(ChildForm.BlockList[i], Obj2Tail(DragObj), ChildForm.BlockList.Items[i].GetPort(x, y));
         if not ChildForm.ANew.New then
           Draw;
       end;
@@ -876,7 +876,7 @@ begin
   if (DragObj in [st, en]) and (Blocks[Obj2Tail(DragObj)].Block = nil) then
   begin
     for j := 0 to ChildForm.BlockList.Count - 1 do
-      TBlock(ChildForm.BlockList[j]).CanIDock(Mouse.x, Mouse.y, Obj2Tail(DragObj), true);
+      ChildForm.BlockList.Items[j].CanIDock(Mouse.x, Mouse.y, Obj2Tail(DragObj), true);
   end;
 end;
 
@@ -972,7 +972,7 @@ begin
   if (DragObj in [st, en]) and (Blocks[Obj2Tail(DragObj)].Block = nil) then
   begin
     for j := 0 to ChildForm.BlockList.Count - 1 do
-      TBlock(ChildForm.BlockList[j]).CanIDock(Mouse.x, Mouse.y, Obj2Tail(DragObj), true);
+      ChildForm.BlockList.Items[j].CanIDock(Mouse.x, Mouse.y, Obj2Tail(DragObj), true);
   end;
 
   case _Type of

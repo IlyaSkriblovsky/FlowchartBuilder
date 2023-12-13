@@ -800,11 +800,13 @@ end;
 procedure TMainForm.BlockCreateClick(Sender: TObject);
 var
   SB: TSpeedButton;
+  wd: TWD;
 
 begin
   SB := Sender as TSpeedButton;
+  wd := TWD(SB.Tag);
 
-  if (AlreadyGlob and (TWD(SB.Tag) = wdGlob)) or (AlreadyInit and (TWD(SB.Tag) = wdInit)) then
+  if (AlreadyGlob and (wd = wdGlob)) or (AlreadyInit and (wd = wdInit)) then
   begin
     MessageBox(0, 'На схеме уже есть этот блок.', 'Ошибка', MB_ICONSTOP);
     WhatDown := wdNone;
@@ -813,7 +815,7 @@ begin
     Exit;
   end;
 
-  if WhatDown = TWD(SB.Tag) then
+  if WhatDown = wd then
   begin
     SB.Down := false;
     WhatDown := wdNone;
@@ -822,7 +824,7 @@ begin
   end;
   ChildForm.SetButtsUp;
   SB.Down := true;
-  WhatDown := TWD(SB.Tag);
+  WhatDown := wd;
   ChildForm.SetRange;
   Modifed := true;
   ChildForm.DefCursor := crCross;
