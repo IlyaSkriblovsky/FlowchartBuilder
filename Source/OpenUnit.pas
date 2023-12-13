@@ -10,7 +10,7 @@ procedure LoadScheme(FileName: string);
 
 implementation
 
-uses Main, Child, EdTypes, Arrows;
+uses Main, Child, Block, Arrows, Constants;
 
 var
   F: TextFile;

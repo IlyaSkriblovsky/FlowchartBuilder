@@ -7,23 +7,25 @@ uses
   SysUtils,
   Dialogs,
   Generics.Collections,
-  Main in 'Main.pas' {MainForm} ,
-  EdTypes in 'EdTypes.pas',
-  About in 'About.pas' {AboutBox} ,
-  OutProg in 'OutProg.pas' {frmOutProg} ,
-  Options in 'Options.pas' {frmOpt} ,
+  Main in 'Main.pas' {MainForm},
+  Block in 'Block.pas',
+  About in 'About.pas' {AboutBox},
+  OutProg in 'OutProg.pas' {frmOutProg},
+  Options in 'Options.pas' {frmOpt},
   OpenUnit in 'OpenUnit.pas',
   SaveUnit in 'SaveUnit.pas',
-  Child in 'Child.pas' {ChildForm} ,
-  Watch in 'Watch.pas' {frmWatch} ,
+  Child in 'Child.pas' {ChildForm},
+  Watch in 'Watch.pas' {frmWatch},
   Lang in 'Lang.pas',
-  uInterval in 'uInterval.pas' {frmInterval} ,
+  uInterval in 'uInterval.pas' {frmInterval},
   Arrows in 'Arrows.pas',
-  StrsInput in 'StrsInput.pas' {frmStrsForm} ,
+  StrsInput in 'StrsInput.pas' {frmStrsForm},
   ini in 'ini.pas',
-  BlockProps in 'BlockProps.pas' {frmProps} ,
+  BlockProps in 'BlockProps.pas' {frmProps},
   Version in 'Version.pas',
-  ZoomForm in 'ZoomForm.pas' {frmZoom} ;
+  ZoomForm in 'ZoomForm.pas' {frmZoom},
+  Constants in 'Constants.pas';
+
 {$R *.RES}
 
 begin

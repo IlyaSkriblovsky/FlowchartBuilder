@@ -2,25 +2,15 @@
 
 interface
 
-uses Windows, Classes, Controls, Types, ExtCtrls, Graphics, Math;
+uses Windows, Classes, Controls, Types, ExtCtrls, Graphics, Math, Block, Constants;
 
 type
-  TTmpBlock = class;
-  // Не перепутай: atStart - "голова" стрелки (<-), atEnd - "хвост" стрелки (--)
-  // То есть выполнение идёт от "хвоста" стрелки к "голове"
-  TArrowTail = (atStart, atEnd);
-  TArrowStyle = (eg2, eg4);
-  TArrowType = (horiz, vert);
-  TBlockPort = (North, East, West, South);
-
   TBlockRec = record
-    Block: TTmpBlock;
+    Block: TBlock;
     Port: TBlockPort;
   end;
 
   TBlockArr = array [TArrowTail] of TBlockRec;
-
-  TDragObj = (none, st, en, pnt);
 
   TArrow = class
     Blocks: TBlockArr;
@@ -48,7 +38,7 @@ type
     procedure MouseTest;
     procedure GetObj;
 
-    procedure Dock(Block: TTmpBlock; Tl: TArrowTail; Port: TBlockPort);
+    procedure Dock(Block: TBlock; Tl: TArrowTail; Port: TBlockPort);
     procedure UnDock(Tl: TArrowTail);
 
     procedure StandWell;
@@ -69,40 +59,15 @@ type
 
   end;
 
-  TTmpBlock = class(TPaintBox)
-  public
-    Ins: set of TBlockPort;
-    Blocked: set of TBlockPort;
-
-    procedure DrawPort(p: TBlockPort); virtual; abstract;
-
-    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; x, y: integer); override;
-    procedure MouseMove(Shift: TShiftState; x, y: integer); override;
-    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; x, y: integer); override;
-
-    function IsPortAvail(t: TArrowTail; p: TBlockPort; LookAtAlready: boolean): boolean; virtual;
-
-    function CanIDock(x, y: integer; Tail: TArrowTail; LookAtAlready: boolean): boolean;
-    function GetPort(x, y: integer): TBlockPort;
-    function GetPortPoint(Port: TBlockPort): TPoint;
-  end;
-
-const
-  R = 5;
-  arrW = 4;
-  arrH = 10;
-  l = 12;
-  d = 5;
-
 var
-  Mous, dMous: TPoint;
+  Mouse, dMouse: TPoint;
 
   // Variables for Undo
   unOrig: array [TArrowTail] of TPoint;
   unP: integer;
   unType: TArrowType;
   unStyle: TArrowStyle;
-  unBlock: array [TArrowTail] of TTmpBlock;
+  unBlock: array [TArrowTail] of TBlock;
   unPort: array [TArrowTail] of TBlockPort;
 
 function Obj2Tail(obj: TDragObj): TArrowTail;
@@ -111,7 +76,7 @@ function SecTail(t: TArrowTail): TArrowTail;
 
 implementation
 
-uses Child, Main, EdTypes;
+uses Child, Main;
 
 (* **  Utility Functions  ** *)
 function sh: integer;
@@ -148,145 +113,6 @@ begin
     Result := atStart;
 end;
 
-(* **  TTmpBlock  ** *)
-procedure TTmpBlock.MouseDown(Button: TMouseButton; Shift: TShiftState; x, y: integer);
-begin
-  if ChildForm.ANew.New then
-  begin
-    ChildForm.FormMouseDown(nil, mbLeft, [], Left + x, Top + y);
-    Exit;
-  end;
-
-  inherited;
-
-  ChildForm.Refresh;
-end;
-
-procedure TTmpBlock.MouseMove(Shift: TShiftState; x, y: integer);
-begin
-  if ChildForm.ANew.New then
-    ChildForm.FormMouseMove(nil, [], Left + x, Top + y)
-  else
-    inherited;
-end;
-
-procedure TTmpBlock.MouseUp(Button: TMouseButton; Shift: TShiftState; x, y: integer);
-begin
-  if ChildForm.ANew.New then
-    ChildForm.FormMouseUp(nil, mbLeft, [], Left + x, Top + y)
-  else
-  begin
-    inherited;
-    ChildForm.Refresh;
-  end;
-end;
-
-function TTmpBlock.GetPortPoint(Port: TBlockPort): TPoint;
-begin
-  case Port of
-    North:
-      Result := Point(Left + Width div 2, Top);
-    East:
-      Result := Point(Left + Width, Top + Height div 2);
-    West:
-      Result := Point(Left, Top + Height div 2);
-    South:
-      Result := Point(Left + Width div 2, Top + Height);
-  end;
-end;
-
-function TTmpBlock.GetPort(x, y: integer): TBlockPort;
-begin
-  Dec(x, Left);
-  Dec(y, Top);
-  Result := North;
-  if (x > Width div 4) and (x <= 3 * Width div 4) and (y > -R) and (y <= Height div 2) then
-    Result := North;
-  if (x > Width div 4) and (x <= 3 * Width div 4) and (y > Height div 2) and (y <= Height + R) then
-    Result := South;
-  if (x > 3 * Width div 4) and (x <= Width + R) and (y > 0) and (y <= Height) then
-    Result := East;
-  if (x > 0 - R) and (x <= Width div 4) and (y > 0) and (y <= Height) then
-    Result := West;
-end;
-
-function TTmpBlock.IsPortAvail(t: TArrowTail; p: TBlockPort; LookAtAlready: boolean): boolean;
-var
-  i: integer;
-
-begin
-  Result := true;
-  if p in Blocked then
-    Result := false;
-  if (t = atStart) and (not(p in Ins)) then
-    Result := false;
-  if t = atEnd then
-  begin
-    if p in Ins then
-      Result := false;
-    if LookAtAlready then
-      for i := 0 to ChildForm.ArrowList.Count - 1 do
-        if (ChildForm.ArrowList.Items[i].Blocks[atEnd].Block = Self) and
-          (ChildForm.ArrowList.Items[i].Blocks[atEnd].Port = p) then
-          Result := false;
-  end;
-end;
-
-function TTmpBlock.CanIDock(x, y: integer; Tail: TArrowTail; LookAtAlready: boolean): boolean;
-var
-  t: TBlockPort;
-
-  procedure SetColor(blink: boolean);
-  begin
-    if blink then
-    begin
-      Canvas.Pen.Color := clRed;
-      Canvas.Brush.Color := clRed;
-    end
-    else
-    begin
-      Canvas.Pen.Color := $9900;
-      Canvas.Brush.Color := $9900;
-    end;
-  end;
-
-  function Test(p: TBlockPort): boolean;
-  begin
-    Result := false;
-    case p of
-      North:
-        if (x > Width div 4) and (x <= 3 * Width div 4) and (y > 0 - R) and (y <= Height div 2) then
-          Result := true;
-      East:
-        if (x > 3 * Width div 4) and (x <= Width + R) and (y > 0) and (y <= Height) then
-          Result := true;
-      West:
-        if (x > -R) and (x <= Width div 4) and (y > 0) and (y <= Height) then
-          Result := true;
-      South:
-        if (x > Width div 4) and (x <= 3 * Width div 4) and (y > Height div 2) and (y <= Height + R) then
-          Result := true;
-    end;
-  end;
-
-begin
-  Result := false;
-  SetColor(false);
-  Dec(x, Left);
-  Dec(y, Top);
-  for t := North to South do
-  begin
-    if IsPortAvail(Tail, t, LookAtAlready) then
-    begin
-      if Test(t) then
-        Result := true;
-      SetColor(Test(t));
-      DrawPort(t);
-    end;
-  end;
-  SetColor(false);
-end;
-
 (* **  TArrow  ** *)
 function TArrow.GetReallyTail(t: TArrowTail): TPoint;
 begin
@@ -296,23 +122,23 @@ begin
     case Blocks[t].Port of
       North:
         Result := Point(Blocks[t].Block.GetPortPoint(Blocks[t].Port).x,
-          Blocks[t].Block.GetPortPoint(Blocks[t].Port).y - l);
+          Blocks[t].Block.GetPortPoint(Blocks[t].Port).y - BlockMargin);
       East:
-        Result := Point(Blocks[t].Block.GetPortPoint(Blocks[t].Port).x + l,
+        Result := Point(Blocks[t].Block.GetPortPoint(Blocks[t].Port).x + BlockMargin,
           Blocks[t].Block.GetPortPoint(Blocks[t].Port).y);
       West:
-        Result := Point(Blocks[t].Block.GetPortPoint(Blocks[t].Port).x - l,
+        Result := Point(Blocks[t].Block.GetPortPoint(Blocks[t].Port).x - BlockMargin,
           Blocks[t].Block.GetPortPoint(Blocks[t].Port).y);
       South:
         Result := Point(Blocks[t].Block.GetPortPoint(Blocks[t].Port).x,
-          Blocks[t].Block.GetPortPoint(Blocks[t].Port).y + l);
+          Blocks[t].Block.GetPortPoint(Blocks[t].Port).y + BlockMargin);
     end;
 end;
 
 procedure TArrow.StandWell;
 var
   t: TArrowTail;
-  b: TTmpBlock;
+  b: TBlock;
   s: TArrowStyle;
 
 begin
@@ -365,14 +191,14 @@ begin
       if Blocks[t].Block <> nil then
         case _Type of
           vert:
-            if Abs(Tail[atStart].x - Tail[atEnd].x) < arrH then
+            if Abs(Tail[atStart].x - Tail[atEnd].x) < ArrH then
             begin
               _Type := horiz;
               if Blocks[t].Block.GetPortPoint(Blocks[t].Port).y < Tail[SecTail(t)].y then
                 Tail[t] := Point(Tail[t].x, Tail[SecTail(t)].y - 20);
             end;
           horiz:
-            if Abs(Tail[atStart].y - Tail[atEnd].y) < arrH then
+            if Abs(Tail[atStart].y - Tail[atEnd].y) < ArrH then
             begin
               _Type := vert;
               if Blocks[t].Block.GetPortPoint(Blocks[t].Port).x < Tail[SecTail(t)].x then
@@ -396,7 +222,7 @@ begin
   {
     если выходим за границу
     то выравниваемся
-  }
+    }
   (* v:=sv;
     h:=sh;
     for t:=atStart to atEnd
@@ -422,33 +248,33 @@ begin
   {
     если 2 звена оказались рядом и не нажат Alt
     то выравниваем
-  }
+    }
   if IsDrag and (DragObj in [st, en]) and (not GetKeyState(VK_MENU) <= 0) then
     case _Type of
       vert:
-        if Abs(Tail[atStart].y - Tail[atEnd].y) <= d then
+        if Abs(Tail[atStart].y - Tail[atEnd].y) <= MinDrag then
           Tail[Obj2Tail(DragObj)] := Point(Tail[Obj2Tail(DragObj)].x, Tail[SecTail(Obj2Tail(DragObj))].y);
       horiz:
-        if Abs(Tail[atStart].x - Tail[atEnd].x) <= d then
+        if Abs(Tail[atStart].x - Tail[atEnd].x) <= MinDrag then
           Tail[Obj2Tail(DragObj)] := Point(Tail[SecTail(Obj2Tail(DragObj))].x, Tail[Obj2Tail(DragObj)].y);
     end;
 
   if IsDrag and (DragObj = pnt) then
     case _Type of
       vert:
-        if Abs(Tail[atEnd].x - p) <= d then
+        if Abs(Tail[atEnd].x - p) <= MinDrag then
           p := Tail[atEnd].x;
       horiz:
-        if Abs(Tail[atEnd].y - p) <= d then
+        if Abs(Tail[atEnd].y - p) <= MinDrag then
           p := Tail[atEnd].y;
     end;
   if (Blocks[atStart].Block <> nil) and IsDrag and (DragObj = pnt) then
     case _Type of
       vert:
-        if Abs(Tail[atStart].x - p) <= d then
+        if Abs(Tail[atStart].x - p) <= MinDrag then
           p := Tail[atStart].x;
       horiz:
-        if Abs(Tail[atStart].y - p) <= d then
+        if Abs(Tail[atStart].y - p) <= MinDrag then
           p := Tail[atStart].y;
     end;
 
@@ -479,7 +305,7 @@ begin
     если нас тащут и каким-то концом прицеплены за одину сторону блока и другой конец на другой
     стороне блока
     то выравниваемся, обходя блок
-  }
+    }
   if true // IsDrag
     then
     for t := atStart to atEnd do
@@ -494,9 +320,9 @@ begin
               begin
                 _Type := vert;
                 if Tail[SecTail(t)].x <= b.Left + b.Width div 2 then
-                  p := Min(p, b.Left - l)
+                  p := Min(p, b.Left - BlockMargin)
                 else
-                  p := Max(p, b.Left + b.Width + l);
+                  p := Max(p, b.Left + b.Width + BlockMargin);
               end;
             East:
               if (Tail[SecTail(t)].x <= b.Left + b.Width) and (Tail[SecTail(t)].y > b.Top) and
@@ -504,9 +330,9 @@ begin
               begin
                 _Type := horiz;
                 if Tail[SecTail(t)].y <= b.Top + b.Height div 2 then
-                  p := Min(p, b.Top - l)
+                  p := Min(p, b.Top - BlockMargin)
                 else
-                  p := Max(p, b.Top + b.Height + l);
+                  p := Max(p, b.Top + b.Height + BlockMargin);
               end;
             West:
               if (Tail[SecTail(t)].x > b.Left
@@ -514,9 +340,9 @@ begin
               begin
                 _Type := horiz;
                 if Tail[SecTail(t)].y <= b.Top + b.Height div 2 then
-                  p := Min(p, b.Top - l)
+                  p := Min(p, b.Top - BlockMargin)
                 else
-                  p := Max(p, b.Top + b.Height + l);
+                  p := Max(p, b.Top + b.Height + BlockMargin);
               end;
             South:
               if (Tail[SecTail(t)].y <= b.Top + b.Height) and (Tail[SecTail(t)].x > b.Left) and
@@ -524,9 +350,9 @@ begin
               begin
                 _Type := vert;
                 if Tail[SecTail(t)].x <= b.Left + b.Width div 2 then
-                  p := Min(p, b.Left - l)
+                  p := Min(p, b.Left - BlockMargin)
                 else
-                  p := Max(p, b.Left + b.Width + l);
+                  p := Max(p, b.Left + b.Width + BlockMargin);
               end;
           end;
       end;
@@ -557,31 +383,31 @@ begin
   {
     если прицеплены и прицепленый конец тащут слишком близко к блоку
     то оставляем прицепленый конец на должном расстоянии от блока
-  }
+    }
   for t := atStart to atEnd do
   begin
     b := Blocks[t].Block;
     if b <> nil then
       case Blocks[t].Port of
         North:
-          if Tail[t].y > b.GetPortPoint(North).y - l then
-            Tail[t] := Point(Tail[t].x, b.GetPortPoint(North).y - l);
+          if Tail[t].y > b.GetPortPoint(North).y - BlockMargin then
+            Tail[t] := Point(Tail[t].x, b.GetPortPoint(North).y - BlockMargin);
         East:
-          if Tail[t].x <= b.GetPortPoint(East).x + l then
-            Tail[t] := Point(b.GetPortPoint(East).x + l, Tail[t].y);
+          if Tail[t].x <= b.GetPortPoint(East).x + BlockMargin then
+            Tail[t] := Point(b.GetPortPoint(East).x + BlockMargin, Tail[t].y);
         West:
-          if Tail[t].x > b.GetPortPoint(West).x - l then
-            Tail[t] := Point(b.GetPortPoint(West).x - l, Tail[t].y);
+          if Tail[t].x > b.GetPortPoint(West).x - BlockMargin then
+            Tail[t] := Point(b.GetPortPoint(West).x - BlockMargin, Tail[t].y);
         South:
-          if Tail[t].y <= b.GetPortPoint(South).y + l then
-            Tail[t] := Point(Tail[t].x, b.GetPortPoint(South).y + l);
+          if Tail[t].y <= b.GetPortPoint(South).y + BlockMargin then
+            Tail[t] := Point(Tail[t].x, b.GetPortPoint(South).y + BlockMargin);
       end;
   end;
 
   {
     если прицеплены и неприцепленый конец тащут слишком близко к блоку
     то оставляем неприцепленый конец на должном расстоянии от блока
-  }
+    }
   for t := atStart to atEnd do
   begin
     b := Blocks[SecTail(t)].Block;
@@ -589,44 +415,44 @@ begin
       case _Type of
         horiz:
           if // (((Tail[t].y>b.Top) and (p<b.Top)) or ((Tail[t].y<b.Top) and (p>b.Top))) and
-            (Tail[t].y > b.Top) and (Tail[t].y < b.Top + b.Height) and (Tail[t].x > b.Left - l) and
-            (Tail[t].x < b.Left + b.Width + l) then
+            (Tail[t].y > b.Top) and (Tail[t].y < b.Top + b.Height) and (Tail[t].x > b.Left - BlockMargin) and
+            (Tail[t].x < b.Left + b.Width + BlockMargin) then
             if Tail[t].x < b.Left + b.Width div 2 then
-              Tail[t] := Point(b.Left - l, Tail[t].y)
+              Tail[t] := Point(b.Left - BlockMargin, Tail[t].y)
             else
-              Tail[t] := Point(b.Left + b.Width + l, Tail[t].y);
+              Tail[t] := Point(b.Left + b.Width + BlockMargin, Tail[t].y);
         vert:
           if // (((Tail[t].x>b.Left) {and (p<b.Left)}) or ((Tail[t].x<b.Left) {and (p>b.Left)})) and
-            (Tail[t].x > b.Left) and (Tail[t].x < b.Left + b.Width) and (Tail[t].y > b.Top - l) and
-            (Tail[t].y < b.Top + b.Height + l) then
+            (Tail[t].x > b.Left) and (Tail[t].x < b.Left + b.Width) and (Tail[t].y > b.Top - BlockMargin) and
+            (Tail[t].y < b.Top + b.Height + BlockMargin) then
             if Tail[t].y < b.Top + b.Height div 2 then
-              Tail[t] := Point(Tail[t].x, b.Top - l)
+              Tail[t] := Point(Tail[t].x, b.Top - BlockMargin)
             else
-              Tail[t] := Point(Tail[t].x, b.Top + b.Height + l);
+              Tail[t] := Point(Tail[t].x, b.Top + b.Height + BlockMargin);
       end;
   end;
 
   {
     если прицеплены и среднее звено тащут слишком близко к блоку
     то оставляем среднее звено на должном расстоянии от блока
-  }
+    }
   for t := atStart to atEnd do
   begin
     b := Blocks[t].Block;
     if b <> nil then
       case Blocks[t].Port of
         East:
-          if (_Type = vert) and (p < b.Left + b.Width + l) then
-            p := b.Left + b.Width + l;
+          if (_Type = vert) and (p < b.Left + b.Width + BlockMargin) then
+            p := b.Left + b.Width + BlockMargin;
         West:
-          if (_Type = vert) and (p > b.Left - l) then
-            p := b.Left - l;
+          if (_Type = vert) and (p > b.Left - BlockMargin) then
+            p := b.Left - BlockMargin;
         North:
-          if (_Type = horiz) and (p > b.Top - l) then
-            p := b.Top - l;
+          if (_Type = horiz) and (p > b.Top - BlockMargin) then
+            p := b.Top - BlockMargin;
         South:
-          if (_Type = horiz) and (p < b.Top + b.Height + l) then
-            p := b.Top + b.Height + l;
+          if (_Type = horiz) and (p < b.Top + b.Height + BlockMargin) then
+            p := b.Top + b.Height + BlockMargin;
       end;
   end;
   for t := atStart to atEnd do
@@ -635,38 +461,40 @@ begin
     if b <> nil then
       case Blocks[t].Port of
         North:
-          if (_Type = vert) and (Tail[SecTail(t)].y > b.Top) and (p > b.Left - l) and (p < b.Left + b.Width + l) then
+          if (_Type = vert) and (Tail[SecTail(t)].y > b.Top) and (p > b.Left - BlockMargin) and
+            (p < b.Left + b.Width + BlockMargin) then
           begin
             if p <= b.Left + b.Width div 2 then
-              p := b.Left - l
+              p := b.Left - BlockMargin
             else
-              p := b.Left + b.Width + l;
+              p := b.Left + b.Width + BlockMargin;
           end;
         East:
-          if (_Type = horiz) and (Tail[SecTail(t)].x < b.Left + b.Width) and (p > b.Top - l) and
-            (p < b.Top + b.Height + l) then
+          if (_Type = horiz) and (Tail[SecTail(t)].x < b.Left + b.Width) and (p > b.Top - BlockMargin) and
+            (p < b.Top + b.Height + BlockMargin) then
           begin
             if p <= b.Top + b.Height div 2 then
-              p := b.Top - l
+              p := b.Top - BlockMargin
             else
-              p := b.Top + b.Height + l;
+              p := b.Top + b.Height + BlockMargin;
           end;
         West:
-          if (_Type = horiz) and (Tail[SecTail(t)].x > b.Left) and (p > b.Top - l) and (p < b.Top + b.Height + l) then
+          if (_Type = horiz) and (Tail[SecTail(t)].x > b.Left) and (p > b.Top - BlockMargin) and
+            (p < b.Top + b.Height + BlockMargin) then
           begin
             if p <= b.Top + b.Height div 2 then
-              p := b.Top - l
+              p := b.Top - BlockMargin
             else
-              p := b.Top + b.Height + l;
+              p := b.Top + b.Height + BlockMargin;
           end;
         South:
-          if (_Type = vert) and (Tail[SecTail(t)].y < b.Top + b.Height) and (p > b.Left - l) and
-            (p < b.Left + b.Width + l) then
+          if (_Type = vert) and (Tail[SecTail(t)].y < b.Top + b.Height) and (p > b.Left - BlockMargin) and
+            (p < b.Left + b.Width + BlockMargin) then
           begin
             if p <= b.Left + b.Width div 2 then
-              p := b.Left - l
+              p := b.Left - BlockMargin
             else
-              p := b.Left + b.Width + l;
+              p := b.Left + b.Width + BlockMargin;
           end;
       end;
   end;
@@ -703,7 +531,7 @@ begin
   // ChildForm.OnPaint(nil);
 end;
 
-procedure TArrow.Dock(Block: TTmpBlock; Tl: TArrowTail; Port: TBlockPort);
+procedure TArrow.Dock(Block: TBlock; Tl: TArrowTail; Port: TBlockPort);
 begin
   Blocks[Tl].Block := Block;
   Blocks[Tl].Port := Port;
@@ -749,7 +577,7 @@ end;
 
 function TArrow.GetTail(t: TArrowTail): TPoint;
 var
-  b: TTmpBlock;
+  b: TBlock;
   q: TPoint;
 
 begin
@@ -792,7 +620,7 @@ end;
 procedure TArrow.Draw;
 var
   i: TArrowTail;
-  b: TTmpBlock;
+  b: TBlock;
   DrawElls: boolean;
 
   procedure Ell(x, y: integer);
@@ -813,39 +641,39 @@ var
     i: integer;
 
   begin
-    for i := 0 to arrH - 1 do
+    for i := 0 to ArrH - 1 do
       case Dir of
         North:
           begin
-            DrawCanvas.MoveTo(xo + x - Round(i / arrH * arrW), yo + y - i);
-            DrawCanvas.LineTo(xo + x + Round(i / arrH * arrW), yo + y - i);
+            DrawCanvas.MoveTo(xo + x - Round(i / ArrH * ArrW), yo + y - i);
+            DrawCanvas.LineTo(xo + x + Round(i / ArrH * ArrW), yo + y - i);
           end;
         East:
           begin
-            DrawCanvas.MoveTo(xo + x + i, yo + y - Round(i / arrH * arrW));
-            DrawCanvas.LineTo(xo + x + i, yo + y + Round(i / arrH * arrW));
+            DrawCanvas.MoveTo(xo + x + i, yo + y - Round(i / ArrH * ArrW));
+            DrawCanvas.LineTo(xo + x + i, yo + y + Round(i / ArrH * ArrW));
           end;
         West:
           begin
-            DrawCanvas.MoveTo(xo + x - i, yo + y - Round(i / arrH * arrW));
-            DrawCanvas.LineTo(xo + x - i, yo + y + Round(i / arrH * arrW));
+            DrawCanvas.MoveTo(xo + x - i, yo + y - Round(i / ArrH * ArrW));
+            DrawCanvas.LineTo(xo + x - i, yo + y + Round(i / ArrH * ArrW));
           end;
         South:
           begin
-            DrawCanvas.MoveTo(xo + x - Round(i / arrH * arrW), yo + y + i);
-            DrawCanvas.LineTo(xo + x + Round(i / arrH * arrW), yo + y + i);
+            DrawCanvas.MoveTo(xo + x - Round(i / ArrH * ArrW), yo + y + i);
+            DrawCanvas.LineTo(xo + x + Round(i / ArrH * ArrW), yo + y + i);
           end;
       end;
     DrawCanvas.MoveTo(xo + x, yo + y);
     case Dir of
       North:
-        DrawCanvas.LineTo(xo + x, yo + y - arrH);
+        DrawCanvas.LineTo(xo + x, yo + y - ArrH);
       East:
-        DrawCanvas.LineTo(xo + x + arrH, yo + y);
+        DrawCanvas.LineTo(xo + x + ArrH, yo + y);
       West:
-        DrawCanvas.LineTo(xo + x - arrH, yo + y);
+        DrawCanvas.LineTo(xo + x - ArrH, yo + y);
       South:
-        DrawCanvas.LineTo(xo + x, yo + y + arrH);
+        DrawCanvas.LineTo(xo + x, yo + y + ArrH);
     end;
   end;
 
@@ -981,12 +809,12 @@ begin
         horiz:
           begin
             p := y;
-            Tail[pTail] := Point(x, dMous.y + Tail[pTail].y);
+            Tail[pTail] := Point(x, dMouse.y + Tail[pTail].y);
           end;
         vert:
           begin
             p := x;
-            Tail[pTail] := Point(dMous.x + Tail[pTail].x, y);
+            Tail[pTail] := Point(dMouse.x + Tail[pTail].x, y);
           end;
       end;
   end;
@@ -996,15 +824,15 @@ begin
     то прицепляемся
     если нас тащут за конец и этот конец прицеплен и он не может быть прицеплен
     то отцепляемся
-  }
+    }
   if not DoesNotUnDock then
   begin
     for i := 0 to ChildForm.BlockList.Count - 1 do
-      if TTmpBlock(ChildForm.BlockList[i]).CanIDock(x, y, Obj2Tail(DragObj), true) then
+      if TBlock(ChildForm.BlockList[i]).CanIDock(x, y, Obj2Tail(DragObj), true) then
       begin
         if Blocks[Obj2Tail(DragObj)].Block <> nil then
           UnDock(Obj2Tail(DragObj));
-        Dock(TTmpBlock(ChildForm.BlockList[i]), Obj2Tail(DragObj), TTmpBlock(ChildForm.BlockList[i]).GetPort(x, y));
+        Dock(TBlock(ChildForm.BlockList[i]), Obj2Tail(DragObj), TBlock(ChildForm.BlockList[i]).GetPort(x, y));
         if not ChildForm.ANew.New then
           Draw;
       end;
@@ -1025,7 +853,7 @@ begin
     то устанавливаем среднее звено вертикально
     иначе устанавливаем среднее звено горизонтально
     устанавливаем среднее звено посередине
-  }
+    }
   if (DragObj <> pnt) and (Blocks[SecTail(Obj2Tail(DragObj))].Block = nil) then
   begin
     if Abs(Tail[atStart].x - Tail[atEnd].x) > Abs(Tail[atStart].y - Tail[atEnd].y) then
@@ -1048,29 +876,30 @@ begin
   if (DragObj in [st, en]) and (Blocks[Obj2Tail(DragObj)].Block = nil) then
   begin
     for j := 0 to ChildForm.BlockList.Count - 1 do
-      TTmpBlock(ChildForm.BlockList[j]).CanIDock(Mous.x, Mous.y, Obj2Tail(DragObj), true);
+      TBlock(ChildForm.BlockList[j]).CanIDock(Mouse.x, Mouse.y, Obj2Tail(DragObj), true);
   end;
 end;
 
 procedure TArrow.GetObj;
 begin
   DragObj := none;
-  if (Mous.x > Tail[atStart].x - R) and (Mous.x < Tail[atStart].x + R) and (Mous.y > Tail[atStart].y - R) and
-    (Mous.y < Tail[atStart].y + R) then
+  if (Mouse.x > Tail[atStart].x - HotRadius) and (Mouse.x < Tail[atStart].x + HotRadius) and
+    (Mouse.y > Tail[atStart].y - HotRadius) and (Mouse.y < Tail[atStart].y + HotRadius) then
     DragObj := st;
-  if (Mous.x > Tail[atEnd].x - R) and (Mous.x < Tail[atEnd].x + R) and (Mous.y > Tail[atEnd].y - R) and
-    (Mous.y < Tail[atEnd].y + R) then
+  if (Mouse.x > Tail[atEnd].x - HotRadius) and (Mouse.x < Tail[atEnd].x + HotRadius) and
+    (Mouse.y > Tail[atEnd].y - HotRadius) and (Mouse.y < Tail[atEnd].y + HotRadius) then
     DragObj := en;
   case _Type of
     horiz:
       begin
-        if (Mous.x > Tail[atStart].x - R) and (Mous.x < Tail[atStart].x + R) and (Mous.y > p - R) and (Mous.y < p + R)
-          then
+        if (Mouse.x > Tail[atStart].x - HotRadius) and (Mouse.x < Tail[atStart].x + HotRadius) and
+          (Mouse.y > p - HotRadius) and (Mouse.y < p + HotRadius) then
         begin
           DragObj := pnt;
           pTail := atStart;
         end;
-        if (Mous.x > Tail[atEnd].x - R) and (Mous.x < Tail[atEnd].x + R) and (Mous.y > p - R) and (Mous.y < p + R) then
+        if (Mouse.x > Tail[atEnd].x - HotRadius) and (Mouse.x < Tail[atEnd].x + HotRadius) and (Mouse.y > p - HotRadius)
+          and (Mouse.y < p + HotRadius) then
         begin
           DragObj := pnt;
           pTail := atEnd;
@@ -1078,13 +907,14 @@ begin
       end;
     vert:
       begin
-        if (Mous.x > p - R) and (Mous.x < p + R) and (Mous.y > Tail[atStart].y - R) and (Mous.y < Tail[atStart].y + R)
-          then
+        if (Mouse.x > p - HotRadius) and (Mouse.x < p + HotRadius) and (Mouse.y > Tail[atStart].y - HotRadius) and
+          (Mouse.y < Tail[atStart].y + HotRadius) then
         begin
           DragObj := pnt;
           pTail := atStart;
         end;
-        if (Mous.x > p - R) and (Mous.x < p + R) and (Mous.y > Tail[atEnd].y - R) and (Mous.y < Tail[atEnd].y + R) then
+        if (Mouse.x > p - HotRadius) and (Mouse.x < p + HotRadius) and (Mouse.y > Tail[atEnd].y - HotRadius) and
+          (Mouse.y < Tail[atEnd].y + HotRadius) then
         begin
           DragObj := pnt;
           pTail := atEnd;
@@ -1106,13 +936,13 @@ begin
   Backup := Blocks;
   for i := atStart to atEnd do
     if Blocks[i].Block <> nil then
-      if (Mous.x > Blocks[i].Block.GetPortPoint(Blocks[i].Port).x - R) and
-        (Mous.x < Blocks[i].Block.GetPortPoint(Blocks[i].Port).x + R) and
-        (Mous.y > Blocks[i].Block.GetPortPoint(Blocks[i].Port).y - R) and
-        (Mous.y < Blocks[i].Block.GetPortPoint(Blocks[i].Port).y + R) then
+      if (Mouse.x > Blocks[i].Block.GetPortPoint(Blocks[i].Port).x - HotRadius) and
+        (Mouse.x < Blocks[i].Block.GetPortPoint(Blocks[i].Port).x + HotRadius) and
+        (Mouse.y > Blocks[i].Block.GetPortPoint(Blocks[i].Port).y - HotRadius) and
+        (Mouse.y < Blocks[i].Block.GetPortPoint(Blocks[i].Port).y + HotRadius) then
       begin
         UnDock(i);
-        Tail[i] := Point(Mous.x, Mous.y);
+        Tail[i] := Point(Mouse.x, Mouse.y);
         ChildForm.Refresh;
       end;
 
@@ -1142,17 +972,17 @@ begin
   if (DragObj in [st, en]) and (Blocks[Obj2Tail(DragObj)].Block = nil) then
   begin
     for j := 0 to ChildForm.BlockList.Count - 1 do
-      TTmpBlock(ChildForm.BlockList[j]).CanIDock(Mous.x, Mous.y, Obj2Tail(DragObj), true);
+      TBlock(ChildForm.BlockList[j]).CanIDock(Mouse.x, Mouse.y, Obj2Tail(DragObj), true);
   end;
 
   case _Type of
     vert:
-      if ((Mous.x > Min(Tail[atStart].x, p) - R) and (Mous.x < Max(Tail[atStart].x, p) + R) and
-          (Mous.y > Tail[atStart].y - R) and (Mous.y < Tail[atStart].y + R)) or
-        ((Mous.x > p - R) and (Mous.x < p + R) and (Mous.y > Min(Tail[atStart].y, Tail[atEnd].y) - R) and
-          (Mous.y < Max(Tail[atStart].y, Tail[atEnd].y) + R)) or
-        ((Mous.x > Min(p, Tail[atEnd].x) - R) and (Mous.x < Max(p, Tail[atEnd].x) + R) and
-          (Mous.y > Tail[atEnd].y - R) and (Mous.y < Tail[atEnd].y + R)) then
+      if ((Mouse.x > Min(Tail[atStart].x, p) - HotRadius) and (Mouse.x < Max(Tail[atStart].x, p) + HotRadius) and
+          (Mouse.y > Tail[atStart].y - HotRadius) and (Mouse.y < Tail[atStart].y + HotRadius)) or
+        ((Mouse.x > p - HotRadius) and (Mouse.x < p + HotRadius) and (Mouse.y > Min(Tail[atStart].y,
+            Tail[atEnd].y) - HotRadius) and (Mouse.y < Max(Tail[atStart].y, Tail[atEnd].y) + HotRadius)) or
+        ((Mouse.x > Min(p, Tail[atEnd].x) - HotRadius) and (Mouse.x < Max(p, Tail[atEnd].x) + HotRadius) and
+          (Mouse.y > Tail[atEnd].y - HotRadius) and (Mouse.y < Tail[atEnd].y + HotRadius)) then
       begin
         if not(ssShift in Shift) then
           ChildForm.Actives.Clear;
@@ -1160,11 +990,12 @@ begin
         ChildForm.Refresh;
       end;
     horiz:
-      if ((Mous.x > Tail[atStart].x - R) and (Mous.x < Tail[atStart].x + R) and (Mous.y > Min(Tail[atStart].y, p) - R)
-          and (Mous.y < Max(Tail[atStart].y, p) + R)) or
-        ((Mous.x > Min(Tail[atStart].x, Tail[atEnd].x) - R) and (Mous.x < Max(Tail[atStart].x, Tail[atEnd].x) + R) and
-          (Mous.y > p - R) and (Mous.y < p + R)) or ((Mous.x > Tail[atEnd].x - R) and (Mous.x < Tail[atEnd].x + R) and
-          (Mous.y > Min(p, Tail[atEnd].y) - R) and (Mous.y < Max(p, Tail[atEnd].y) + R)) then
+      if ((Mouse.x > Tail[atStart].x - HotRadius) and (Mouse.x < Tail[atStart].x + HotRadius) and
+          (Mouse.y > Min(Tail[atStart].y, p) - HotRadius) and (Mouse.y < Max(Tail[atStart].y, p) + HotRadius)) or
+        ((Mouse.x > Min(Tail[atStart].x, Tail[atEnd].x) - HotRadius) and (Mouse.x < Max(Tail[atStart].x,
+            Tail[atEnd].x) + HotRadius) and (Mouse.y > p - HotRadius) and (Mouse.y < p + HotRadius)) or
+        ((Mouse.x > Tail[atEnd].x - HotRadius) and (Mouse.x < Tail[atEnd].x + HotRadius) and (Mouse.y > Min(p,
+            Tail[atEnd].y) - HotRadius) and (Mouse.y < Max(p, Tail[atEnd].y) + HotRadius)) then
       begin
         if not(ssShift in Shift) then
           ChildForm.Actives.Clear;

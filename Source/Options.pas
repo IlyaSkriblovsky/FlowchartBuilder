@@ -58,7 +58,7 @@ var
 
 implementation
 
-uses Main, Child, About, EdTypes;
+uses Main, Child, About, Block;
 {$R *.DFM}
 
 procedure TfrmOpt.FormCreate(Sender: TObject);

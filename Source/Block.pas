@@ -1,15 +1,15 @@
-﻿unit EdTypes;
+﻿unit Block;
 
 interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Arrows;
+  StdCtrls, ExtCtrls, Constants;
 
 type
   SetBlocks = (stBeginEnd, stStatement, stIf, stInOut, stCall, stGlob, stInit, stComment, stConfl);
 
-  TBlock = class(TTmpBlock)
+  TBlock = class(TPaintBox)
     constructor Create(AOwner: TComponent); override;
     procedure Paint; override;
 
@@ -17,6 +17,9 @@ type
     FBlockType: SetBlocks;
 
   public
+    Ins: set of TBlockPort;
+    Blocked: set of TBlockPort;
+
     Statement: TStringList;
     UnfText: TStringList;
     RemText: string;
@@ -26,22 +29,154 @@ type
     DrawCanvas: TCanvas;
     XOffs, YOffs: integer;
 
-    function Isd: boolean;
+    procedure DrawPort(Port: TBlockPort);
 
-    function IsPortAvail(t: TArrowTail; p: TBlockPort; laa: boolean): boolean; override;
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; x, y: integer); override;
+    procedure MouseMove(Shift: TShiftState; x, y: integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; x, y: integer); override;
+
+    function IsPortAvail(t: TArrowTail; p: TBlockPort; LookAtAlready: boolean): boolean;
+
+    function CanIDock(x, y: integer; Tail: TArrowTail; LookAtAlready: boolean): boolean;
+    function GetPort(x, y: integer): TBlockPort;
+    function GetPortPoint(Port: TBlockPort): TPoint;
+
+    function Isd: boolean;
 
     procedure SetBlockType(Value: SetBlocks);
     procedure WriteText;
 
-    procedure DrawPort(Port: TBlockPort); override;
     property BlockType: SetBlocks read FBlockType write SetBlockType;
   end;
 
 implementation
 
-uses Child, Math, Main;
+uses Child, Math, Main, Arrows;
 
 (* **  TBlock  ** *)
+procedure TBlock.MouseDown(Button: TMouseButton; Shift: TShiftState; x, y: integer);
+begin
+  if ChildForm.ANew.New then
+  begin
+    ChildForm.FormMouseDown(nil, mbLeft, [], Left + x, Top + y);
+    Exit;
+  end;
+
+  inherited;
+
+  ChildForm.Refresh;
+end;
+
+procedure TBlock.MouseMove(Shift: TShiftState; x, y: integer);
+begin
+  if ChildForm.ANew.New then
+    ChildForm.FormMouseMove(nil, [], Left + x, Top + y)
+  else
+    inherited;
+end;
+
+procedure TBlock.MouseUp(Button: TMouseButton; Shift: TShiftState; x, y: integer);
+begin
+  if ChildForm.ANew.New then
+    ChildForm.FormMouseUp(nil, mbLeft, [], Left + x, Top + y)
+  else
+  begin
+    inherited;
+    ChildForm.Refresh;
+  end;
+end;
+
+function TBlock.GetPortPoint(Port: TBlockPort): TPoint;
+begin
+  case Port of
+    North:
+      Result := Point(Left + Width div 2, Top);
+    East:
+      Result := Point(Left + Width, Top + Height div 2);
+    West:
+      Result := Point(Left, Top + Height div 2);
+    South:
+      Result := Point(Left + Width div 2, Top + Height);
+  end;
+end;
+
+function TBlock.GetPort(x, y: integer): TBlockPort;
+begin
+  Dec(x, Left);
+  Dec(y, Top);
+  Result := North;
+  if (x > Width div 4) and (x <= 3 * Width div 4) and (y > -HotRadius) and (y <= Height div 2) then
+    Result := North;
+  if (x > Width div 4) and (x <= 3 * Width div 4) and (y > Height div 2) and (y <= Height + HotRadius) then
+    Result := South;
+  if (x > 3 * Width div 4) and (x <= Width + HotRadius) and (y > 0) and (y <= Height) then
+    Result := East;
+  if (x > 0 - HotRadius) and (x <= Width div 4) and (y > 0) and (y <= Height) then
+    Result := West;
+end;
+
+// function TBlock.IsPortAvail(t: TArrowTail; p: TBlockPort; LookAtAlready: boolean): boolean;
+// var
+// i: integer;
+//
+// begin
+// end;
+
+function TBlock.CanIDock(x, y: integer; Tail: TArrowTail; LookAtAlready: boolean): boolean;
+var
+  t: TBlockPort;
+
+  procedure SetColor(blink: boolean);
+  begin
+    if blink then
+    begin
+      Canvas.Pen.Color := clRed;
+      Canvas.Brush.Color := clRed;
+    end
+    else
+    begin
+      Canvas.Pen.Color := $9900;
+      Canvas.Brush.Color := $9900;
+    end;
+  end;
+
+  function Test(p: TBlockPort): boolean;
+  begin
+    Result := false;
+    case p of
+      North:
+        if (x > Width div 4) and (x <= 3 * Width div 4) and (y > 0 - HotRadius) and (y <= Height div 2) then
+          Result := true;
+      East:
+        if (x > 3 * Width div 4) and (x <= Width + HotRadius) and (y > 0) and (y <= Height) then
+          Result := true;
+      West:
+        if (x > -HotRadius) and (x <= Width div 4) and (y > 0) and (y <= Height) then
+          Result := true;
+      South:
+        if (x > Width div 4) and (x <= 3 * Width div 4) and (y > Height div 2) and (y <= Height + HotRadius) then
+          Result := true;
+    end;
+  end;
+
+begin
+  Result := false;
+  SetColor(false);
+  Dec(x, Left);
+  Dec(y, Top);
+  for t := North to South do
+  begin
+    if IsPortAvail(Tail, t, LookAtAlready) then
+    begin
+      if Test(t) then
+        Result := true;
+      SetColor(Test(t));
+      DrawPort(t);
+    end;
+  end;
+  SetColor(false);
+end;
+
 function TBlock.Isd: boolean;
 var
   i: integer;
@@ -49,11 +184,12 @@ var
 begin
   Result := false;
   for i := 0 to ChildForm.ArrowList.Count - 1 do
-    if (ChildForm.ArrowList.Items[i].Blocks[atEnd].Block = Self) and (ChildForm.ArrowList.Items[i].Blocks[atEnd].Port = South) then
+    if (ChildForm.ArrowList.Items[i].Blocks[atEnd].Block = Self) and
+      (ChildForm.ArrowList.Items[i].Blocks[atEnd].Port = South) then
       Result := true;
 end;
 
-function TBlock.IsPortAvail(t: TArrowTail; p: TBlockPort; laa: boolean): boolean;
+function TBlock.IsPortAvail(t: TArrowTail; p: TBlockPort; LookAtAlready: boolean): boolean;
 var
   i: integer;
   w, s, e: bool;
@@ -61,7 +197,24 @@ var
 
 begin
   if BlockType <> stIf then
-    Result := inherited IsPortAvail(t, p, laa)
+  begin
+    // Result := inherited IsPortAvail(t, p, laa)
+    Result := true;
+    if p in Blocked then
+      Result := false;
+    if (t = atStart) and (not(p in Ins)) then
+      Result := false;
+    if t = atEnd then
+    begin
+      if p in Ins then
+        Result := false;
+      if LookAtAlready then
+        for i := 0 to ChildForm.ArrowList.Count - 1 do
+          if (ChildForm.ArrowList.Items[i].Blocks[atEnd].Block = Self) and
+            (ChildForm.ArrowList.Items[i].Blocks[atEnd].Port = p) then
+            Result := false;
+    end
+  end
   else
   begin
     if t = atStart then
@@ -91,17 +244,17 @@ begin
         if (w and s) or (s and e) or (e and w) then
         begin
           Result := false;
-          exit;
+          Exit;
         end;
         if (w and (p = West)) or (s and (p = South)) or (e and (p = East)) then
         begin
           Result := false;
-          exit;
+          Exit;
         end;
         if e then
         begin
           Result := not(s or w);
-          exit;
+          Exit;
         end;
         if (w and (p = South)) or (s and (p = West)) then
           Result := false
@@ -141,7 +294,7 @@ begin
   if BlockType = stComment then
     Lines := UnfText;
   if BlockType = stConfl then
-    exit;
+    Exit;
 
   tW := 0;
   tH := 0;

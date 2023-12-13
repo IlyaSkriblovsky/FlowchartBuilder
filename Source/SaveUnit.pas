@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, EdTypes, Arrows;
+  StdCtrls, ExtCtrls, Block, Arrows;
 
 procedure SaveScheme(FileName: string);
 
@@ -15,7 +15,7 @@ var
 
 implementation
 
-uses Main, Child;
+uses Main, Child, Constants;
 
 var
   F: TextFile;

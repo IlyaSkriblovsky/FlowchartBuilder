@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Menus, Buttons, ExtCtrls, StdCtrls, IniFiles, EdTypes, OpenUnit, SaveUnit,
-  ComCtrls, Printers, Lang, Math, Arrows, Ini, BlockProps, Generics.Collections;
+  Menus, Buttons, ExtCtrls, StdCtrls, IniFiles, Block, OpenUnit, SaveUnit,
+  ComCtrls, Printers, Lang, Math, Arrows, Ini, BlockProps, Generics.Collections, Constants;
 
 type
   TActives = class;
@@ -139,8 +139,8 @@ type
 
     procedure CreateArrow;
     function MakeReplace(b1, b2: TBlock; T: TArrowTail; ChangePort: Boolean = false; Port: TBlockPort = North): TArrow;
-    procedure MoveAllDown(b1: TTmpBlock; h: Integer);
-    procedure MoveAllLeftRight(b1: TTmpBlock; l, r: Integer);
+    procedure MoveAllDown(b1: TBlock; h: Integer);
+    procedure MoveAllLeftRight(b1: TBlock; l, r: Integer);
 
     procedure AllArrowsStandWell;
 
@@ -409,8 +409,8 @@ var
 
 begin
   for i := 0 to BlockList.Count - 1 do
-    if TTmpBlock(BlockList[i]).CanIDock(Mous.X, Mous.Y, ANew.Tail, true) then
-      ANew.Arrow.Dock(TTmpBlock(BlockList[i]), atStart, TTmpBlock(BlockList[i]).GetPort(Mous.X, Mous.Y));
+    if TBlock(BlockList[i]).CanIDock(Mouse.X, Mouse.Y, ANew.Tail, true) then
+      ANew.Arrow.Dock(TBlock(BlockList[i]), atStart, TBlock(BlockList[i]).GetPort(Mouse.X, Mouse.Y));
 
   ANew.New := false;
   MainForm.btnLineRun.down := false;
@@ -954,29 +954,29 @@ end;
 function TChildForm.GetNext(Cur: TBlock; Cond: Boolean): TBlock;
 var
   i: Integer;
-  arrow: TArrow;
+  Arrow: TArrow;
 
 begin
   Result := nil;
   for i := 0 to ArrowList.Count - 1 do
   begin
-    arrow := ArrowList.Items[i];
-    if arrow.Blocks[atEnd].Block = Cur then
+    Arrow := ArrowList.Items[i];
+    if Arrow.Blocks[atEnd].Block = Cur then
       if Cur.BlockType <> stIf then
-        Result := TBlock(arrow.Blocks[atStart].Block)
+        Result := TBlock(Arrow.Blocks[atStart].Block)
       else if Cond then
       begin
-        if (Cur.Isd) and (arrow.Blocks[atEnd].Port = South) then
-          Result := TBlock(arrow.Blocks[atStart].Block);
-        if (not Cur.Isd) and (arrow.Blocks[atEnd].Port = East) then
-          Result := TBlock(arrow.Blocks[atStart].Block);
+        if (Cur.Isd) and (Arrow.Blocks[atEnd].Port = South) then
+          Result := TBlock(Arrow.Blocks[atStart].Block);
+        if (not Cur.Isd) and (Arrow.Blocks[atEnd].Port = East) then
+          Result := TBlock(Arrow.Blocks[atStart].Block);
       end
       else
       begin
-        if (Cur.Isd) and (arrow.Blocks[atEnd].Port = East) then
-          Result := TBlock(arrow.Blocks[atStart].Block);
-        if (not Cur.Isd) and (arrow.Blocks[atEnd].Port = West) then
-          Result := TBlock(arrow.Blocks[atStart].Block);
+        if (Cur.Isd) and (Arrow.Blocks[atEnd].Port = East) then
+          Result := TBlock(Arrow.Blocks[atStart].Block);
+        if (not Cur.Isd) and (Arrow.Blocks[atEnd].Port = West) then
+          Result := TBlock(Arrow.Blocks[atStart].Block);
       end;
   end;
   if (Result <> nil) and (Result.BlockType = stConfl) then
@@ -1353,7 +1353,7 @@ begin
   if not(ssShift in Shift) then
     Actives.Clear;
 
-  Mous := Point(X, Y);
+  Mouse := Point(X, Y);
   DoExit := false;
   for i := 0 to ArrowList.Count - 1 do
   begin
@@ -1437,8 +1437,8 @@ var
   i: Integer;
 
 begin
-  dMous := Point(X - Mous.X, Y - Mous.Y);
-  Mous := Point(X, Y);
+  dMouse := Point(X - Mouse.X, Y - Mouse.Y);
+  Mouse := Point(X, Y);
 
   if ANew.New then
   begin
@@ -1504,9 +1504,9 @@ begin
     if (ArrowList.Items[j].IsDrag) and (ArrowList.Items[j].DragObj in [st, en]) then
     begin
       for i := 0 to BlockList.Count - 1 do
-        if TTmpBlock(BlockList[i]).CanIDock(X, Y, Obj2Tail(ArrowList.Items[j].DragObj), true) then
-          ArrowList.Items[j].Dock(TTmpBlock(BlockList[i]), Obj2Tail(ArrowList.Items[j].DragObj),
-            TTmpBlock(BlockList[i]).GetPort(X, Y));
+        if TBlock(BlockList[i]).CanIDock(X, Y, Obj2Tail(ArrowList.Items[j].DragObj), true) then
+          ArrowList.Items[j].Dock(TBlock(BlockList[i]), Obj2Tail(ArrowList.Items[j].DragObj),
+            TBlock(BlockList[i]).GetPort(X, Y));
     end;
 
   for i := 0 to ArrowList.Count - 1 do
@@ -1995,7 +1995,7 @@ end;
   end;
   *)
 
-procedure TChildForm.MoveAllDown(b1: TTmpBlock; h: Integer);
+procedure TChildForm.MoveAllDown(b1: TBlock; h: Integer);
 var
   i: Integer;
   b: TBlock;
@@ -2024,7 +2024,7 @@ begin
   end;
 end;
 
-procedure TChildForm.MoveAllLeftRight(b1: TTmpBlock; l, r: Integer);
+procedure TChildForm.MoveAllLeftRight(b1: TBlock; l, r: Integer);
 var
   i, c, c1: Integer;
   j: TArrowTail;
@@ -2207,7 +2207,7 @@ begin
   c.Top := s2.Top + s2.Height + Ind;
 
   MoveAllDown(TmpBlock, c.Top - if1.Top - s2.Height + c.Height);
-  MoveAllLeftRight(TmpBlock, l, s2.Left + s2.Width - TmpBlock.Left - TmpBlock.Width);
+  MoveAllLeftRight(TmpBlock, BlockMargin, s2.Left + s2.Width - TmpBlock.Left - TmpBlock.Width);
 
   BlockList.Add(if1);
   BlockList.Add(s2);
@@ -2481,3 +2481,4 @@ begin
 end;
 
 end.
+

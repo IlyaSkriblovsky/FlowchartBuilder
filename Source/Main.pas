@@ -6,8 +6,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Menus, Buttons, ExtCtrls, StdCtrls, EdTypes, OpenUnit, SaveUnit, Math, Generics.Collections,
-  ComCtrls, ToolWin, ActnList, AppEvnts, ShellAPI, Arrows, JPEG, ini, StrUtils, Lang;
+  Menus, Buttons, ExtCtrls, StdCtrls, Block, OpenUnit, SaveUnit, Math, Generics.Collections,
+  ComCtrls, ToolWin, ActnList, AppEvnts, ShellAPI, Arrows, JPEG, ini, StrUtils, Lang, Constants;
 
 type
   TUndoType = (utEmpty, utBlocksMove, utTextChange, utArrowMove, utNewBlock, utNewArrow, utDelBlock, utDelArrow);

@@ -3,7 +3,7 @@
 interface
 
 uses
-  Windows, Forms, EdTypes, Classes, Controls, StdCtrls, ExtCtrls, Buttons;
+  Windows, Forms, Block, Classes, Controls, StdCtrls, ExtCtrls, Buttons;
 
 const
   without_help = 318;

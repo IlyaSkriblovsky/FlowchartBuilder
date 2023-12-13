@@ -47,7 +47,7 @@
 			<DCCReference Include="Main.pas">
 				<Form>MainForm</Form>
 			</DCCReference>
-			<DCCReference Include="EdTypes.pas"/>
+			<DCCReference Include="Block.pas"/>
 			<DCCReference Include="About.pas">
 				<Form>AboutBox</Form>
 			</DCCReference>
@@ -81,6 +81,7 @@
 			<DCCReference Include="ZoomForm.pas">
 				<Form>frmZoom</Form>
 			</DCCReference>
+			<DCCReference Include="Constants.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
