@@ -76,6 +76,7 @@ begin
         s := false;
         e := false;
         for i := 0 to ChildForm.ArrowList.Count - 1 do
+        begin
           blockRec := ChildForm.ArrowList.Items[i].Blocks[atEnd];
           if blockRec.Block = Self then
           begin
@@ -86,6 +87,7 @@ begin
             if blockRec.Port = East then
               e := true;
           end;
+        end;
         if (w and s) or (s and e) or (e and w) then
         begin
           Result := false;
