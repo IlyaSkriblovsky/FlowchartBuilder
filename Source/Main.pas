@@ -1026,7 +1026,9 @@ end;
 
 procedure TMainForm.AutoTimerTimer(Sender: TObject);
 begin
+  MainForm.AutoTimer.Enabled := false;
   btnStep.Click;
+  MainForm.AutoTimer.Enabled := MainForm.AutoExec;
 end;
 
 procedure TMainForm.AboutShowTimer(Sender: TObject);

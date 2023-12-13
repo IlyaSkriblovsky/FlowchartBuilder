@@ -1106,10 +1106,8 @@ begin
           tmp := Lines[0];
           Delete(tmp, System.Pos('?', tmp), 1);
           Lines[0] := tmp;
-          AutoPause;
           Lines[0] := Lines[0] + ' := ' + InputBox('Ввод', IfThen(MainForm.StatusBar.Panels[1].Text <> '',
               MainForm.StatusBar.Panels[1].Text, 'Введите значение: '), '');
-          AutoResume;
           ReadBlock(Lines, Lexs);
           if CheckOperator(Lexs) then
             ExecOperator(Lexs, Vars)
@@ -1248,11 +1246,9 @@ begin
           FTbCur.Color := ChildForm.ColorBlock;
           if not HasFirstBlock then
           begin
-            AutoPause;
             MessageDlg(
               'В вызываемой схеме не указан первый элемент'#10#13'Откройте эту схему, задайте первый элемент и сохраните ее.'
                 , mtError, [mbOK], 0);
-            AutoResume;
             Cur := nil;
           end
           else
@@ -1263,9 +1259,7 @@ begin
         end
         else
         begin
-          AutoPause;
           MessageDlg('Схема ' + fstr + '.bsh не существует.'#10#13'Pабота схемы завершена', mtError, [mbOK], 0);
-          AutoResume;
           Cur := nil;
         end;
       end;

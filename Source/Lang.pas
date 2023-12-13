@@ -1601,9 +1601,7 @@ begin
     Result := MakeVal(AnsiLowerCase(P[1].Str));
   if n = 'message' then
   begin
-    AutoPause;
     MessageBox(MainForm.Handle, PChar(P[1].Str), 'Конструктор блок-схем', MB_ICONINFORMATION);
-    AutoResume;
     Result := MakeVal(P[1].Str);
   end;
   if n = 'insert' then
