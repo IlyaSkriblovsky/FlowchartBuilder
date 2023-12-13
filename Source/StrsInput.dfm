@@ -17,6 +17,7 @@ object StrsForm: TStrsForm
   OldCreateOrder = False
   ParentBiDiMode = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Memo: TMemo
@@ -25,8 +26,15 @@ object StrsForm: TStrsForm
     Width = 225
     Height = 146
     Align = alClient
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Courier New'
+    Font.Style = []
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 0
+    OnKeyDown = MemoKeyDown
   end
   object Panel1: TPanel
     Left = 0

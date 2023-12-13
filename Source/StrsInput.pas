@@ -15,6 +15,8 @@ type
     BitBtn2: TBitBtn;
     procedure btnOKClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure MemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -48,6 +50,24 @@ procedure TStrsForm.btnOKClick(Sender: TObject);
 begin
   ModalResult := mrOK;
   Memo.SetFocus; // Makes this form easy to use. Modified by Roman Mitin
+end;
+
+procedure TStrsForm.FormShow(Sender: TObject);
+begin
+  Memo.ClearSelection;
+  Memo.SelStart := 0;
+  Memo.SetFocus;
+end;
+
+procedure TStrsForm.MemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if (Key = VK_RETURN) and (ssCtrl in Shift) then
+  begin
+    Key := 0;
+    btnOK.Click;
+  end;
+  if Key = VK_ESCAPE then
+    btnCancel.Click;
 end;
 
 procedure TStrsForm.btnCancelClick(Sender: TObject);
