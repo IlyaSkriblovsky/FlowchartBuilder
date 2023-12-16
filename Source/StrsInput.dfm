@@ -6,8 +6,8 @@ object StrsForm: TStrsForm
   BorderStyle = bsSizeToolWin
   BorderWidth = 5
   Caption = 'StrsForm'
-  ClientHeight = 206
-  ClientWidth = 225
+  ClientHeight = 209
+  ClientWidth = 223
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -23,8 +23,8 @@ object StrsForm: TStrsForm
   object Memo: TMemo
     Left = 0
     Top = 20
-    Width = 225
-    Height = 146
+    Width = 223
+    Height = 149
     Align = alClient
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
@@ -35,19 +35,23 @@ object StrsForm: TStrsForm
     ScrollBars = ssBoth
     TabOrder = 0
     OnKeyDown = MemoKeyDown
+    ExplicitWidth = 225
+    ExplicitHeight = 146
   end
   object Panel1: TPanel
     Left = 0
-    Top = 166
-    Width = 225
+    Top = 169
+    Width = 223
     Height = 40
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 166
+    ExplicitWidth = 225
     DesignSize = (
-      225
+      223
       40)
-    object BitBtn1: TBitBtn
+    object btnOk: TBitBtn
       Left = 40
       Top = 12
       Width = 73
@@ -77,8 +81,8 @@ object StrsForm: TStrsForm
       TabOrder = 0
       OnClick = btnOKClick
     end
-    object BitBtn2: TBitBtn
-      Left = 128
+    object btnCancel: TBitBtn
+      Left = 126
       Top = 12
       Width = 73
       Height = 25
@@ -89,16 +93,18 @@ object StrsForm: TStrsForm
       ParentDoubleBuffered = False
       TabOrder = 1
       OnClick = btnCancelClick
+      ExplicitLeft = 128
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 225
+    Width = 223
     Height = 20
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitWidth = 225
     object Prompt: TLabel
       Left = 8
       Top = 4

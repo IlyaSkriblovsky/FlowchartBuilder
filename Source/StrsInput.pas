@@ -11,8 +11,8 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     Prompt: TLabel;
-    BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
+    btnOk: TBitBtn;
+    btnCancel: TBitBtn;
     procedure btnOKClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -30,6 +30,7 @@ function MemoInput(ACaption, APrompt: string; var Strs: TStringList): boolean;
 
 implementation
 
+uses Windows;
 {$R *.dfm}
 
 function MemoInput(ACaption, APrompt: string; var Strs: TStringList): boolean;
