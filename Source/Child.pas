@@ -1471,16 +1471,6 @@ begin
     Bevel.Width := max(Xd, Xc) - Bevel.Left;
     Bevel.Height := max(Yd, Yc) - Bevel.Top;
   end;
-
-  // AboutBox
-  with AboutBox do
-  begin
-    with GoToWeb do
-    begin
-      Font.Color := clPurple;
-      Font.Style := GoToWeb.Font.Style - [fsUnderline];
-    end;
-  end;
 end;
 
 procedure TChildForm.FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -2422,3 +2412,4 @@ begin
 end;
 
 end.
+

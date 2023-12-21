@@ -17,7 +17,6 @@ object AboutBox: TAboutBox
   Position = poScreenCenter
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -179,27 +178,9 @@ object AboutBox: TAboutBox
       ShowHint = True
       Transparent = True
     end
-    object Label7: TLabel
-      Left = 24
-      Top = 136
-      Width = 221
-      Height = 16
-      Hint = #1044#1086#1084#1072#1096#1085#1103#1103' '#1089#1090#1088#1072#1085#1080#1095#1082#1072' '#1056#1086#1084#1072#1085#1072' '#1052#1080#1090#1080#1085#1072
-      Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1086#1085#1085#1072#1103' '#1087#1086#1076#1076#1077#1088#1078#1082#1072':'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clNavy
-      Font.Height = -13
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = True
-      IsControl = True
-    end
     object Copyright: TLabel
       Left = 24
-      Top = 162
+      Top = 180
       Width = 119
       Height = 16
       Caption = #1041#1083#1072#1075#1086#1076#1072#1088#1085#1086#1089#1090#1080':'
@@ -253,11 +234,11 @@ object AboutBox: TAboutBox
     end
     object Label6: TLabel
       Left = 48
-      Top = 210
-      Width = 134
+      Top = 228
+      Width = 130
       Height = 16
       Hint = #1053#1053#1043#1059
-      Caption = #1050#1086#1090#1082#1086#1074#1091' '#1040#1083#1077#1082#1089#1077#1102'.'
+      Caption = #1050#1086#1090#1082#1086#1074#1091' '#1040#1083#1077#1082#1089#1077#1102
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clNavy
       Font.Height = -13
@@ -271,7 +252,7 @@ object AboutBox: TAboutBox
     end
     object Label9: TLabel
       Left = 48
-      Top = 178
+      Top = 196
       Width = 215
       Height = 16
       Hint = #1059#1095#1080#1090#1077#1083#1100' '#1080#1085#1092#1086#1088#1084#1072#1090#1080#1082#1080' '#1074' '#1096#1082#1086#1083#1077' '#8470'91'
@@ -289,7 +270,7 @@ object AboutBox: TAboutBox
     end
     object Label12: TLabel
       Left = 48
-      Top = 194
+      Top = 212
       Width = 137
       Height = 16
       Hint = #1064#1082#1086#1083#1072' '#8470'91'
@@ -317,12 +298,12 @@ object AboutBox: TAboutBox
       OnMouseDown = OnShapeClick
     end
     object GoToWeb: TLabel
-      Left = 246
+      Left = 75
       Top = 136
-      Width = 206
+      Width = 143
       Height = 16
       Cursor = crHandPoint
-      Caption = #1089#1090#1088#1072#1085#1080#1094#1072' '#1087#1088#1086#1077#1082#1090#1072' '#1085#1072' Github'
+      Caption = #1057#1090#1088#1072#1085#1080#1094#1072' '#1085#1072' Github'
       Color = clAqua
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clBlue
@@ -335,8 +316,64 @@ object AboutBox: TAboutBox
       ShowHint = True
       Transparent = True
       OnClick = GoToWebClick
-      OnMouseMove = GoToWebMouseMove
       IsControl = True
+    end
+    object GoToEmail: TLabel
+      Left = 75
+      Top = 158
+      Width = 191
+      Height = 16
+      Cursor = crHandPoint
+      Caption = 'ilyaskriblovsky@gmail.com'
+      Color = clAqua
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold, fsUnderline]
+      ParentColor = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      Transparent = True
+      OnClick = GoToEmailClick
+      IsControl = True
+    end
+    object Label1: TLabel
+      Left = 24
+      Top = 136
+      Width = 41
+      Height = 16
+      Caption = #1057#1072#1081#1090':'
+      Color = clBlack
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      Transparent = True
+    end
+    object Label2: TLabel
+      Left = 24
+      Top = 158
+      Width = 49
+      Height = 16
+      Caption = 'E-Mail:'
+      Color = clBlack
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      Transparent = True
     end
   end
   object Timer: TTimer

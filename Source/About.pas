@@ -17,7 +17,6 @@ type
     Label4: TLabel;
     Label8: TLabel;
     Label5: TLabel;
-    Label7: TLabel;
     GoToWeb: TLabel;
     Copyright: TLabel;
     CityAndYears: TLabel;
@@ -30,15 +29,17 @@ type
     Shape6: TShape;
     Shape7: TShape;
     Shape8: TShape;
+    GoToEmail: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
     procedure OnTimer(Sender: TObject);
     procedure GoToWebClick(Sender: TObject);
-    procedure GoToWebMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    procedure FormShow(Sender: TObject);
     procedure ReportErrorByMail(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure OnPanelClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure OnShapeClick(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure GoToEmailClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -59,20 +60,14 @@ begin
   Close;
 end;
 
+procedure TAboutBox.GoToEmailClick(Sender: TObject);
+begin
+  ShellExecute(Handle, nil, PChar('mailto:IlyaSkriblovsky@gmail.com'), nil, nil, SW_SHOWNORMAL);
+end;
+
 procedure TAboutBox.GoToWebClick(Sender: TObject);
 begin
   ShellExecute(Handle, nil, PChar('https://github.com/IlyaSkriblovsky/FlowchartBuilder'), nil, nil, SW_SHOWNORMAL);
-end;
-
-procedure TAboutBox.GoToWebMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-begin (Sender as TLabel)
-  .Font.Color := clPurple;
-end;
-
-procedure TAboutBox.FormShow(Sender: TObject);
-begin
-  GoToWeb.Font.Color := clBlue;
-  GoToWeb.Font.Style := [fsBold, fsUnderline];
 end;
 
 procedure TAboutBox.ReportErrorByMail(Sender: TObject);
