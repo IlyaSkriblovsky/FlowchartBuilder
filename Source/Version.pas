@@ -3,8 +3,8 @@ unit Version;
 interface
 
 const
-  BuildDate = 45281.7288889699;
-  BuildNumber = 386;
+  BuildDate = 45281.7303808218;
+  BuildNumber = 387;
   BuildVersion = '3.4';
 
 implementation
