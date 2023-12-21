@@ -32,7 +32,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 25
       Height = 22
-      Hint = #1053#1086#1074#1072#1103' '#1089#1090#1088#1077#1083#1082#1072
+      Hint = #1053#1086#1074#1072#1103' '#1089#1090#1088#1077#1083#1082#1072' (F2)'
       AllowAllUp = True
       GroupIndex = 1
       Flat = True
@@ -60,7 +60,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 23
       Height = 22
-      Hint = #1059#1076#1072#1083#1080#1090#1100
+      Hint = #1059#1076#1072#1083#1080#1090#1100' (Del)'
       Action = actDelete
       Flat = True
       Glyph.Data = {
@@ -113,7 +113,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 23
       Height = 22
-      Hint = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      Hint = #1053#1072#1089#1090#1088#1086#1081#1082#1080' (Alt+P)'
       Flat = True
       Glyph.Data = {
         86050000424D8605000000000000360000002800000016000000140000000100
@@ -171,7 +171,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 23
       Height = 22
-      Hint = #1052#1072#1089#1096#1090#1072#1073
+      Hint = #1052#1072#1089#1096#1090#1072#1073' (Ctrl+M)'
       Flat = True
       Glyph.Data = {
         76010000424D7601000000000000760000002800000020000000100000000100
@@ -204,7 +204,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1053#1086#1074#1099#1081' '#1092#1072#1081#1083
+        Hint = #1053#1086#1074#1099#1081' '#1092#1072#1081#1083' (Ctrl+N)'
         Action = actNew
         Flat = True
         Glyph.Data = {
@@ -230,7 +230,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1054#1090#1082#1088#1099#1090#1100
+        Hint = #1054#1090#1082#1088#1099#1090#1100' (Ctrl+O)'
         Action = actOpen
         Flat = True
         Glyph.Data = {
@@ -256,7 +256,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+        Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100' (Ctrl+S)'
         Action = actSave
         Flat = True
         Glyph.Data = {
@@ -326,7 +326,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 55
         Height = 22
-        Hint = #1064#1072#1075#1085#1091#1090#1100
+        Hint = #1064#1072#1075#1085#1091#1090#1100' (F2)'
         Caption = #1064#1072#1075
         Flat = True
         Font.Charset = RUSSIAN_CHARSET
@@ -359,7 +359,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 23
         Height = 22
-        Hint = #1040#1074#1090#1086#1074#1099#1087#1086#1083#1085#1077#1085#1080#1077
+        Hint = #1040#1074#1090#1086#1074#1099#1087#1086#1083#1085#1077#1085#1080#1077' (Ctrl+R)'
         AllowAllUp = True
         GroupIndex = 22
         Flat = True
@@ -387,7 +387,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1055#1088#1077#1082#1088#1072#1090#1080#1090#1100
+        Hint = #1055#1088#1077#1082#1088#1072#1090#1080#1090#1100' (Ctrl+T)'
         Flat = True
         Glyph.Data = {
           76010000424D7601000000000000760000002800000020000000100000000100
@@ -422,7 +422,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1053#1072#1095#1072#1083#1086'/'#1050#1086#1085#1077#1094
+        Hint = #1053#1072#1095#1072#1083#1086'/'#1050#1086#1085#1077#1094' (F5)'
         AllowAllUp = True
         GroupIndex = 12
         Flat = True
@@ -466,7 +466,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 24
         Height = 22
-        Hint = #1044#1077#1081#1089#1090#1074#1080#1077
+        Hint = #1044#1077#1081#1089#1090#1074#1080#1077' (F6)'
         AllowAllUp = True
         GroupIndex = 13
         Flat = True
@@ -512,7 +512,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1059#1089#1083#1086#1074#1080#1077
+        Hint = #1059#1089#1083#1086#1074#1080#1077' (F7)'
         AllowAllUp = True
         GroupIndex = 14
         Flat = True
@@ -536,7 +536,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1042#1074#1086#1076'/'#1042#1099#1074#1086#1076
+        Hint = #1042#1074#1086#1076'/'#1042#1099#1074#1086#1076' (F8)'
         AllowAllUp = True
         GroupIndex = 15
         Flat = True
@@ -580,7 +580,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 23
         Height = 22
-        Hint = #1042#1099#1079#1086#1074
+        Hint = #1042#1099#1079#1086#1074' (F9)'
         AllowAllUp = True
         GroupIndex = 16
         Flat = True
@@ -625,7 +625,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 23
         Height = 22
-        Hint = #1057#1083#1080#1103#1085#1080#1077
+        Hint = #1057#1083#1080#1103#1085#1080#1077' (F10)'
         AllowAllUp = True
         GroupIndex = 20
         Flat = True
@@ -801,7 +801,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 23
         Height = 22
-        Hint = #1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1081
+        Hint = #1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1081' (F12)'
         AllowAllUp = True
         GroupIndex = 19
         Flat = True
@@ -835,7 +835,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1069#1082#1088#1072#1085' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+        Hint = #1069#1082#1088#1072#1085' '#1087#1088#1086#1075#1088#1072#1084#1084#1099' (Ctrl+P)'
         Flat = True
         Glyph.Data = {
           76010000424D7601000000000000760000002800000020000000100000000100
@@ -861,7 +861,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 25
         Height = 22
-        Hint = #1055#1088#1086#1089#1084#1086#1090#1088' '#1087#1077#1088#1077#1084#1077#1085#1085#1099#1093
+        Hint = #1055#1088#1086#1089#1084#1086#1090#1088' '#1087#1077#1088#1077#1084#1077#1085#1085#1099#1093' (Ctrl+W)'
         Flat = True
         Glyph.Data = {
           76010000424D7601000000000000760000002800000020000000100000000100
